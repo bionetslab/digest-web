@@ -71,8 +71,9 @@ export default {
 
     loadAll: function () {
       this.number = undefined
-      this.$http.getExamples().then(response => {
-        this.examples = response.data.examples
+      console.log("click")
+      this.$http.post("/set",{target_id:'symbol',target:["TNFRSF1A","CFTR","FCGR2A","STX1A"]}).then(response => {
+        console.log(response)
       })
     },
 
