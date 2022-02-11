@@ -1,23 +1,133 @@
 <template>
   <v-app>
     <v-main>
-      <Example/>
+      <v-toolbar elevation="4" dense>
+        <v-toolbar-title>DIGEST-Web</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn depressed f>Home</v-btn>
+        <v-btn depressed>Documentation</v-btn>
+        <v-btn depressed>About</v-btn>
+      </v-toolbar>
+      <v-card style="width: 70vw; justify-self: center; margin-left: auto; margin-right: auto">
+        <div style="background-color: cornflowerblue; width: 100%; padding:16px">
+          <h2 style="display: flex; justify-content: center; color: white; font-size: 5rem">Digest</h2>
+        </div>
+        <div style="margin-top: 16px; margin-bottom: 16px; width: 90%;text-align: justify; display: flex; justify-self: center; margin-right: auto; margin-left: auto; color: #484848">{{ digestDescription }}</div>
+        <div style="width: 100%; display: flex; justify-content: center">
+          <v-card style="width: 45%; height: 300px; margin:8px">
+            <v-card-title>Set</v-card-title>
+            <v-card-subtitle style="height: 52px">Compare similarity inside the set.</v-card-subtitle>
+            <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
+              <v-card style="width: 50%; height: 200px;" :elevation="hover_set_gene ? 10:0" :flat="!hover_set_gene"
+                      @mouseenter="hover_set_gene=true" @mouseleave="hover_set_gene=false">
+                <v-img
+                    class="white--text align-end"
+                    height="200px"
+                    src="https://media.istockphoto.com/photos/blue-chromosome-dna-and-gradually-glowing-flicker-light-matter-when-picture-id1297146235?b=1&k=20&m=1297146235&s=170667a&w=0&h=vUyHfisjnfzyhzeZvYzt23iaHSEl6UkpoiFctK4BMbc="
+                >
+                  <v-card-title>Gene</v-card-title>
+                  <v-card-subtitle v-show="hover_set_gene">asdfj saöldfj aösldkfj aösdklfa södklf asödlfkja södlfkjas
+                    ödflkjsd öflksajd föskldj f
+                  </v-card-subtitle>
+                  <v-card-actions v-show="hover_set_gene">
+                    <div style="width: 100%; display: flex; justify-content: center">
+                      <v-btn depressed color="primary">Validate</v-btn>
+                    </div>
+                  </v-card-actions>
+                </v-img>
+              </v-card>
+              <v-card style="width: 50%; height: 200px;" :elevation="hover_set_disorder ? 10:0"
+                      :flat="!hover_set_disorder" @mouseenter="hover_set_disorder=true"
+                      @mouseleave="hover_set_disorder=false">
+                <v-img
+                    class="white--text align-end"
+                    height="200px"
+                    src="https://images.medicinenet.com/images/article/main_image/what-is-conversion-disorder.jpg"
+                >
+                  <v-card-title>Disease</v-card-title>
+                  <v-card-subtitle v-show="hover_set_disorder">asdfj saöldfj aösldkfj aösdklfa södklf asödlfkja
+                    södlfkjas ödflkjsd öflksajd föskldj f
+                  </v-card-subtitle>
+                  <v-card-actions v-show="hover_set_disorder">
+                    <div style="width: 100%; display: flex; justify-content: center">
+                      <v-btn depressed color="primary">Validate</v-btn>
+                    </div>
+                  </v-card-actions>
+                </v-img>
+              </v-card>
+            </div>
+          </v-card>
+          <v-card style="width: 45%; height: 300px; margin:8px">
+            <v-card-title>Cluster
+            </v-card-title>
+            <v-card-subtitle style="height: 52px">Compare similarity inside the set.</v-card-subtitle>
+            <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
+              <v-card style="width: 50%; height: 200px;" :elevation="hover_cluster_gene ? 10:0"
+                      :flat="!hover_cluster_gene"
+                      @mouseenter="hover_cluster_gene=true" @mouseleave="hover_cluster_gene=false">
+                <v-img
+                    class="white--text align-end"
+                    height="200px"
+                    src="https://media.istockphoto.com/photos/blue-chromosome-dna-and-gradually-glowing-flicker-light-matter-when-picture-id1297146235?b=1&k=20&m=1297146235&s=170667a&w=0&h=vUyHfisjnfzyhzeZvYzt23iaHSEl6UkpoiFctK4BMbc="
+                >
+                  <v-card-title>Gene</v-card-title>
+                  <v-card-subtitle v-show="hover_cluster_gene">asdfj saöldfj aösldkfj aösdklfa södklf asödlfkja
+                    södlfkjas
+                    ödflkjsd öflksajd föskldj f
+                  </v-card-subtitle>
+                  <v-card-actions v-show="hover_cluster_gene">
+                    <div style="width: 100%; display: flex; justify-content: center">
+                      <v-btn depressed color="primary">Validate</v-btn>
+                    </div>
+                  </v-card-actions>
+                </v-img>
+              </v-card>
+              <v-card style="width: 50%; height: 200px;" :elevation="hover_cluster_disorder ? 10:0"
+                      :flat="!hover_cluster_disorder" @mouseenter="hover_cluster_disorder=true"
+                      @mouseleave="hover_cluster_disorder=false">
+                <v-img
+                    class="white--text align-end"
+                    height="200px"
+                    src="https://images.medicinenet.com/images/article/main_image/what-is-conversion-disorder.jpg"
+                >
+                  <v-card-title>Disease</v-card-title>
+                  <v-card-subtitle v-show="hover_cluster_disorder">asdfj saöldfj aösldkfj aösdklfa södklf asödlfkja
+                    södlfkjas ödflkjsd öflksajd föskldj f
+                  </v-card-subtitle>
+                  <v-card-actions v-show="hover_cluster_disorder">
+                    <div style="width: 100%; display: flex; justify-content: center">
+                      <v-btn depressed color="primary">Validate</v-btn>
+                    </div>
+                  </v-card-actions>
+                </v-img>
+              </v-card>
+            </div>
+          </v-card>
+        </div>
+      </v-card>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Example from './components/Example';
 
 export default {
   name: 'App',
 
-  components: {
-    Example,
-  },
+  components: {},
 
   data: () => ({
-    //
+    digestDescription: "",
+    hover_set_gene: false,
+    hover_set_disorder: false,
+    hover_cluster_gene: false,
+    hover_cluster_disorder: false
   }),
+
+  created() {
+    this.digestDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  }
+
+
 };
 </script>

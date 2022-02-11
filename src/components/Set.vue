@@ -56,7 +56,7 @@
 
 <script>
 export default {
-  name: "Example",
+  name: "Set",
 
 
   data() {
@@ -71,8 +71,11 @@ export default {
 
     loadAll: function () {
       this.number = undefined
-      console.log("click")
-      this.$http.post("/set",{target_id:'symbol',target:["TNFRSF1A","CFTR","FCGR2A","STX1A"]}).then(response => {
+      this.$http.validate_set('entrez', ["7040",
+        "7132",
+        "51164",
+        "6338",
+        "6337"], 1000, 100).then(response => {
         console.log(response)
       })
     },

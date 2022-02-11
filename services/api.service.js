@@ -31,6 +31,12 @@ const ApiService = {
 
     getExample(nr){
         return this.get("test?nr="+nr)
+    },
+
+    validate_set(id_type, set, runs, replace){
+        return this.post("/set",{target:set, target_id:id_type, runs: runs, replace: replace}).then(response=>{
+            return response.data
+        })
     }
 
 
