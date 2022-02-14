@@ -42,13 +42,17 @@ const ApiService = {
     },
 
     validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched){
-        return this.post("/set_set",{target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}).then(response=>{
+        let data = {target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}
+        console.log(data)
+        return this.post("/set_set",data).then(response=>{
             return response.data
         })
     },
 
     validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched){
-        return this.post("/id_set",{target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}).then(response=>{
+        let data = {target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}
+        console.log(data)
+        return this.post("/id_set",data).then(response=>{
             return response.data
         })
     },

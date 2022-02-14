@@ -15,8 +15,8 @@
         <v-simple-table>
           <tr>
             <th></th>
-            <th>inputValues</th>
-            <th>pValues</th>
+            <th align="left">inputValues</th>
+            <th align="left">pValues</th>
           </tr>
           <tr v-for="metric in Object.keys(result.inputValues)" :key="metric">
             <td>{{ metric }}</td>

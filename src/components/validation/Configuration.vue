@@ -17,11 +17,16 @@
       </div>
       <v-alert v-if="errorTargetID" type="error" dense>Missing Target ID Type selection</v-alert>
       <v-alert v-if="errorTargetIDs" type="error" dense>Missing TargetIDs</v-alert>
-      <div style="display: flex">
-        <v-select label="Target ID Type" :items="targetIDTypes[type]" v-model="targetIDType"
-                  style="max-width: 150px"></v-select>
+      <div style="display: flex; width: 100%">
+        <div>
+          <v-select label="Target ID Type" :items="targetIDTypes[type]" v-model="targetIDType"
+                    style="max-width: 170px" outlined dense filled></v-select>
+          <v-file-input label="Upload Targets" hint="Upload a file of newline separated target IDs" dense style="width: 210px; max-width: 210px; cursor: pointer"
+                        v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined prepend-inner-icon="$file"></v-file-input>
+        </div>
         <v-textarea label="Target IDs" v-model="targets"
                     style="max-width: 40vw; margin-left: auto; margin-right: auto; justify-self: flex-end" no-resize
+                    filled
                     placeholder="Enter your chosen IDs newline separated..."></v-textarea>
       </div>
       <v-divider></v-divider>
@@ -33,19 +38,21 @@
         <v-checkbox v-model="useSingleReference" :disabled="!useReference" label="Use single ID"
                     style="margin-left: 16px"></v-checkbox>
       </div>
+      <v-alert v-if="errorReferenceID" type="error" dense>Missing Reference ID Type selection</v-alert>
+      <v-alert v-if="errorReferenceIDs" type="error" dense>Missing Reference IDs</v-alert>
       <div style="display: flex; width: 100%">
-        <div style="margin-right: 64px">
-          <v-select :disabled="!useReference" label="Reference ID Type" :items="targetIDTypes[type]"
-                    v-model="referenceIDType" style="max-width: 150px"></v-select>
+        <div>
+          <v-select outlined :disabled="!useReference" filled label="Reference ID Type" :items="targetIDTypes[type]"
+                    v-model="referenceIDType" style="max-width: 170px" dense></v-select>
+          <v-file-input :disabled="!useReference || useSingleReference"  label="Upload References" hint="Upload a file of newline separated referende IDs" dense style="width: 210px; max-width: 210px; cursor: pointer"
+                        v-model="referenceFile" @change="readReferenceFile" prepend-icon="" filled outlined prepend-inner-icon="$file"></v-file-input>
         </div>
-        <v-alert v-if="errorReferenceID" type="error" dense>Missing Reference ID Type selection</v-alert>
-        <v-alert v-if="errorReferenceIDs" type="error" dense>Missing Reference IDs</v-alert>
         <v-text-field label="Reference ID" :disabled="!useReference" v-if="useSingleReference"
-                      style="margin-left: auto; margin-right: auto; justify-self: flex-end"
-                      v-model="reference"></v-text-field>
-        <v-textarea :disabled="!useReference" v-else label="Reference IDs"
-                    placeholder="Enter your chosen IDs newline separated..." v-model="reference"
-                    style="margin-left: auto; margin-right: auto; justify-self: flex-end"></v-textarea>
+                      style="margin-left: auto; margin-right: auto; justify-self: flex-end;max-width: 40vw; "
+                      v-model="reference" filled></v-text-field>
+        <v-textarea :disabled="!useReference" v-else label="Reference IDs" filled
+                    placeholder="Enter your chosen IDs newline separated..." v-model="references" no-resize
+                    style="max-width: 40vw; margin-left: auto; margin-right: auto; justify-self: flex-end;"></v-textarea>
       </div>
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
@@ -76,6 +83,8 @@ export default {
 
   data() {
     return {
+      targetFile: undefined,
+      referenceFile: undefined,
       errorTargetID: false,
       errorTargetIDs: false,
       errorReferenceID: false,
@@ -112,8 +121,40 @@ export default {
 
   methods: {
 
-    idsToList: function(ids){
+    idsToList: function (ids) {
       return ids.split(/\n/)
+    },
+
+    readTargetFile: function (file) {
+      this.readFile(file, 'target')
+    },
+
+    readReferenceFile: function (file) {
+      this.readFile(file, 'reference')
+    },
+
+    readFile: function (file, goal) {
+      const reader = new FileReader();
+      reader.addEventListener('load', (event) => {
+        let result = event.target.result;
+        result = atob(result.split('base64,')[1])
+        if (goal === 'target') {
+          this.targets = result
+          this.targetFile = undefined
+        }
+        if (goal === 'reference') {
+          this.references = result
+          this.referenceFile = undefined
+        }
+      });
+
+      reader.addEventListener('progress', (event) => {
+        if (event.loaded && event.total) {
+          const percent = (event.loaded / event.total) * 100;
+          console.log(`Progress: ${Math.round(percent)}`);
+        }
+      });
+      reader.readAsDataURL(file);
     },
 
 
@@ -122,7 +163,11 @@ export default {
       this.errorTargetIDs = this.targets.length === 0
       if (this.useReference) {
         this.errorReferenceID = !this.referenceIDType;
+        console.log(this.references)
         this.errorReferenceIDs = this.useSingleReference ? this.reference.length === 0 : this.references.length === 0
+      } else {
+        this.errorReferenceIDs = false
+        this.errorReferenceID = false
       }
       let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs
       if (!error) {
@@ -133,16 +178,16 @@ export default {
           target: this.idsToList(this.targets),
           runs: this.runs,
         }
-        if(this.useReference){
-          params.enriched= this.enriched
+        if (this.useReference) {
+          params.enriched = this.enriched
           params.referenceID = this.referenceIDType
           params.reference = this.useSingleReference ? this.reference : this.idsToList(this.references)
           route = this.useSingleReference ? "id-set" : "set-set"
-        }else{
-          route="set"
+        } else {
+          route = "set"
         }
-        params.mode=route
-        this.$emit("validationEvent",params)
+        params.mode = route
+        this.$emit("validationEvent", params)
       }
     }
   }
