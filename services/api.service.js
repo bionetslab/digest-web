@@ -34,10 +34,25 @@ const ApiService = {
     },
 
     validate_set(id_type, set, runs, replace){
-        return this.post("/set",{target:set, target_id:id_type, runs: runs, replace: replace}).then(response=>{
+        let data = {target:set, target_id:id_type, runs: runs, replace: replace};
+        console.log(data)
+        return this.post("/set",data).then(response=>{
             return response.data
         })
-    }
+    },
+
+    validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched){
+        return this.post("/set_set",{target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}).then(response=>{
+            return response.data
+        })
+    },
+
+    validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched){
+        return this.post("/id_set",{target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}).then(response=>{
+            return response.data
+        })
+    },
+
 
 
 
