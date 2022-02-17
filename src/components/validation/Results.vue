@@ -18,10 +18,10 @@
             <th align="left">inputValues</th>
             <th align="left">pValues</th>
           </tr>
-          <tr v-for="metric in Object.keys(result.inputValues.value)" :key="metric">
+          <tr v-for="metric in Object.keys(result.input_values.value)" :key="metric">
             <td>{{ metric }}</td>
-            <td>{{ result.inputValues.value[metric] }}</td>
-            <td>{{ result.pValues.value[metric] }}</td>
+            <td>{{ result.inpu_values.value[metric] }}</td>
+            <td>{{ result.p_values.value[metric] }}</td>
           </tr>
         </v-simple-table>
       </div>
