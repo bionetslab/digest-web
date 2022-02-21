@@ -88,7 +88,7 @@
                       :items="refTypes" v-model="refType"
                       style="max-width: 180px" dense></v-select>
             <v-select v-else outlined :disabled="!useReference" filled label="Reference Type"
-                      :items="{text:'Disease',value:'disease'}" v-model="refType"
+                      :items="[{text:'Disease',value:'disease'}]" v-model="refType"
                       style="max-width: 180px" dense></v-select>
             <v-select outlined :disabled="!useReference" filled label="Reference ID Type"
                       :items="targetIDTypes[refType]"
@@ -111,7 +111,7 @@
       <div style="display: flex; justify-content: center">
         <v-subheader>Additional Parameters (Optional)</v-subheader>
       </div>
-      <div style="display: flex;margin-bottom: 75px">
+      <div style="display: flex; justify-content: center; margin-top: 16px">
         <v-checkbox v-if="mode==='set'" style="margin-right: 64px; margin-top: 4px;" :disabled="!useReference"
                     v-model="enriched"
                     label="Enriched"></v-checkbox>
@@ -119,9 +119,18 @@
                   style="max-width: 200px; margin-right: 32px" outlined dense filled></v-select>
         <v-select label="Background model" :items="backgroundModels" v-model="backgroundModel"
                   style="max-width: 200px; margin-right: 32px" outlined dense filled></v-select>
+      </div>
+      <div style="display: flex;justify-content: center; margin-bottom: 32px; margin-top: 16px">
         <v-slider label="Runs" min="100" max="10000" step="100" v-model="runs" dense>
           <template v-slot:prepend>
             <v-text-field v-model="runs" single-line type="number"
+                          style="max-width: 5rem; margin-top: -16px"></v-text-field>
+          </template>
+        </v-slider>
+        <div style="width: 32px"></div>
+        <v-slider label="Replace" min="1" max="100" step="1" v-model="replace" dense>
+          <template v-slot:prepend>
+            <v-text-field v-model="replace" single-line type="number"
                           style="max-width: 5rem; margin-top: -16px"></v-text-field>
           </template>
         </v-slider>
@@ -168,6 +177,7 @@ export default {
       useMultiReference: false,
       enriched: false,
       runs: 1000,
+      replace:100,
       distanceModel: "jaccard",
       refType: "disease",
       clusterHeaders: [
@@ -217,14 +227,14 @@ export default {
     },
 
     readTargetFile: function (file) {
-      if(file) {
+      if (file) {
         this.readFile(file, 'target')
         this.$refs.tarInput.blur()
       }
     },
 
     readReferenceFile: function (file) {
-      if(file) {
+      if (file) {
         this.readFile(file, 'reference')
         this.$refs.refInput.blur()
       }
@@ -232,13 +242,15 @@ export default {
 
     limitColumns: function (content, delim, columns) {
       return content.split("\n").map(line => {
+        if(line.length===0)
+          return ""
         let entries = line.split(delim);
         let l = ""
         for (let e = 0; e < columns; e++)
           l += entries[e] + delim;
         l = l.substring(0, l.length - delim.length)
-        return l
-      }).join("\n")
+        return  l
+      }).filter(l=>l.length>0).join("\n")
     },
 
     readFile: function (file, goal) {
@@ -262,13 +274,6 @@ export default {
         if (goal === 'reference') {
           this.references = result
           this.referenceFile = undefined
-        }
-      });
-
-      reader.addEventListener('progress', (event) => {
-        if (event.loaded && event.total) {
-          const percent = (event.loaded / event.total) * 100;
-          console.log(`Progress: ${Math.round(percent)}`);
         }
       });
       reader.readAsDataURL(file);
@@ -325,6 +330,7 @@ export default {
           target: this.mode === 'cluster' ? this.clusters : this.idsToList(this.targets),
           distance: this.distanceModel,
           runs: this.runs,
+          replace: this.replace,
           background: this.backgroundModel,
         }
         if (this.useReference) {

@@ -62,7 +62,7 @@ export default {
       this.step = 2
       switch (this.params.mode) {
         case "set": {
-          this.$http.validate_set(this.params.targetID, this.params.target, this.params.runs, 100, this.params.distance, this.params.background).then(response => {
+          this.$http.validate_set(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background).then(response => {
             this.saveResult(response)
           }).catch(() => {
             this.error = true
@@ -70,7 +70,7 @@ export default {
           break;
         }
         case "id-set": {
-          this.$http.validate_id_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference, this.params.runs, 100, this.params.enriched, this.params.distance, this.params.background).then(response => {
+          this.$http.validate_id_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference, this.params.runs, this.params.replace, this.params.enriched, this.params.distance, this.params.background).then(response => {
             this.saveResult(response)
           }).catch(() => {
             this.error = true
@@ -78,7 +78,7 @@ export default {
           break
         }
         case "set-set": {
-          this.$http.validate_set_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference, this.params.runs, 100, this.params.enriched, this.params.distance, this.params.background).then(response => {
+          this.$http.validate_set_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference, this.params.runs, this.params.replace, this.params.enriched, this.params.distance, this.params.background).then(response => {
             this.saveResult(response)
           }).catch(() => {
             this.error = true
@@ -86,7 +86,7 @@ export default {
           break
         }
         case "cluster": {
-          this.$http.validate_cluster(this.params.targetID, this.params.target, this.params.runs, 100, this.params.distance, this.params.background).then(response=>{
+          this.$http.validate_cluster(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background).then(response=>{
             this.saveResult(response)
           }).catch(()=>{
             this.error=true
