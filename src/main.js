@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import VueRouter from 'vue-router'
 
+import '@mdi/font/css/materialdesignicons.css'
 import * as CONFIG from "./Config"
 import ApiService from "../services/api.service";
 import vuetify from './plugins/vuetify'
