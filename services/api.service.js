@@ -33,24 +33,24 @@ const ApiService = {
         return this.get("test?nr="+nr)
     },
 
-    validate_set(id_type, set, runs, replace){
-        let data = {target:set, target_id:id_type, runs: runs, replace: replace};
+    validate_set(id_type, set, runs, replace, distance){
+        let data = {target:set, target_id:id_type, runs: runs, replace: replace, distance:distance};
         console.log(data)
         return this.post("/set",data).then(response=>{
             return response.data
         })
     },
 
-    validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched){
-        let data = {target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}
+    validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched,distance){
+        let data = {target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched, distance:distance}
         console.log(data)
         return this.post("/set_set",data).then(response=>{
             return response.data
         })
     },
 
-    validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched){
-        let data = {target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched}
+    validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched,distance){
+        let data = {target:target, target_id:target_id, reference:ref, reference_id:ref_id, runs: runs, replace: replace, enriched: enriched, distance:distance}
         console.log(data)
         return this.post("/id_set",data).then(response=>{
             return response.data

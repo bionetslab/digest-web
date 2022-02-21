@@ -7,7 +7,7 @@
         validation.
       </header>
       <v-btn color="primary" @click="checkEvent" style="margin-left: auto; margin-right: 0; justify-self: flex-end">
-        Submit
+        Validate
       </v-btn>
     </div>
     <v-sheet style="margin-top: 16px;">
@@ -21,8 +21,10 @@
         <div>
           <v-select label="Target ID Type" :items="targetIDTypes[type]" v-model="targetIDType"
                     style="max-width: 170px" outlined dense filled></v-select>
-          <v-file-input label="Upload Targets" hint="Upload a file of newline separated target IDs" dense style="width: 210px; max-width: 210px; cursor: pointer"
-                        v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined prepend-inner-icon="$file"></v-file-input>
+          <v-file-input label="Upload Targets" hint="Upload a file of newline separated target IDs" dense
+                        style="width: 210px; max-width: 210px; cursor: pointer"
+                        v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined
+                        prepend-inner-icon="$file"></v-file-input>
         </div>
         <v-textarea label="Target IDs" v-model="targets"
                     style="max-width: 40vw; margin-left: auto; margin-right: auto; justify-self: flex-end" no-resize
@@ -44,8 +46,11 @@
         <div>
           <v-select outlined :disabled="!useReference" filled label="Reference ID Type" :items="targetIDTypes[type]"
                     v-model="referenceIDType" style="max-width: 170px" dense></v-select>
-          <v-file-input :disabled="!useReference || useSingleReference"  label="Upload References" hint="Upload a file of newline separated referende IDs" dense style="width: 210px; max-width: 210px; cursor: pointer"
-                        v-model="referenceFile" @change="readReferenceFile" prepend-icon="" filled outlined prepend-inner-icon="$file"></v-file-input>
+          <v-file-input :disabled="!useReference || useSingleReference" label="Upload References"
+                        hint="Upload a file of newline separated referende IDs" dense
+                        style="width: 210px; max-width: 210px; cursor: pointer"
+                        v-model="referenceFile" @change="readReferenceFile" prepend-icon="" filled outlined
+                        prepend-inner-icon="$file"></v-file-input>
         </div>
         <v-text-field label="Reference ID" :disabled="!useReference" v-if="useSingleReference"
                       style="margin-left: auto; margin-right: auto; justify-self: flex-end;max-width: 40vw; "
@@ -58,10 +63,12 @@
       <div style="display: flex; justify-content: center">
         <v-subheader>Additional Parameters (Optional)</v-subheader>
       </div>
-      <div style="display: flex;">
-        <v-checkbox style="margin-right: 64px" :disabled="!useReference" v-model="enriched"
+      <div style="display: flex;margin-bottom: 75px">
+        <v-checkbox style="margin-right: 64px; margin-top: 4px;" :disabled="!useReference" v-model="enriched"
                     label="Enriched"></v-checkbox>
-        <v-slider label="Runs" min="100" max="10000" step="100" v-model="runs" dense style="margin-top:16px;">
+        <v-select label="Distance Measure" :items="distanceMeasures" v-model="distanceModel"
+                  style="max-width: 170px; margin-right: 32px" outlined dense filled></v-select>
+        <v-slider label="Runs" min="100" max="10000" step="100" v-model="runs" dense>
           <template v-slot:prepend>
             <v-text-field v-model="runs" single-line type="number"
                           style="max-width: 5rem; margin-top: -16px"></v-text-field>
@@ -98,6 +105,11 @@ export default {
       useSingleReference: true,
       enriched: false,
       runs: 1000,
+      distanceModel: "jaccard",
+      distanceMeasures: [
+        {text: "Jaccard Index", value: "jaccard"},
+        {text: "Overlap coefficient", value: "overlap"}
+      ],
       targetIDTypes: {
         "gene": [
           {text: "Entrez ID", value: "entrez"},
@@ -163,7 +175,6 @@ export default {
       this.errorTargetIDs = this.targets.length === 0
       if (this.useReference) {
         this.errorReferenceID = !this.referenceIDType;
-        console.log(this.references)
         this.errorReferenceIDs = this.useSingleReference ? this.reference.length === 0 : this.references.length === 0
       } else {
         this.errorReferenceIDs = false
@@ -176,6 +187,7 @@ export default {
           type: this.type,
           targetID: this.targetIDType,
           target: this.idsToList(this.targets),
+          distance: this.distanceModel,
           runs: this.runs,
         }
         if (this.useReference) {
