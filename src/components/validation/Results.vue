@@ -10,7 +10,7 @@
     </div>
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
-      <v-subheader v-if="!error && result ===undefined">Status:{{status}}</v-subheader>
+      <v-subheader v-if="!error && result ===undefined">Status:{{ status }}</v-subheader>
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else>
         <v-simple-table>
@@ -66,14 +66,15 @@ export default {
       this.$http.getTaskStatus(this.taskID).then((response) => {
         console.log(response)
         if (response.status)
-          this.status = status
+          this.status = response.status
         if (response.failed)
           this.error = true
         if (response.done) {
           this.saveResult(response.result)
         }
-      }).then(() => {
-        if (!this.result)
+        return response.failed || response.done
+      }).then((done) => {
+        if (!done)
           setTimeout(() => this.queryStatus(), 5000)
       })
     },
