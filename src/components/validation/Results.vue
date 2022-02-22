@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;  padding: 16px">
     <div style="display: flex;">
-      <v-btn color="error" @click="$emit('resetEvent')">Clear</v-btn>
+      <v-btn color="error" @click="$emit('resetEvent')">Reset</v-btn>
       <header style="justify-self: center; margin-left: auto; margin-right: auto; padding-top: 32px">This is the
         validation score for your
         {{ params.type }}-{{ params.mode }}
@@ -10,7 +10,7 @@
     </div>
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
-      <v-subheader v-if="!error && result ===undefined">Status: {{ status }}</v-subheader>
+      <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status: 'loading...' }}</v-subheader>
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else>
         <v-simple-table>
@@ -59,7 +59,7 @@ export default {
         return;
       }
       console.log(result)
-      this.result = result
+      this.result = result.result
     },
 
     queryResult: function(){
