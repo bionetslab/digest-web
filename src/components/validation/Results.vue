@@ -10,6 +10,7 @@
     </div>
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
+      <v-subheader v-if="!error && result ===undefined">Status:{{status}}</v-subheader>
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else>
         <v-simple-table>
@@ -43,6 +44,7 @@ export default {
       result: undefined,
       error: false,
       taskID: undefined,
+      status: "",
     }
   },
 
@@ -60,22 +62,23 @@ export default {
       this.result = result
     },
 
-    queryStatus: function(){
-      this.$http.getTaskStatus(this.taskID).then((response)=>{
+    queryStatus: function () {
+      this.$http.getTaskStatus(this.taskID).then((response) => {
         console.log(response)
-        if(response.failed)
-          this.error=true
-        if(response.done){
+        if (response.status)
+          this.status = status
+        if (response.failed)
+          this.error = true
+        if (response.done) {
           this.saveResult(response.result)
         }
-      }).then(()=>{
-        if(this.result)
-          return
-        setTimeout(()=>this.queryStatus(),5000)
+      }).then(() => {
+        if (!this.result)
+          setTimeout(() => this.queryStatus(), 5000)
       })
     },
 
-    saveTaskId: function(response){
+    saveTaskId: function (response) {
       console.log(response)
       this.taskID = response.task
       this.queryStatus()
@@ -108,10 +111,10 @@ export default {
           break
         }
         case "cluster": {
-          this.$http.validate_cluster(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background).then(response=>{
+          this.$http.validate_cluster(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background).then(response => {
             this.saveTaskId(response)
-          }).catch(()=>{
-            this.error=true
+          }).catch(() => {
+            this.error = true
           })
         }
       }
