@@ -4,7 +4,7 @@
       <v-btn color="error" @click="$emit('resetEvent')">Reset</v-btn>
       <header style="justify-self: center; margin-left: auto; margin-right: auto; padding-top: 32px">This is the
         validation score for your
-        {{ params.type }}-{{ params.mode }}
+        {{ type }}-{{ mode }}
         input.
       </header>
     </div>
@@ -13,15 +13,15 @@
       <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status : 'loading...' }}</v-subheader>
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else>
-        <v-simple-table>
+        <v-simple-table v-if="mode==='set'">
           <tr>
             <th></th>
             <th align="left">inputValues</th>
             <th align="left">pValues</th>
           </tr>
-          <tr v-for="metric in Object.keys(result.input_values.values)" :key="metric">
+          <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
             <td>{{ metric }}</td>
-            <td>{{ result.input_values.values[metric] }}</td>
+            <td>{{ result.input_values.values.set_value[metric] }}</td>
             <td>{{ result.p_values[metric] }}</td>
           </tr>
         </v-simple-table>
@@ -45,6 +45,8 @@ export default {
       error: false,
       taskID: undefined,
       status: "",
+      mode: undefined,
+      type: undefined,
     }
   },
 
@@ -74,6 +76,10 @@ export default {
     queryStatus: function () {
       this.$http.getTaskStatus(this.taskID).then((response) => {
         console.log(response)
+        if(!this.mode)
+          this.mode = response.mode
+        if(!this.type)
+          this.mode = response.type
         if (response.status)
           this.status = response.status
         if (response.failed)
