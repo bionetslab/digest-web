@@ -27,7 +27,7 @@
             </tr>
             <tr v-for="metric in Object.keys(result.p_values.values.set_value)" :key="metric">
               <td style="padding:4px">{{ metric }}</td>
-              <td style="padding:4px">{{ result.p_values.values.set_value[metric] }}</td>
+              <td style="padding:4px">{{ formatValue(result.p_values.values.set_value[metric]) }}</td>
             </tr>
           </v-simple-table>
           <v-simple-table style="justify-self: flex-end; margin-right: auto; margin-left: auto">
@@ -37,7 +37,7 @@
             </tr>
             <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
               <td style="padding:4px">{{ metric }}</td>
-              <td style="padding:4px">{{ result.input_values.values.set_value[metric] }}</td>
+              <td style="padding:4px">{{ formatValue(result.input_values.values.set_value[metric]) }}</td>
             </tr>
           </v-simple-table>
         </div>
