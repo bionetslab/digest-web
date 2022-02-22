@@ -10,7 +10,7 @@
     </div>
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
-      <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status: 'loading...' }}</v-subheader>
+      <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status : 'loading...' }}</v-subheader>
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else>
         <v-simple-table>
@@ -26,7 +26,7 @@
           </tr>
         </v-simple-table>
       </div>
-      <span v-if="error"><i>An error occurred!</i></span>
+      <span v-if="error"><i>An error with following message occurred: {{ status }}</i></span>
     </v-sheet>
   </div>
 </template>
@@ -49,7 +49,12 @@ export default {
   },
 
   created() {
-    this.execute()
+    this.taskID = this.$route.query.result
+    if (this.taskID) {
+      this.queryStatus()
+    } else {
+      this.execute()
+    }
   },
 
   methods: {
@@ -62,7 +67,7 @@ export default {
       this.result = result.result
     },
 
-    queryResult: function(){
+    queryResult: function () {
       this.$http.getTaskResult(this.taskID).then(this.saveResult).catch(console.error)
     },
 
