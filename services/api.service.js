@@ -70,6 +70,11 @@ const ApiService = {
         return this.get("/status?task="+taskID).then(response=>{
             return response.data
         })
+    },
+    getTaskResult(taskID) {
+        return this.get("/result?task="+taskID).then(response=>{
+            return response.data
+        })
     }
 }
 export default ApiService

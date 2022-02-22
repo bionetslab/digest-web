@@ -54,12 +54,16 @@ export default {
 
   methods: {
     saveResult: function (result) {
-      // if (typeof result !== "object") {
-      //   this.error = true
-      //   return;
-      // }
+      if (typeof result !== "object") {
+        this.error = true
+        return;
+      }
       console.log(result)
       this.result = result
+    },
+
+    queryResult: function(){
+      this.$http.getTaskResult(this.taskID).then(this.saveResult).catch(console.error)
     },
 
     queryStatus: function () {
@@ -70,13 +74,13 @@ export default {
         if (response.failed)
           this.error = true
         if (response.done) {
-          this.saveResult(response.result)
+          this.queryResult()
         }
         return response.failed || response.done
       }).then((done) => {
         if (!done)
           setTimeout(() => this.queryStatus(), 5000)
-      })
+      }).catch(console.error)
     },
 
     saveTaskId: function (response) {
