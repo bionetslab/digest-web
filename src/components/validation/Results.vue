@@ -79,7 +79,7 @@ export default {
         if(!this.mode)
           this.mode = response.mode
         if(!this.type)
-          this.mode = response.type
+          this.type = response.type
         if (response.status)
           this.status = response.status
         if (response.failed)
