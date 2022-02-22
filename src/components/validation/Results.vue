@@ -10,7 +10,7 @@
     </div>
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
-      <v-subheader v-if="!error && result ===undefined">Status:{{ status }}</v-subheader>
+      <v-subheader v-if="!error && result ===undefined">Status: {{ status }}</v-subheader>
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else>
         <v-simple-table>
@@ -19,9 +19,9 @@
             <th align="left">inputValues</th>
             <th align="left">pValues</th>
           </tr>
-          <tr v-for="metric in Object.keys(result.input_values.value)" :key="metric">
+          <tr v-for="metric in Object.keys(result.input_values.values)" :key="metric">
             <td>{{ metric }}</td>
-            <td>{{ result.input_values.value[metric] }}</td>
+            <td>{{ result.input_values.values[metric] }}</td>
             <td>{{ result.p_values[metric] }}</td>
           </tr>
         </v-simple-table>
