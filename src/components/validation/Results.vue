@@ -157,7 +157,7 @@ export default {
       if (typeof value === "number") {
         let s = value + ""
         let idx = s.indexOf(".")
-        return s.length > 6 ? s.substring(0, Math.max(6, idx)) : s
+        return s.length > 8 ? s.substring(0, Math.max(8, idx)) : s
       }
       return value
     },
