@@ -42,6 +42,7 @@ export default {
     return {
       result: undefined,
       error: false,
+      taskID: undefined,
     }
   },
 
@@ -58,12 +59,33 @@ export default {
       console.log(result)
       this.result = result
     },
+
+    queryStatus: function(){
+      this.$http.getTaskStatus(this.taskID).then((response)=>{
+        console.log(response)
+        if(response.failed)
+          this.error=true
+        if(response.done){
+          this.saveResult(response.result)
+        }
+
+      })
+      if(this.result)
+        return
+      setTimeout(()=>this.queryStatus,5000)
+    },
+
+    saveTaskId: function(response){
+      console.log(response)
+      this.taskID = response.task
+      this.queryStatus()
+    },
     execute: function () {
       this.step = 2
       switch (this.params.mode) {
         case "set": {
           this.$http.validate_set(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background).then(response => {
-            this.saveResult(response)
+            this.saveTaskId(response)
           }).catch(() => {
             this.error = true
           })
@@ -71,7 +93,7 @@ export default {
         }
         case "id-set": {
           this.$http.validate_id_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference, this.params.runs, this.params.replace, this.params.enriched, this.params.distance, this.params.background).then(response => {
-            this.saveResult(response)
+            this.saveTaskId(response)
           }).catch(() => {
             this.error = true
           })
@@ -79,7 +101,7 @@ export default {
         }
         case "set-set": {
           this.$http.validate_set_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference, this.params.runs, this.params.replace, this.params.enriched, this.params.distance, this.params.background).then(response => {
-            this.saveResult(response)
+            this.saveTaskId(response)
           }).catch(() => {
             this.error = true
           })
@@ -87,7 +109,7 @@ export default {
         }
         case "cluster": {
           this.$http.validate_cluster(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background).then(response=>{
-            this.saveResult(response)
+            this.saveTaskId(response)
           }).catch(()=>{
             this.error=true
           })

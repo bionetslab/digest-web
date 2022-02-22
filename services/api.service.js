@@ -63,10 +63,13 @@ const ApiService = {
         return this.post("/cluster",data).then(response=>{
             return response.data
         })
+    },
+
+
+    getTaskStatus(taskID) {
+        return this.get("/status?task="+taskID).then(response=>{
+            return response.data
+        })
     }
-
-
-
-
 }
 export default ApiService
