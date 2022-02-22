@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;  padding: 16px">
     <div style="display: flex;">
-      <v-btn color="error" @click="$emit('resetEvent')">Reset</v-btn>
+      <v-btn color="error" @click="reset()">Reset</v-btn>
       <header style="justify-self: center; margin-left: auto; margin-right: auto; padding-top: 32px">This is the
         validation score for your
         {{ type }}-{{ mode }}
@@ -99,6 +99,10 @@ export default {
       this.taskID = response.task
       this.$router.push("/result?id="+this.taskID)
       this.queryStatus()
+    },
+    reset: function(){
+      this.$router.push("/")
+      this.$router.go()
     },
     execute: function () {
       this.step = 2
