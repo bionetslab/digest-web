@@ -91,6 +91,7 @@ export default {
     saveTaskId: function (response) {
       console.log(response)
       this.taskID = response.task
+      this.$router.push("?result="+this.taskID)
       this.queryStatus()
     },
     execute: function () {
