@@ -11,6 +11,7 @@ const router = new Router({
             // {path:"/explore/:view/result/:job", component:App},
             // {path:"/", redirect:"/home"},
             {path: "/", component: Validation},
+            {path: "/result", component: Validation},
             {path:"/documentation", component:Documentation},
             {path:"/about", component:About}
         ]

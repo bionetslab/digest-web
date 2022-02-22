@@ -51,7 +51,7 @@ export default {
   },
 
   created() {
-    this.taskID = this.$route.query.result
+    this.taskID = this.$route.query.id
     if (this.taskID) {
       this.queryStatus()
     } else {
@@ -97,7 +97,7 @@ export default {
     saveTaskId: function (response) {
       console.log(response)
       this.taskID = response.task
-      this.$router.push("?result="+this.taskID)
+      this.$router.push("/result?id="+this.taskID)
       this.queryStatus()
     },
     execute: function () {

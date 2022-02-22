@@ -4,7 +4,7 @@
       <v-toolbar elevation="4" dense style="padding-left: 15vw; padding-right: 15vw">
           <v-toolbar-title>DIGEST-Web</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn depressed plain>
+          <v-btn depressed plain @click="checkRouting()">
             <router-link style="text-decoration: none" to="/">Home</router-link>
           </v-btn>
           <v-btn depressed plain>
@@ -30,6 +30,16 @@ export default {
 
   data: () => ({}),
 
+
+  methods:{
+
+    checkRouting:function(){
+      if(this.$route.path === "/"){
+        this.$router.push("/")
+        this.$router.go()
+      }
+    }
+  }
 
 };
 </script>
