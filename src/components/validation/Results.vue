@@ -68,11 +68,11 @@ export default {
         if(response.done){
           this.saveResult(response.result)
         }
-
+      }).then(()=>{
+        if(this.result)
+          return
+        setTimeout(()=>this.queryStatus(),5000)
       })
-      if(this.result)
-        return
-      setTimeout(()=>this.queryStatus,5000)
     },
 
     saveTaskId: function(response){
