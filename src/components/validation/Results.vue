@@ -54,10 +54,10 @@ export default {
 
   methods: {
     saveResult: function (result) {
-      if (typeof result !== "object") {
-        this.error = true
-        return;
-      }
+      // if (typeof result !== "object") {
+      //   this.error = true
+      //   return;
+      // }
       console.log(result)
       this.result = result
     },
