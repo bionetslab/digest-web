@@ -3,51 +3,85 @@
     <div style="display: flex;">
       <v-btn color="error" @click="reset()">Reset</v-btn>
       <header style="justify-self: center; margin-left: auto; margin-right: auto; padding-top: 32px">This is the
-        validation score for your
+        validation result for your
         {{ type }}-{{ mode }}
         input.
       </header>
     </div>
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
-      <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status : 'loading...' }}</v-subheader>
+      <v-subheader></v-subheader>
+
+      <div style="display: flex; justify-content: center">
+        <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status : 'loading...' }}</v-subheader>
+        <v-subheader v-else>Results</v-subheader>
+      </div>
+
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
-      <div v-else>
-        <div v-if="mode!=='cluster'">
-          <v-simple-table>
+      <div v-else style="padding-left: 64px; padding-right: 64px">
+        <div v-if="mode!=='cluster'" style="display: flex">
+          <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
             <tr>
               <th></th>
               <th align="left">pValues</th>
             </tr>
-            <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
-              <td>{{ metric }}</td>
-              <td>{{ result.p_values.values.set_value[metric] }}</td>
+            <tr v-for="metric in Object.keys(result.p_values.values.set_value)" :key="metric">
+              <td style="padding:4px">{{ metric }}</td>
+              <td style="padding:4px">{{ result.p_values.values.set_value[metric] }}</td>
             </tr>
           </v-simple-table>
-          <v-simple-table>
+          <v-simple-table style="justify-self: flex-end; margin-right: auto; margin-left: auto">
             <tr>
               <th></th>
               <th align="left">inputValues</th>
             </tr>
             <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
-              <td>{{ metric }}</td>
-              <td>{{ result.input_values.values.set_value[metric] }}</td>
+              <td style="padding:4px">{{ metric }}</td>
+              <td style="padding:4px">{{ result.input_values.values.set_value[metric] }}</td>
             </tr>
           </v-simple-table>
         </div>
         <div v-else>
-          <v-simple-table>
-            <tr>
-              <th></th>
-              <th align="left">inputValues</th>
-              <th align="left">pValues</th>
-            </tr>
-            <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
-              <td>{{ metric }}</td>
-              <td>{{ result.input_values.values.set_value[metric] }}</td>
-              <td>{{ result.p_values.values.set_value[metric] }}</td>
-            </tr>
-          </v-simple-table>
+          <div style="display: flex">
+            <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
+              <tr>
+                <th style="padding:4px">
+                  <v-subheader>P-values</v-subheader>
+                </th>
+                <th style="padding:4px" align="left" v-for="head in Object.keys(result.p_values.values)"
+                    :key="'p_'+head">{{ head }}
+                </th>
+              </tr>
+              <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
+                <td style="padding:4px">{{ metric }}</td>
+                <td style="padding:4px" v-for="head in Object.keys(result.p_values.values)" :key="metric+head">
+                  {{ formatValue(result.p_values.values[head][metric]) }}
+                </td>
+              </tr>
+            </v-simple-table>
+            <!--          </div>-->
+            <!--          <div style="display: flex; justify-content: center">-->
+            <v-simple-table style="justify-self: flex-end; margin-right: auto; margin-left: auto">
+              <tr>
+                <th style="padding:4px">
+                  <v-subheader>Input-values</v-subheader>
+                </th>
+                <th style="padding:4px" align="left"
+                    v-for="head in Object.keys(result.input_values.values).filter(k=>k !== 'ss_inter')"
+                    :key="'i_'+head">{{ head }}
+                </th>
+              </tr>
+              <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric">
+                <td style="padding:4px">{{ metric }}</td>
+                <td style="padding:4px"
+                    v-for="head in Object.keys(result.input_values.values).filter(k=>k !== 'ss_inter')"
+                    :key="metric+head">
+                  {{ formatValue(result.input_values.values[head][metric]) }}
+                </td>
+              </tr>
+            </v-simple-table>
+
+          </div>
         </div>
       </div>
       <span v-if="error"><i>An error with following message occurred: {{ status }}</i></span>
@@ -76,6 +110,7 @@ export default {
 
   created() {
     this.taskID = this.$route.query.id
+
     if (this.taskID) {
       this.queryStatus()
     } else {
@@ -116,6 +151,15 @@ export default {
         if (!done)
           setTimeout(() => this.queryStatus(), 5000)
       }).catch(console.error)
+    },
+
+    formatValue: function (value) {
+      if (typeof value === "number") {
+        let s = value + ""
+        let idx = s.indexOf(".")
+        return s.length > 6 ? s.substring(0, Math.max(6, idx)) : s
+      }
+      return value
     },
 
     saveTaskId: function (response) {
