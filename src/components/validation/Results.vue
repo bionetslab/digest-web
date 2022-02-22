@@ -13,18 +13,42 @@
       <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status : 'loading...' }}</v-subheader>
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else>
-        <v-simple-table v-if="mode==='set'">
-          <tr>
-            <th></th>
-            <th align="left">inputValues</th>
-            <th align="left">pValues</th>
-          </tr>
-          <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
-            <td>{{ metric }}</td>
-            <td>{{ result.input_values.values.set_value[metric] }}</td>
-            <td>{{ result.p_values.values.set_value[metric] }}</td>
-          </tr>
-        </v-simple-table>
+        <div v-if="mode!=='cluster'">
+          <v-simple-table>
+            <tr>
+              <th></th>
+              <th align="left">pValues</th>
+            </tr>
+            <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
+              <td>{{ metric }}</td>
+              <td>{{ result.p_values.values.set_value[metric] }}</td>
+            </tr>
+          </v-simple-table>
+          <v-simple-table>
+            <tr>
+              <th></th>
+              <th align="left">inputValues</th>
+            </tr>
+            <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
+              <td>{{ metric }}</td>
+              <td>{{ result.input_values.values.set_value[metric] }}</td>
+            </tr>
+          </v-simple-table>
+        </div>
+        <div v-else>
+          <v-simple-table>
+            <tr>
+              <th></th>
+              <th align="left">inputValues</th>
+              <th align="left">pValues</th>
+            </tr>
+            <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
+              <td>{{ metric }}</td>
+              <td>{{ result.input_values.values.set_value[metric] }}</td>
+              <td>{{ result.p_values.values.set_value[metric] }}</td>
+            </tr>
+          </v-simple-table>
+        </div>
       </div>
       <span v-if="error"><i>An error with following message occurred: {{ status }}</i></span>
     </v-sheet>
@@ -76,9 +100,9 @@ export default {
     queryStatus: function () {
       this.$http.getTaskStatus(this.taskID).then((response) => {
         console.log(response)
-        if(!this.mode)
+        if (!this.mode)
           this.mode = response.mode
-        if(!this.type)
+        if (!this.type)
           this.type = response.type
         if (response.status)
           this.status = response.status
@@ -97,10 +121,10 @@ export default {
     saveTaskId: function (response) {
       console.log(response)
       this.taskID = response.task
-      this.$router.push("/result?id="+this.taskID)
+      this.$router.push("/result?id=" + this.taskID)
       this.queryStatus()
     },
-    reset: function(){
+    reset: function () {
       this.$router.push("/")
       this.$router.go()
     },
