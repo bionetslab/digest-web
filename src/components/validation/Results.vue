@@ -20,7 +20,7 @@
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else style="padding-left: 64px; padding-right: 64px">
         <div style="display: flex; justify-content: center" v-if="plots">
-          <v-img v-for="img in plots" :key="img" :src="img" max-width="25vw" style="margin:32px"></v-img>
+          <v-img v-for="img in plots" :key="img" :src="img" :max-width="mode==='cluster' ? '10vw' :'25vw'" style="margin:32px"></v-img>
         </div>
         <div v-if="mode!=='cluster'" style="display: flex">
           <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
@@ -180,7 +180,6 @@ export default {
     },
 
     saveTaskId: function (response) {
-      console.log(response)
       this.taskID = response.task
       this.$router.push("/result?id=" + this.taskID)
       this.queryStatus()
