@@ -13,12 +13,15 @@
       <v-subheader></v-subheader>
 
       <div style="display: flex; justify-content: center">
-        <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status : 'loading...' }}</v-subheader>
+        <v-subheader v-if="!error && result ===undefined">Status: {{ status ? status +(status ==="Queued"? "("+queueStats.queuePosition+"/"+queueStats.queueLength+")" : '') : "communicating..." }}</v-subheader>
         <v-subheader v-else>Results</v-subheader>
       </div>
 
       <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
       <div v-else style="padding-left: 64px; padding-right: 64px">
+        <div style="display: flex; justify-content: center" v-if="plots">
+          <v-img v-for="img in plots" :key="img" :src="img" max-width="25vw" style="margin:32px"></v-img>
+        </div>
         <div v-if="mode!=='cluster'" style="display: flex">
           <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
             <tr>
@@ -90,6 +93,9 @@
 </template>
 
 <script>
+
+import * as CONFIG from '../../Config'
+
 export default {
   name: "Results",
 
@@ -103,8 +109,10 @@ export default {
       error: false,
       taskID: undefined,
       status: "",
+      queueStats: undefined,
       mode: undefined,
       type: undefined,
+      plots:undefined
     }
   },
 
@@ -124,9 +132,17 @@ export default {
         this.error = true
         return;
       }
-      console.log(result)
       this.result = result.result
+      this.loadPlots()
     },
+
+    loadPlots: function(){
+      this.$http.getResultFiles(this.taskID).then(files=>{
+        this.plots = files.filter(file=>file.type==='png').map(file=>CONFIG.HOST_URL+"/result_file?name="+file.name)
+        console.log(this.plots)
+      }).catch(console.error)
+    },
+
 
     queryResult: function () {
       this.$http.getTaskResult(this.taskID).then(this.saveResult).catch(console.error)
@@ -139,6 +155,7 @@ export default {
           this.mode = response.mode
         if (!this.type)
           this.type = response.type
+        this.queueStats = response.stats
         if (response.status)
           this.status = response.status
         if (response.failed)

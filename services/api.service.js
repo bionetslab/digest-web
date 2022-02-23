@@ -75,6 +75,11 @@ const ApiService = {
         return this.get("/result?task="+taskID).then(response=>{
             return response.data
         })
+    },
+    getResultFiles(taskID) {
+        return this.get("/result_file_list?task="+taskID).then(response=>{
+            return response.data
+        })
     }
 }
 export default ApiService

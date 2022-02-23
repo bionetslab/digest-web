@@ -48,7 +48,7 @@
       </div>
     </v-card>
     <v-card style="width: 45%; height: 300px; margin:8px">
-      <v-card-title>Cluster
+      <v-card-title>Clustering
       </v-card-title>
       <v-card-subtitle style="height: 52px">Compare inter and intra cluster similarities.</v-card-subtitle>
       <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">

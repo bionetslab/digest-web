@@ -259,7 +259,7 @@
       <div style="display: flex;margin-top: 16px; padding-left: 64px; padding-right: 64px">
         <v-checkbox v-if="mode==='set'"
                     style="justify-self: flex-start; margin-right: auto; margin-left: 0; margin-top: 4px;"
-                    :disabled="!useReference"
+                    :disabled="!(useReference && !useSingleReference)"
                     v-model="enriched"
                     label="Enriched">
           <template v-slot:append>
@@ -436,7 +436,7 @@ export default {
       backgroundModel: "complete",
       backgroundModels: [
         {text: "Complete", value: "complete"},
-        {text: "Term Preserving", value: "term-preserving"}
+        {text: "Term Preserving", value: "term-pres"}
       ],
       targetIDTypes: {
         "gene": [
