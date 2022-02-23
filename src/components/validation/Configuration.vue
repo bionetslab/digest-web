@@ -31,7 +31,7 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  TODO
+                  ID type of inserted target IDs. Click on the drop-down to see the supported types.
                 </div>
               </v-tooltip>
             </template>
@@ -46,7 +46,7 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  TODO
+                  Upload of file with target IDs that are separated by a newline in the file.
                 </div>
               </v-tooltip>
             </template>
@@ -62,7 +62,7 @@
                 <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
-                TODO
+                Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be changed or deleted as desired.
               </div>
             </v-tooltip>
           </template>
@@ -93,7 +93,7 @@
                         <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                       </template>
                       <div style="width: 250px; text-align: justify">
-                        TODO
+                        Insert ID of target ID type.
                       </div>
                     </v-tooltip>
                   </template>
@@ -108,7 +108,7 @@
                         <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                       </template>
                       <div style="width: 250px; text-align: justify">
-                        TODO
+                        Add assigned Cluster. Names and/or numbers are supported.
                       </div>
                     </v-tooltip>
                   </template>
@@ -144,7 +144,7 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  TODO
+                  Set checkmark if the input target set should be compared to either a reference set or a single reference ID.
                 </div>
               </v-tooltip>
             </template>
@@ -186,7 +186,7 @@
                     <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 250px; text-align: justify">
-                    TODO
+                    Select if the reference set or single ID are gene or disease IDs.
                   </div>
                 </v-tooltip>
               </template>
@@ -200,7 +200,7 @@
                     <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 250px; text-align: justify">
-                    TODO
+                    ID type of inserted reference IDs. Click on the drop-down to see the supported types.
                   </div>
                 </v-tooltip>
               </template>
@@ -216,7 +216,7 @@
                     <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 250px; text-align: justify">
-                    TODO
+                    Upload of file with reference IDs that are separated by a newline in the file.
                   </div>
                 </v-tooltip>
               </template>
@@ -231,7 +231,7 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  TODO
+                  Manually add single ID.
                 </div>
               </v-tooltip>
             </template>
@@ -245,7 +245,7 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  TODO
+                  Manually add reference IDs newline separated. After inserting IDs manually or with a file upload, IDs can be changed or deleted as desired.
                 </div>
               </v-tooltip>
             </template>
@@ -287,7 +287,7 @@
                     Jaccard Index:
                   </div>
                   <div style="width: 60%; text-align: justify">
-                    TODO
+                    defined as the size of the intersection divided by the size of the union of the sets
                   </div>
                 </div>
                 <div style="display: flex; margin-top: 8px;">
@@ -295,7 +295,7 @@
                     Overlap Coefficient:
                   </div>
                   <div style="width: 60%; text-align: justify">
-                    TODO
+                    defined as the size of the intersection divided by the size of the smaller of the two sets
                   </div>
                 </div>
               </div>
@@ -348,7 +348,7 @@
                 <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
-                TODO
+                Number of runs to be performed with randomly generated target IDs to be used as a comparison for the determination of the empirical p-value
               </div>
             </v-tooltip>
           </template>
