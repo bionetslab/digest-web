@@ -22,6 +22,9 @@
         <div style="display: flex; justify-content: center" v-if="plots">
           <v-img v-for="img in plots" :key="img" :src="img" :max-width="mode==='cluster' ? '10vw' :'25vw'" style="margin:32px"></v-img>
         </div>
+        <div style="display: flex; justify-content: center" v-if="plots">
+          <v-btn v-for="csv in csvs" :key="csv" @click="downloadFile(csv)" style="margin:32px"><v-icon left>fas fa-download</v-icon>{{csv.split("=")[1].substring(37)}}</v-btn>
+        </div>
         <div v-if="mode!=='cluster'" style="display: flex">
           <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
             <tr>
@@ -94,8 +97,6 @@
 
 <script>
 
-import * as CONFIG from '../../Config'
-
 export default {
   name: "Results",
 
@@ -112,7 +113,8 @@ export default {
       queueStats: undefined,
       mode: undefined,
       type: undefined,
-      plots:undefined
+      plots:undefined,
+      csvs:undefined,
     }
   },
 
@@ -135,11 +137,18 @@ export default {
       this.result = result.result
       this.loadPlots()
     },
+    getFilePath:function(name){
+      return this.$config.HOST_URL+"/result_file?name="+name
+    },
+
+    downloadFile: function(name){
+      window.open(name)
+    },
 
     loadPlots: function(){
       this.$http.getResultFiles(this.taskID).then(files=>{
-        this.plots = files.filter(file=>file.type==='png').map(file=>CONFIG.HOST_URL+"/result_file?name="+file.name)
-        console.log(this.plots)
+        this.plots = files.filter(file=>file.type==='png').map(file=>this.getFilePath(file.name))
+        this.csvs = files.filter(file=>file.type==='csv').map(file=>this.getFilePath(file.name))
       }).catch(console.error)
     },
 

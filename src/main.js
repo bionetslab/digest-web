@@ -11,6 +11,7 @@ import vuetify from './plugins/vuetify'
 
 ApiService.init(CONFIG.HOST_URL+CONFIG.CONTEXT_PATH)
 
+Vue.prototype.$config=CONFIG
 Vue.prototype.$http = ApiService
 Vue.use(VueRouter)
 

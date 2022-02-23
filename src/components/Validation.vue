@@ -23,7 +23,6 @@
 import Selection from "@/components/validation/Selection";
 import Configuration from "@/components/validation/Configuration";
 import Results from "@/components/validation/Results";
-import * as CONFIG from '../Config'
 
 export default {
 
@@ -50,7 +49,7 @@ export default {
 
   methods: {
     getIllustration: function () {
-      return CONFIG.STATIC_PATH + "assets/digest_summary_illustration.png"
+      return this.$config.STATIC_PATH + "assets/digest_summary_illustration.png"
     },
     startValidation: function (data) {
       this.params.mode = data.mode;
