@@ -5,10 +5,21 @@
         <v-icon left>fas fa-angle-left</v-icon>
         Back
       </v-btn>
-      <header style="justify-self: center; margin-left: auto; margin-right: auto; padding-top: 32px">Parametrize your
-        <i>{{ type }}-{{ mode }}</i>
-        validation.
-      </header>
+      <v-btn v-if="mode==='set' && type==='gene'" color="primary" outlined @click="loadExample('set', 'gene', 'set')">
+        Set only Example
+      </v-btn>
+      <v-btn v-if="mode==='set' && type==='gene'" color="primary" outlined @click="loadExample('set', 'gene', 'ref')">
+        Reference Example
+      </v-btn>
+      <v-btn v-if="mode==='cluster' && type==='gene'" color="primary" outlined @click="loadExample('cluster', 'gene')">
+        Example
+      </v-btn>
+      <v-btn v-if="mode==='cluster' && type==='disease'" color="primary" outlined
+             @click="loadExample('cluster', 'disease')">Example
+      </v-btn>
+      <v-btn v-if="mode==='set' && type==='disease'" color="primary" outlined @click="loadExample('set', 'disease')">
+        Example
+      </v-btn>
       <v-btn color="primary" @click="checkEvent" style="margin-left: auto; margin-right: 0; justify-self: flex-end">
         Validate
         <v-icon right>fas fa-angle-right</v-icon>
@@ -57,9 +68,11 @@
                     filled
                     placeholder="Enter your chosen IDs newline separated...">
           <template v-slot:append>
-            <v-tooltip right >
+            <v-tooltip right>
               <template v-slot:activator="{on, attrs}">
-                <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far
+                  fa-question-circle
+                </v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
                 Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be
@@ -244,7 +257,9 @@
             <template v-slot:append>
               <v-tooltip right>
                 <template v-slot:activator="{on, attrs}">
-                  <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                  <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far
+                    fa-question-circle
+                  </v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
                   Manually add reference IDs newline separated. After inserting IDs manually or with a file upload, IDs
@@ -379,7 +394,8 @@
           </template>
         </v-slider>
       </div>
-      <div style="display: flex;">
+      <v-divider></v-divider>
+      <div style="display: flex; margin-top:8px">
         <v-btn color="error" @click="$emit('resetEvent')" style="justify-self: left; margin-right: auto;">
           <v-icon left>fas fa-angle-left</v-icon>
           Back
@@ -399,6 +415,9 @@
 </template>
 
 <script>
+
+import * as EXAMPLES from "../../Example"
+
 export default {
   name: "Configuration",
 
@@ -508,28 +527,31 @@ export default {
       }).filter(l => l.length > 0).join("\n")
     },
 
+    readFileContent: function (result, goal) {
+      if (goal === 'target') {
+        if (this.mode === 'cluster') {
+          result = this.limitColumns(result, "\t", 2)
+          result.split("\n").forEach(l => {
+            let entries = l.split("\t");
+            this.addToClusters(entries[0], entries[1]);
+          })
+        } else {
+          result = this.limitColumns(result, "\t", 1)
+          this.targets = result
+        }
+        this.targetFile = undefined
+      }
+      if (goal === 'reference') {
+        this.references = result
+        this.referenceFile = undefined
+      }
+    },
+
     readFile: function (file, goal) {
       const reader = new FileReader();
       reader.addEventListener('load', (event) => {
-        let result = event.target.result;
-        result = atob(result.split('base64,')[1])
-        if (goal === 'target') {
-          if (this.mode === 'cluster') {
-            result = this.limitColumns(result, "\t", 2)
-            result.split("\n").forEach(l => {
-              let entries = l.split("\t");
-              this.addToClusters(entries[0], entries[1]);
-            })
-          } else {
-            result = this.limitColumns(result, "\t", 1)
-            this.targets = result
-          }
-          this.targetFile = undefined
-        }
-        if (goal === 'reference') {
-          this.references = result
-          this.referenceFile = undefined
-        }
+        let result = event.target.result
+        this.readFileContent(atob(result.split('base64,')[1]), goal)
       });
       reader.readAsDataURL(file);
     },
@@ -564,6 +586,39 @@ export default {
       if (message)
         this.notification.message = message
       this.notification.show = true
+    },
+    loadExample: function (mode, type, example) {
+      if (mode === 'set') {
+        if (type === 'gene') {
+          if (example === 'set') {
+            this.readFileContent(EXAMPLES.gene_set.target,'target')
+            this.targetIDType = EXAMPLES.gene_set.target_id_type
+            this.useReference = false
+            this.references = ""
+            this.useSingleReference=true
+          }
+          if (example === 'ref') {
+            this.readFileContent(EXAMPLES.gene_set.target,'target')
+            this.targetIDType = EXAMPLES.gene_set.target_id_type
+            this.useReference = true
+            this.useSingleReference = false
+            this.refType=EXAMPLES.gene_set.reference_type
+            this.readFileContent(EXAMPLES.gene_set.reference,'reference')
+            this.referenceIDType = EXAMPLES.gene_set.reference_id_type
+          }
+        } else {
+          this.readFileContent(EXAMPLES.disease_set.target,'target')
+          this.targetIDType = EXAMPLES.disease_set.target_id_type
+        }
+      } else {
+        if (type === 'gene') {
+          this.readFileContent(EXAMPLES.gene_cluster.target, 'target')
+          this.targetIDType = EXAMPLES.gene_cluster.target_id_type
+        } else {
+          this.readFileContent(this.targets = EXAMPLES.disease_cluster.target, 'target')
+          this.targetIDType = EXAMPLES.disease_cluster.target_id_type
+        }
+      }
     },
 
     checkEvent: function () {
@@ -605,6 +660,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="sass">
+.v-subheader
+  font-size: 1.5rem
+  margin: 8px
 
 </style>
