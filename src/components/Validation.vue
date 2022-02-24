@@ -15,8 +15,8 @@
             sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
             including versions of Lorem Ipsum.
           </div>
-          <div style="width: 45%; margin-left: 16px">
-            <v-img :src="getIllustration()" max-width="30vw"></v-img>
+          <div style="width: 45%; margin-left: 16px;">
+            <v-img :src="getIllustration()" max-width="30vw" />
           </div>
         </div>
 
