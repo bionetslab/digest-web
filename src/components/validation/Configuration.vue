@@ -62,7 +62,8 @@
                 <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
-                Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be changed or deleted as desired.
+                Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be
+                changed or deleted as desired.
               </div>
             </v-tooltip>
           </template>
@@ -144,7 +145,8 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  Set checkmark if the input target set should be compared to either a reference set or a single reference ID.
+                  Set checkmark if the input target set should be compared to either a reference set or a single
+                  reference ID.
                 </div>
               </v-tooltip>
             </template>
@@ -245,7 +247,8 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  Manually add reference IDs newline separated. After inserting IDs manually or with a file upload, IDs can be changed or deleted as desired.
+                  Manually add reference IDs newline separated. After inserting IDs manually or with a file upload, IDs
+                  can be changed or deleted as desired.
                 </div>
               </v-tooltip>
             </template>
@@ -326,8 +329,9 @@
                   </div>
                   <div style="width: 60%; text-align: justify">
                     Model maintains some information from target set and constructs randomized gene sets where the
-                    distribution of the contained {{type}}s' annotation set sizes (approximately) matches the distribution
-                    of the annotation set sizes of the {{type}} contained in target set.
+                    distribution of the contained {{ type }}s' annotation set sizes (approximately) matches the
+                    distribution
+                    of the annotation set sizes of the {{ type }} contained in target set.
                   </div>
                 </div>
               </div>
@@ -348,7 +352,8 @@
                 <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
-                Number of runs to be performed with randomly generated target IDs to be used as a comparison for the determination of the empirical p-value
+                Number of runs to be performed with randomly generated target IDs to be used as a comparison for the
+                determination of the empirical p-value
               </div>
             </v-tooltip>
           </template>
@@ -373,6 +378,20 @@
             </v-tooltip>
           </template>
         </v-slider>
+      </div>
+      <div style="display: flex;">
+        <v-btn color="error" @click="$emit('resetEvent')" style="justify-self: left; margin-right: auto;">
+          <v-icon left>fas fa-angle-left</v-icon>
+          Back
+        </v-btn>
+        <header style="justify-self: center; margin-left: auto; margin-right: auto; padding-top: 32px">Parametrize your
+          <i>{{ type }}-{{ mode }}</i>
+          validation.
+        </header>
+        <v-btn color="primary" @click="checkEvent" style="margin-left: auto; margin-right: 0; justify-self: flex-end">
+          Validate
+          <v-icon right>fas fa-angle-right</v-icon>
+        </v-btn>
       </div>
     </v-sheet>
     <v-snackbar v-model="notification.show" :multi-line="true" :timeout="notification.timeout"
@@ -462,7 +481,7 @@ export default {
   methods: {
 
     idsToList: function (ids) {
-      return ids.split(/\n/)
+      return ids.split(/\n/).filter(id => id.length > 0)
     },
 
     readTargetFile: function (file) {

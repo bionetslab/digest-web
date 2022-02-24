@@ -1,105 +1,40 @@
 <template>
   <div style="width: 100%; display: flex; justify-content: center">
-    <v-card style="width: 45%; height: 300px; margin:8px">
+    <v-card style="width: 45%; margin:8px; margin-bottom:32px">
       <v-card-title>Set</v-card-title>
-      <v-card-subtitle style="height: 52px">Validate gene or disease sets w.r.t. functional or genetic coherence.</v-card-subtitle>
+      <v-card-subtitle style="height: 52px">Validate gene or disease sets w.r.t. functional or genetic coherence.
+      </v-card-subtitle>
       <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
-        <v-card style="width: 50%; height: 200px;" :elevation="hover_set_gene ? 10:0" :flat="!hover_set_gene"
-                @mouseenter="hover_set_gene=true" @mouseleave="hover_set_gene=false">
-          <v-img
-              class="white--text align-end"
-              height="200px"
-              src="https://media.istockphoto.com/photos/blue-chromosome-dna-and-gradually-glowing-flicker-light-matter-when-picture-id1297146235?b=1&k=20&m=1297146235&s=170667a&w=0&h=vUyHfisjnfzyhzeZvYzt23iaHSEl6UkpoiFctK4BMbc="
-          >
-            <v-card-title>Gene</v-card-title>
-            <v-card-subtitle v-show="hover_set_gene">Validate gene sets w.r.t. functional coherence.
-            </v-card-subtitle>
-            <v-card-actions v-show="hover_set_gene">
-              <div style="width: 100%; display: flex; justify-content: center">
-                <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:'gene',mode:'set'})">
-                  Validate
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-img>
-        </v-card>
-        <v-card style="width: 50%; height: 200px;" :elevation="hover_set_disorder ? 10:0"
-                :flat="!hover_set_disorder" @mouseenter="hover_set_disorder=true"
-                @mouseleave="hover_set_disorder=false">
-          <v-img
-              class="white--text align-end"
-              height="200px"
-              src="https://images.medicinenet.com/images/article/main_image/what-is-conversion-disorder.jpg"
-          >
-            <v-card-title>Disease</v-card-title>
-            <v-card-subtitle v-show="hover_set_disorder">Validate disease sets w.r.t. genetic coherence.
-            </v-card-subtitle>
-            <v-card-actions v-show="hover_set_disorder">
-              <div style="width: 100%; display: flex; justify-content: center">
-                <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:'disease',mode:'set'})">
-                  Validate
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-img>
-        </v-card>
+        <ModeCard :image="getCardImage('set','gene')" type="gene" mode="set"
+                  text="Validate gene sets w.r.t. functional coherence." title="Gene"
+                  @startValidationEvent="validationEvent"></ModeCard>
+        <ModeCard :image="getCardImage('set','disease')" type="disease" mode="set"
+                  text="Validate disease sets w.r.t. genetic coherence." title="Disease"></ModeCard>
       </div>
     </v-card>
-    <v-card style="width: 45%; height: 300px; margin:8px">
+    <v-card style="width: 45%; margin:8px; margin-bottom:32px">
       <v-card-title>Clustering
       </v-card-title>
-      <v-card-subtitle style="height: 52px">Validate gene or disease clusterings w.r.t. functional or genetic coherence.</v-card-subtitle>
+      <v-card-subtitle style="height: 52px">Validate gene or disease clusterings w.r.t. functional or genetic
+        coherence.
+      </v-card-subtitle>
       <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
-        <v-card style="width: 50%; height: 200px;" :elevation="hover_cluster_gene ? 10:0"
-                :flat="!hover_cluster_gene"
-                @mouseenter="hover_cluster_gene=true" @mouseleave="hover_cluster_gene=false">
-          <v-img
-              class="white--text align-end"
-              height="200px"
-              src="https://media.istockphoto.com/photos/blue-chromosome-dna-and-gradually-glowing-flicker-light-matter-when-picture-id1297146235?b=1&k=20&m=1297146235&s=170667a&w=0&h=vUyHfisjnfzyhzeZvYzt23iaHSEl6UkpoiFctK4BMbc="
-          >
-            <v-card-title>Gene</v-card-title>
-            <v-card-subtitle v-show="hover_cluster_gene">Validate gene clustering w.r.t. functional coherence.
-            </v-card-subtitle>
-            <v-card-actions v-show="hover_cluster_gene">
-              <div style="width: 100%; display: flex; justify-content: center">
-                <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:'gene',mode:'cluster'})">
-                  Validate
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-img>
-        </v-card>
-        <v-card style="width: 50%; height: 200px;" :elevation="hover_cluster_disorder ? 10:0"
-                :flat="!hover_cluster_disorder" @mouseenter="hover_cluster_disorder=true"
-                @mouseleave="hover_cluster_disorder=false">
-          <v-img
-              class="white--text align-end"
-              height="200px"
-              src="https://images.medicinenet.com/images/article/main_image/what-is-conversion-disorder.jpg"
-          >
-            <v-card-title>Disease</v-card-title>
-            <v-card-subtitle v-show="hover_cluster_disorder">Validate disease clustering w.r.t. genetic coherence.
-            </v-card-subtitle>
-            <v-card-actions v-show="hover_cluster_disorder">
-              <div style="width: 100%; display: flex; justify-content: center">
-                <v-btn depressed color="primary"
-                       @click="$emit('startValidationEvent',{type:'disease',mode:'cluster'})">Validate
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-img>
-        </v-card>
+        <ModeCard :image="getCardImage('cluster','gene')" type="gene" mode="cluster"
+                  text="Validate gene clustering w.r.t. functional coherence." title="Gene"
+                  @startValidationEvent="validationEvent"></ModeCard>
+        <ModeCard :image="getCardImage('cluster','disease')" type="disease" mode="cluster"
+                  text="Validate disease clustering w.r.t. genetic coherence." title="Disease"></ModeCard>
       </div>
     </v-card>
   </div>
 </template>
 
 <script>
+import ModeCard from "@/components/validation/start/ModeCard";
+
 export default {
   name: "Selection",
-
-
+  components: {ModeCard},
   data: () => ({
     hover_set_gene: false,
     hover_set_disorder: false,
@@ -109,6 +44,15 @@ export default {
 
 
   created() {
+  },
+
+  methods: {
+    getCardImage: function (mode, type) {
+      return this.$config.STATIC_PATH + "assets/" + mode + "_" + type + ".png"
+    },
+    validationEvent: function (data) {
+      this.$emit("startValidationEvent", data)
+    }
   }
 }
 </script>
