@@ -1,23 +1,27 @@
 <template>
   <div style="width: 100%;  padding: 16px">
     <div style="display: flex;">
-      <v-btn color="error" @click="$emit('resetEvent')" style="justify-self: left; margin-right: auto;">
+      <v-btn color="error" @click="$emit('resetEvent')" style="justify-self: left; margin-right: auto;" >
         <v-icon left>fas fa-angle-left</v-icon>
         Back
       </v-btn>
-      <v-btn v-if="mode==='set' && type==='gene'" color="primary" outlined @click="loadExample('set', 'gene', 'set')">
+      <v-btn v-if="mode==='set' && type==='gene'" color="primary" outlined @click="loadExample('set', 'gene', 'set')" style="margin-right: 8px" >
+        <v-icon left>far fa-lightbulb</v-icon>
         Set only Example
       </v-btn>
-      <v-btn v-if="mode==='set' && type==='gene'" color="primary" outlined @click="loadExample('set', 'gene', 'ref')">
+      <v-btn v-if="mode==='set' && type==='gene'" color="primary" outlined @click="loadExample('set', 'gene', 'ref')" style="margin-left: 8px">
+        <v-icon left>far fa-lightbulb</v-icon>
         Reference Example
       </v-btn>
       <v-btn v-if="mode==='cluster' && type==='gene'" color="primary" outlined @click="loadExample('cluster', 'gene')">
+        <v-icon left>far fa-lightbulb</v-icon>
         Example
       </v-btn>
       <v-btn v-if="mode==='cluster' && type==='disease'" color="primary" outlined
-             @click="loadExample('cluster', 'disease')">Example
+             @click="loadExample('cluster', 'disease')"><v-icon left>far fa-lightbulb</v-icon>Example
       </v-btn>
       <v-btn v-if="mode==='set' && type==='disease'" color="primary" outlined @click="loadExample('set', 'disease')">
+        <v-icon left>far fa-lightbulb</v-icon>
         Example
       </v-btn>
       <v-btn color="primary" @click="checkEvent" style="margin-left: auto; margin-right: 0; justify-self: flex-end">
