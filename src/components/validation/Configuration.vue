@@ -57,9 +57,9 @@
                     filled
                     placeholder="Enter your chosen IDs newline separated...">
           <template v-slot:append>
-            <v-tooltip right>
+            <v-tooltip right >
               <template v-slot:activator="{on, attrs}">
-                <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
                 Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be
@@ -244,7 +244,7 @@
             <template v-slot:append>
               <v-tooltip right>
                 <template v-slot:activator="{on, attrs}">
-                  <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                  <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
                   Manually add reference IDs newline separated. After inserting IDs manually or with a file upload, IDs
@@ -384,10 +384,7 @@
           <v-icon left>fas fa-angle-left</v-icon>
           Back
         </v-btn>
-        <header style="justify-self: center; margin-left: auto; margin-right: auto; padding-top: 32px">Parametrize your
-          <i>{{ type }}-{{ mode }}</i>
-          validation.
-        </header>
+
         <v-btn color="primary" @click="checkEvent" style="margin-left: auto; margin-right: 0; justify-self: flex-end">
           Validate
           <v-icon right>fas fa-angle-right</v-icon>

@@ -1,5 +1,5 @@
 <template>
-  <v-card style="width: 50%;  position:relative;" :elevation="hover ? 10:0"
+  <v-card style="width: 50%; height: 100%; position:relative;" :elevation="hover ? 10:0"
           :flat="!hover"
           @mouseenter="hover=true" @mouseleave="hover=false">
     <div>
