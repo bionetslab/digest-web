@@ -7,7 +7,13 @@
           }}
         </v-subheader>
       </div>
-      <v-progress-linear :color="error?'error':'primary'" indeterminate v-if="result===undefined"></v-progress-linear>
+      <div v-if="result===undefined">
+        <v-progress-linear :color="error?'error':'primary'" indeterminate></v-progress-linear>
+        <div style="width: 100%; display: flex; justify-content: center; margin-top:8px;">
+          <i v-if="taskID && !result">You may return to your results later using the following URL: <a
+              :href="getCurrentURL()">{{ getCurrentURL() }}</a></i>
+        </div>
+      </div>
       <div v-else style="padding-left: 64px; padding-right: 64px">
         <v-tabs v-model="resultTab" centered>
           <v-tabs-slider color="primary"></v-tabs-slider>
@@ -24,13 +30,97 @@
             <div style="display:flex; justify-content: center">
               <v-subheader>Data</v-subheader>
             </div>
-            <div>
+            <div v-if="input" style="margin-top: 32px; margin-bottom: 32px">
               <div style="display: flex">
-                <div style="width: 50%">
-                  Input params
+                <div style="width:50%; justify-content: center; display: flex">
+                  <div v-if="mode==='cluster'">
+                    <div style=" margin:16px">
+                      <b>Clusters</b>
+                      <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+                        <template v-slot:default>
+                          <thead>
+                          <tr>
+                            <th>{{ input.target_id }}</th>
+                            <th>cluster</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="tar in input.target" :key="tar">
+                            <td style="margin:4px">{{ tar.id }}</td>
+                            <td style="margin:4px">{{ tar.cluster }}</td>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <div style=" margin:16px">
+                      <b>Targets</b>
+                      <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+                        <template v-slot:default>
+                          <thead>
+                          <tr>
+                            <th>{{ input.target_id }}</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="tar in input.target" :key="tar">
+                            <td style="margin:4px">{{ tar }}</td>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                    <div style=" margin:16px; margin-left:64px" v-if="input.reference_id">
+                      <b>Reference{{ typeof input.reference === 'string' ? '' : 's' }}</b>
+                      <v-simple-table dense style="max-height: 300px; overflow-y: scroll;">
+                        <template v-slot:default>
+                          <thead>
+                          <tr>
+                            <th>{{ input.reference_id }}</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <template v-if="typeof input.reference !== 'string'">
+                            <tr v-for="ref in input.reference" :key="ref">
+                              <td style="margin:4px">{{ ref }}</td>
+                            </tr>
+                          </template>
+                          <template v-else>
+                            <tr>
+                              <td style="margin:4px">{{ input.reference }}</td>
+                            </tr>
+                          </template>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  Input data
+                <div style="display: flex; justify-content: center;">
+                  <div style="display: flex; align-self: center; margin-top: auto; margin-bottom: auto;">
+                    <div>
+                      <b>Configuration</b>
+                      <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+                        <template v-slot:default>
+                          <thead>
+                          <tr>
+                            <th>Parameter</th>
+                            <th>Value</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="param in Object.keys(input).filter(k=>!k.includes('target') && !k.includes('reference'))"
+                              :key="param">
+                            <td style="margin: 4px">{{ param }}</td>
+                            <td style="margin:4px">{{ input[param] }}</td>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -52,28 +142,31 @@
                             <v-icon right>fas fa-download</v-icon>
                           </v-btn>
                         </th>
-                        <th class="text-left"><div style="white-space: nowrap">
-                          set_value
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
-                          </v-tooltip>
-                        </div></th>
+                        <th class="text-left">
+                          <div style="white-space: nowrap">
+                            set_value
+                            <v-tooltip right>
+                              <template v-slot:activator="{attrs, on}">
+                                <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                              </template>
+                              <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
+                            </v-tooltip>
+                          </div>
+                        </th>
                       </tr>
                       </thead>
                       <tbody>
                       <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
-                        <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)"><div style="white-space: nowrap">
-                          {{ metric }}
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                          </v-tooltip>
-                        </div>
+                        <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
+                          <div style="white-space: nowrap">
+                            {{ metric }}
+                            <v-tooltip right>
+                              <template v-slot:activator="{attrs, on}">
+                                <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                              </template>
+                              <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                            </v-tooltip>
+                          </div>
                         </b>
                         <td style="margin:4px">{{ formatValue(result.input_values.values.set_value[metric]) }}</td>
                       </tr>
@@ -316,7 +409,9 @@
                 <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
                   <v-img :src="getPlot('p-value')" max-width="90%"
                          style="margin:32px; position: relative">
-                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))"><v-icon small>fas fa-download</v-icon></v-btn>
+                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
 
                   </v-img>
                   <p style="text-align: justify"> Lorem Ipsum has been the
@@ -328,7 +423,9 @@
                 <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
                   <v-img :src="getPlot('mappability')" max-width="90%"
                          style="margin:32px; position: relative">
-                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')"><v-icon small>fas fa-download</v-icon></v-btn>
+                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
                   </v-img>
                   <p style="text-align: justify"> Lorem Ipsum has been the
                     industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
@@ -376,7 +473,10 @@
                     </v-tabs>
                     <v-img :src="getPlot(clusterMeasure+'_p-value')" max-width="80%"
                            style="margin-left:32px; margin-bottom:32px; position: relative">
-                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot(clusterMeasure+'_p-value'))"><v-icon small>fas fa-download</v-icon></v-btn>
+                      <v-btn icon small style="position: absolute; right: 0"
+                             @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
+                        <v-icon small>fas fa-download</v-icon>
+                      </v-btn>
                     </v-img>
                   </div>
                   <p style="text-align: justify"> Lorem Ipsum has been the
@@ -388,7 +488,9 @@
                 <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
                   <v-img :src="getPlot('mappability')" max-width="90%"
                          style="margin:32px; position: relative">
-                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')"><v-icon small>fas fa-download</v-icon></v-btn>
+                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
                   </v-img>
                   <p style="text-align: justify"> Lorem Ipsum has been the
                     industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
@@ -427,6 +529,7 @@ export default {
       type: undefined,
       plots: undefined,
       csvs: undefined,
+      input: undefined,
       clusterMeasure: 'di',
       tooltips: {
         di: "TODO",
@@ -476,6 +579,9 @@ export default {
       }).catch(console.error)
     },
 
+    getCurrentURL: function () {
+      return window.location
+    },
 
     queryResult: function () {
       this.$http.getTaskResult(this.taskID).then(this.saveResult).catch(console.error)
@@ -484,6 +590,8 @@ export default {
     queryStatus: function () {
       this.$http.getTaskStatus(this.taskID).then((response) => {
         console.log(response)
+        if (!this.input)
+          this.input = response.input
         if (!this.mode)
           this.mode = response.mode
         if (!this.type)
