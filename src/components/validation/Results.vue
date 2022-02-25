@@ -150,7 +150,7 @@
           </v-tab-item>
           <v-tab-item>
             <div style="display:flex">
-              <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular Results
+              <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular results
               </v-subheader>
               <v-tooltip top>
                 <template v-slot:activator="{attrs, on}">
@@ -167,7 +167,7 @@
                   style="width: 50%; align-self: center; margin-top: auto; margin-bottom: auto; padding-top:16px; padding-bottom: 16px;">
                 <div style=" justify-content: center; display: flex">
                   <div>
-                    <b>Empirical P-Values</b>
+                    <b>Empirical P-values</b>
                     <div v-if="mode!=='cluster'" style="display: flex">
                       <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
                         <template v-slot:default>
@@ -400,7 +400,7 @@
             </div>
             <v-divider></v-divider>
             <div style="display: flex; justify-content: center">
-              <v-subheader>Summary Figures</v-subheader>
+              <v-subheader>Summary figures</v-subheader>
             </div>
             <template v-if="plots">
               <div style="display: flex; justify-content: center" v-if="mode!=='cluster'">
@@ -540,10 +540,10 @@ export default {
         'DBI-based': "Davies Bouldin Index: measures how dense clusters are iin comparison to distances between each cluster pair.",
         p_values: "Empirical P-value calculated on input score(s) with respect to chosen background model.",
         set_value: "Calculated input score based on functional or genetic coherence.",
-        'go.BP': "Functional coherence based on biological process annotations from gene ontology.",
-        'go.CC': "Functional coherence based on cell component annotations from gene ontology.",
-        'go.MF': "Functional coherence based on molecular function annotations process from gene ontology.",
-        'pathway.kegg': "Functional coherence based on pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)",
+        'GO.BP': "based on functional coherence of biological process annotations from Gene Ontology (GO).",
+        'go.CC': "based on functional coherence of cell component annotations from Gene Ontology (GO).",
+        'go.MF': "based on functional coherence of molecular function annotations process from Gene Ontology (GO).",
+        'KEGG': "based on functional coherence of pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)",
         'JI-based':"TODO",
         'OC-based':'TODO'
       }
@@ -610,11 +610,11 @@ export default {
       if (this.mode === 'set-set') {
         let ref_type = this.getIDType(this.input.reference_id)
         if (this.type === 'gene' || ref_type === 'gene') {
-          return 'Functional Relevance Score'
+          return 'Functional relevance score'
         }
-        return 'Functional Relevance Score & Genetic Relevance Score'
+        return 'Functional relevance score & genetic relevance score'
       } else {
-        return this.type === 'gene' ? 'Functional Relevance Score' : 'Genetic Relevance Score'
+        return this.type === 'gene' ? 'Functional relevance score' : 'Genetic relevance score'
       }
     },
 
