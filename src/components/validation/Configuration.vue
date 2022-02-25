@@ -191,7 +191,7 @@
                     <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 250px; text-align: justify">
-                    TODO
+                    ID type of inserted reference IDs. Click on the drop-down to see the supported types.
                   </div>
                 </v-tooltip>
               </template>
@@ -290,7 +290,7 @@
                 <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
-                TODO
+                Set checkmark, if only enriched attributes of the reference set should be used.
               </div>
             </v-tooltip>
           </template>

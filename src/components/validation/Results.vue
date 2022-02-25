@@ -532,15 +532,15 @@ export default {
       input: undefined,
       clusterMeasure: 'di',
       tooltips: {
-        di: "TODO",
-        ss: "TODO",
-        dbi: "TODO",
-        p_values: "TODO",
-        set_value: "TODO",
-        'go.BP': "TODO",
-        'go.CC': "TODO",
-        'go.MF': "TODO",
-        'pathway.kegg': "TODO"
+        di: "Dunn Index:",
+        ss: "Silhouette Score: measures how well an observation is clustered and it estimates the average distance between clusters.",
+        dbi: "Davies Bouldin Index:",
+        p_values: "Empirical P-value calculated using random runs from chosen background model.",
+        set_value: "Calvulated value solely based on the input without the background model.",
+        'go.BP': "Biological Process based on Gene Ontology.",
+        'go.CC': "Cell Component based on Gene Ontology.",
+        'go.MF': "Molecular Function based on Gene Ontology.",
+        'pathway.kegg': "Pathways from Kyoto Encyclopedia of Genes and Genomes (KEGG)"
       }
     }
   },
