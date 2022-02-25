@@ -74,6 +74,7 @@ const ApiService = {
     },
     getResultFiles(taskID) {
         return this.get("/result_file_list?task="+taskID).then(response=>{
+            console.log(response.data)
             return response.data
         })
     }

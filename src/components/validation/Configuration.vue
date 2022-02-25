@@ -428,6 +428,7 @@ export default {
   props: {
     mode: String,
     type: String,
+    idMap: Object,
   },
 
   data() {
@@ -477,25 +478,12 @@ export default {
         {text: "Complete", value: "complete"},
         {text: "Term Preserving", value: "term-pres"}
       ],
-      targetIDTypes: {
-        "gene": [
-          {text: "Entrez ID", value: "entrez"},
-          {text: "Ensembl ID", value: "ensembl"},
-          {text: "Symbol", value: "symbol"},
-          {text: "UniProt ID", value: "uniprot"}]
-        ,
-        "disease": [
-          {text: "MONDO", value: "mondo"},
-          {text: "OMIM", value: "omim"},
-          {text: "SNOMED", value: "snomedct"},
-          {text: "UMLS", value: "umls"},
-          {text: "Orphanet", value: "orpha"},
-          {text: "MeSH", value: "mesh"},
-          {text: "DOID", value: "doid"},
-          {text: "ICD-10", value: "ICD-10"},
-        ]
-      }
+      targetIDTypes: this.idMap
     }
+  },
+
+  created() {
+    this.$router.push("/configure")
   },
 
   methods: {
@@ -600,12 +588,14 @@ export default {
             this.useReference = false
             this.references = ""
             this.useSingleReference=true
+            this.useMultiReference=false
           }
           if (example === 'ref') {
             this.readFileContent(EXAMPLES.gene_set.target,'target')
             this.targetIDType = EXAMPLES.gene_set.target_id_type
             this.useReference = true
             this.useSingleReference = false
+            this.useMultiReference=true
             this.refType=EXAMPLES.gene_set.reference_type
             this.readFileContent(EXAMPLES.gene_set.reference,'reference')
             this.referenceIDType = EXAMPLES.gene_set.reference_id_type

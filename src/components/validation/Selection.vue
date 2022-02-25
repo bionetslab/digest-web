@@ -44,6 +44,8 @@ export default {
 
 
   created() {
+    if(this.$route.fullPath !== "/")
+    this.$router.push("/")
   },
 
   methods: {

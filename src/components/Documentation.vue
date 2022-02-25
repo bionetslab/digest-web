@@ -24,7 +24,8 @@
         <li><a :href="getAnchor('package')">Python Package</a></li>
       </ul>
       <b id="digest" style="font-size: 1.5rem; padding-top:48px; margin-top:48px">DIGEST</b>
-      <div style="text-align: justify; margin-bottom: 48px; margin-bottom: 48px"> DIGEST is a (“validation of <b>di</b>sease
+      <div style="text-align: justify; margin-bottom: 48px">
+        DIGEST is a (“validation of <b>di</b>sease
         and <b>ge</b>ne <b>s</b>ets or
         clus<b>t</b>erings”), is a Python-based validation tool available as a webinterface, as a <a
             href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a

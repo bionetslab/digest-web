@@ -23,12 +23,23 @@
           <v-tab>
             Result
           </v-tab>
+
         </v-tabs>
         <v-divider></v-divider>
         <v-tabs-items v-model="resultTab">
           <v-tab-item>
-            <div style="display:flex; justify-content: center">
-              <v-subheader>Data</v-subheader>
+            <div style="display:flex;">
+              <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Data
+              </v-subheader>
+              <v-tooltip top>
+                <template v-slot:activator="{attrs, on}">
+                  <v-btn icon @click="downloadFile(getZIP('.zip'))" v-on="on" v-bind="attrs"
+                         style="justify-self: flex-end; margin-left: auto; margin-right: 0">
+                    <v-icon>fas fa-download</v-icon>
+                  </v-btn>
+                </template>
+                <div>Download all files as .zip</div>
+              </v-tooltip>
             </div>
             <div v-if="input" style="margin-top: 32px; margin-bottom: 32px">
               <div style="display: flex">
@@ -45,7 +56,7 @@
                           </tr>
                           </thead>
                           <tbody>
-                          <tr v-for="tar in input.target" :key="tar">
+                          <tr v-for="tar in input.target" :key="'cluster'+tar.id">
                             <td style="margin:4px">{{ tar.id }}</td>
                             <td style="margin:4px">{{ tar.cluster }}</td>
                           </tr>
@@ -54,7 +65,7 @@
                       </v-simple-table>
                     </div>
                   </div>
-                  <div v-else>
+                  <div v-else style="display: flex">
                     <div style=" margin:16px">
                       <b>Targets</b>
                       <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
@@ -65,7 +76,7 @@
                           </tr>
                           </thead>
                           <tbody>
-                          <tr v-for="tar in input.target" :key="tar">
+                          <tr v-for="tar in input.target" :key="'set'+tar">
                             <td style="margin:4px">{{ tar }}</td>
                           </tr>
                           </tbody>
@@ -83,7 +94,7 @@
                           </thead>
                           <tbody>
                           <template v-if="typeof input.reference !== 'string'">
-                            <tr v-for="ref in input.reference" :key="ref">
+                            <tr v-for="ref in input.reference" :key="'ref'+ref">
                               <td style="margin:4px">{{ ref }}</td>
                             </tr>
                           </template>
@@ -112,7 +123,7 @@
                           </thead>
                           <tbody>
                           <tr v-for="param in Object.keys(input).filter(k=>!k.includes('target') && !k.includes('reference'))"
-                              :key="param">
+                              :key="'conf-'+param">
                             <td style="margin: 4px">{{ param }}</td>
                             <td style="margin:4px">{{ input[param] }}</td>
                           </tr>
@@ -123,315 +134,303 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <v-divider></v-divider>
-            <div style="display:flex; justify-content: center">
-              <v-subheader>Absolute Input Scores</v-subheader>
-            </div>
-            <div style="display: flex;">
-              <div
-                  style="align-self: center; margin-top: auto; margin-bottom: auto; padding-top:16px; padding-bottom: 16px">
-                <div v-if="mode!=='cluster'" style="display: flex">
-                  <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                    <template v-slot:default>
-                      <thead>
-                      <tr>
-                        <th>
-                          <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
-                                 style="margin:4px">
-                            <v-icon right>fas fa-download</v-icon>
-                          </v-btn>
-                        </th>
-                        <th class="text-left">
-                          <div style="white-space: nowrap">
-                            set_value
-                            <v-tooltip right>
-                              <template v-slot:activator="{attrs, on}">
-                                <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                              </template>
-                              <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
-                            </v-tooltip>
-                          </div>
-                        </th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
-                        <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
-                          <div style="white-space: nowrap">
-                            {{ metric }}
-                            <v-tooltip right>
-                              <template v-slot:activator="{attrs, on}">
-                                <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                              </template>
-                              <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                            </v-tooltip>
-                          </div>
-                        </b>
-                        <td style="margin:4px">{{ formatValue(result.input_values.values.set_value[metric]) }}</td>
-                      </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </div>
-                <div v-else>
-                  <div style="display: flex">
-                    <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                      <template v-slot:default>
-                        <thead>
-                        <tr>
-                          <th>
-                            <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
-                                   style="margin:4px">
-                              <v-icon right>fas fa-download</v-icon>
-                            </v-btn>
-                          </th>
-                          <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
-                              :key="'p_'+head">
-                            <div style="white-space: nowrap">
-                              {{ head }}
-                              <v-tooltip right>
-                                <template v-slot:activator="{attrs, on}">
-                                  <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                                </template>
-                                <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
-                              </v-tooltip>
-                            </div>
-                          </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric">
-                          <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
-                            <div style="white-space: nowrap">
-                              {{ metric }}
-                              <v-tooltip right>
-                                <template v-slot:activator="{attrs, on}">
-                                  <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                                </template>
-                                <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                              </v-tooltip>
-                            </div>
-                          </b></td>
-                          <td style="margin:4px" v-for="head in Object.keys(result.input_values.values)"
-                              :key="metric+head">
-                            {{ formatValue(result.input_values.values[head][metric]) }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </div>
-                </div>
-              </div>
-              <div style="align-self: center; margin-top: auto; margin-bottom: auto;margin-left: 32px">
-                <div v-if="mode!=='cluster'">
-                  <p style="text-align: justify">Set: Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry.
-                    Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap
-                    into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with
-                    the
-                    release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                    publishing
-                    software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
-                <div v-else>
-                  <p style="text-align: justify"> Cluster: Lorem Ipsum is simply dummy text of the printing and
-                    typesetting
-                    industry.
-                    Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap
-                    into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with
-                    the
-                    release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                    publishing
-                    software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
+              <div style="display: flex; justify-content: center; margin-top: 16px;">
+                <v-btn @click="downloadInput()">
+                  <v-icon left>fas fa-download</v-icon>
+                  Download Input
+                </v-btn>
               </div>
             </div>
+            <!--            <v-divider></v-divider>-->
+            <!--            <div style="display:flex; justify-content: center">-->
+            <!--              <v-subheader>Absolute Input Scores</v-subheader>-->
+            <!--            </div>-->
+            <!--            <div style="display: flex;">-->
+            <!--            </div>-->
           </v-tab-item>
           <v-tab-item>
-            <div style="display:flex; justify-content: center">
-              <v-subheader>Values</v-subheader>
+            <div style="display:flex">
+              <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular Results
+              </v-subheader>
+              <v-tooltip top>
+                <template v-slot:activator="{attrs, on}">
+                  <v-btn icon @click="downloadFile(getZIP('.zip'))" v-on="on" v-bind="attrs"
+                         style="justify-self: flex-end; margin-left: auto; margin-right: 0">
+                    <v-icon>fas fa-download</v-icon>
+                  </v-btn>
+                </template>
+                <div>Download all files as .zip</div>
+              </v-tooltip>
             </div>
-            <div style="display: flex;">
+            <div style="display: flex">
               <div
-                  style="align-self: center; margin-top: auto; margin-bottom: auto; padding-top:16px; padding-bottom: 16px">
-                <div v-if="mode!=='cluster'" style="display: flex">
-                  <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                    <template v-slot:default>
-                      <thead>
-                      <tr>
-                        <th>
-                          <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
-                                 style="margin:4px">
-                            <v-icon right>fas fa-download</v-icon>
-                          </v-btn>
-                        </th>
-                        <th class="text-left">
-                          <div style="white-space: nowrap">
-                            set_value
-                            <v-tooltip right>
-                              <template v-slot:activator="{attrs, on}">
-                                <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                              </template>
-                              <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
-                            </v-tooltip>
-                          </div>
-                        </th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr v-for="metric in Object.keys(result.p_values.values.set_value)" :key="metric">
-                        <td style="margin:4px">
-                          <b style="color: rgba(0,0,0,0.6)">
-                            <div style="white-space: nowrap">
-                              {{ metric }}
-                              <v-tooltip right>
-                                <template v-slot:activator="{attrs, on}">
-                                  <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                                </template>
-                                <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                              </v-tooltip>
-                            </div>
-                          </b>
-                        <td style="margin:4px">{{ formatValue(result.p_values.values.set_value[metric]) }}</td>
-                      </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </div>
-                <div v-else>
-                  <div style="display: flex">
-                    <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                      <template v-slot:default>
-                        <thead>
-                        <tr>
-                          <th>
-                            <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
-                                   style="margin:4px">
-                              <v-icon right>fas fa-download</v-icon>
-                            </v-btn>
-                          </th>
-                          <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
-                              :key="'p_'+head">
-                            <div style="white-space: nowrap">
-                              <span v-show="head !== clusterMeasure">{{ head }}</span>
-                              <b style="color: cornflowerblue; text-decoration: underline"
-                                 v-show="head===clusterMeasure">{{
-                                  head
-                                }}</b>
-                              <v-tooltip right>
-                                <template v-slot:activator="{attrs, on}">
-                                  <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
-                                          v-bind="attrs" v-on="on">far fa-question-circle
-                                  </v-icon>
-                                </template>
-                                <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
-                              </v-tooltip>
-                            </div>
-                          </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
-                          <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
-                            <div style="white-space: nowrap">
-                              {{ metric }}
-                              <v-tooltip right>
-                                <template v-slot:activator="{attrs, on}">
-                                  <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                                </template>
-                                <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                              </v-tooltip>
-                            </div>
-                          </b></td>
-                          <td style="margin:4px" v-for="head in Object.keys(result.p_values.values)" :key="metric+head">
-                            <b style="color: cornflowerblue; " v-show="head===clusterMeasure">{{
-                                formatValue(result.p_values.values[head][metric])
-                              }}</b>
-                            <span v-show="head !== clusterMeasure">{{
-                                formatValue(result.p_values.values[head][metric])
-                              }}</span>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
+                  style="width: 50%; align-self: center; margin-top: auto; margin-bottom: auto; padding-top:16px; padding-bottom: 16px;">
+                <div style=" justify-content: center; display: flex">
+                  <div>
+                    <b>Empirical P-Values</b>
+                    <div v-if="mode!=='cluster'" style="display: flex">
+                      <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
+                        <template v-slot:default>
+                          <thead>
+                          <tr>
+                            <th>
+                              <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
+                                     style="margin:4px">
+                                <v-icon right>fas fa-download</v-icon>
+                              </v-btn>
+                            </th>
+                            <th class="text-left">
+                              <div style="white-space: nowrap">
+                                set_value
+                                <v-tooltip right>
+                                  <template v-slot:activator="{attrs, on}">
+                                    <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                  </template>
+                                  <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
+                                </v-tooltip>
+                              </div>
+                            </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="metric in Object.keys(result.p_values.values.set_value)" :key="metric">
+                            <td style="margin:4px">
+                              <b style="color: rgba(0,0,0,0.6)">
+                                <div style="white-space: nowrap">
+                                  {{ metric }}
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                                  </v-tooltip>
+                                </div>
+                              </b>
+                            <td style="margin:4px">{{ formatValue(result.p_values.values.set_value[metric]) }}</td>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                    <div v-else>
+                      <div style="display: flex">
+                        <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
+                          <template v-slot:default>
+                            <thead>
+                            <tr>
+                              <th>
+                                <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
+                                       style="margin:4px">
+                                  <v-icon right>fas fa-download</v-icon>
+                                </v-btn>
+                              </th>
+                              <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
+                                  :key="'p_'+head">
+                                <div style="white-space: nowrap; cursor: pointer" @click="clusterMeasure=head">
+                                  <span v-show="head !== clusterMeasure">{{ head }}</span>
+                                  <b style="color: cornflowerblue; text-decoration: underline"
+                                     v-show="head===clusterMeasure">{{
+                                      head
+                                    }}</b>
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
+                                              v-bind="attrs" v-on="on">far fa-question-circle
+                                      </v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
+                                  </v-tooltip>
+                                </div>
+                              </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
+                              <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
+                                <div style="white-space: nowrap">
+                                  {{ metric }}
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                                  </v-tooltip>
+                                </div>
+                              </b></td>
+                              <td style="margin:4px" v-for="head in Object.keys(result.p_values.values)"
+                                  :key="metric+head">
+                                <b style="color: cornflowerblue; " v-show="head===clusterMeasure">{{
+                                    formatValue(result.p_values.values[head][metric])
+                                  }}</b>
+                                <span v-show="head !== clusterMeasure">{{
+                                    formatValue(result.p_values.values[head][metric])
+                                  }}</span>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div style="align-self: center; margin-top: auto; margin-bottom: auto;margin-left: 32px">
-                <div v-if="mode!=='cluster'">
-                  <p style="text-align: justify">Set: Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry.
-                    Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap
-                    into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with
-                    the
-                    release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                    publishing
-                    software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </div>
-                <div v-else>
-                  <p style="text-align: justify"> Cluster: Lorem Ipsum is simply dummy text of the printing and
-                    typesetting
-                    industry.
-                    Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap
-                    into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with
-                    the
-                    release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                    publishing
-                    software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+              <div
+                  style="width: 50%; align-self: center; margin-top: auto; margin-bottom: auto; padding-top:16px; padding-bottom: 16px;">
+                <div style=" justify-content: center; display: flex">
+                  <div>
+                    <b>{{ getScoreName() }}</b>
+                    <div v-if="mode!=='cluster'" style="display: flex">
+                      <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
+                        <template v-slot:default>
+                          <thead>
+                          <tr>
+                            <th>
+                              <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
+                                     style="margin:4px">
+                                <v-icon right>fas fa-download</v-icon>
+                              </v-btn>
+                            </th>
+                            <th class="text-left">
+                              <div style="white-space: nowrap">
+                                set_value
+                                <v-tooltip right>
+                                  <template v-slot:activator="{attrs, on}">
+                                    <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                  </template>
+                                  <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
+                                </v-tooltip>
+                              </div>
+                            </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
+                            <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
+                              <div style="white-space: nowrap">
+                                {{ metric }}
+                                <v-tooltip right>
+                                  <template v-slot:activator="{attrs, on}">
+                                    <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                  </template>
+                                  <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                                </v-tooltip>
+                              </div>
+                            </b>
+                            <td style="margin:4px">{{ formatValue(result.input_values.values.set_value[metric]) }}</td>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                    <div v-else>
+                      <div style="display: flex">
+                        <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
+                          <template v-slot:default>
+                            <thead>
+                            <tr>
+                              <th>
+                                <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
+                                       style="margin:4px">
+                                  <v-icon right>fas fa-download</v-icon>
+                                </v-btn>
+                              </th>
+                              <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
+                                  :key="'p_'+head">
+                                <div style="white-space: nowrap; cursor: pointer" @click="clusterMeasure=head">
+                                  <span v-show="head !== clusterMeasure">{{ head }}</span>
+                                  <b style="color: cornflowerblue; text-decoration: underline"
+                                     v-show="head===clusterMeasure">{{
+                                      head
+                                    }}</b>
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
+                                              v-bind="attrs" v-on="on">far fa-question-circle
+                                      </v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
+                                  </v-tooltip>
+                                </div>
+                                <!--                                <div style="white-space: nowrap">-->
+                                <!--                                  {{ head }}-->
+                                <!--                                  <v-tooltip right>-->
+                                <!--                                    <template v-slot:activator="{attrs, on}">-->
+                                <!--                                      <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
+                                <!--                                    </template>-->
+                                <!--                                    <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>-->
+                                <!--                                  </v-tooltip>-->
+                                <!--                                </div>-->
+                              </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])"
+                                :key="metric">
+                              <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
+                                <div style="white-space: nowrap">
+                                  {{ metric }}
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                                  </v-tooltip>
+                                </div>
+                              </b></td>
+                              <td style="margin:4px" v-for="head in Object.keys(result.input_values.values)"
+                                  :key="metric+head">
+                                <b style="color: cornflowerblue; " v-show="head===clusterMeasure">{{
+                                    formatValue(result.input_values.values[head][metric])
+                                  }}</b>
+                                <span v-show="head !== clusterMeasure">{{
+                                    formatValue(result.input_values.values[head][metric])
+                                  }}</span>
+                                <!--                                {{ formatValue(result.input_values.values[head][metric]) }}-->
+                              </td>
+                            </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <v-divider></v-divider>
             <div style="display: flex; justify-content: center">
-              <v-subheader>Figures</v-subheader>
+              <v-subheader>Summary Figures</v-subheader>
             </div>
             <template v-if="plots">
               <div style="display: flex; justify-content: center" v-if="mode!=='cluster'">
                 <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
-                  <v-img :src="getPlot('p-value')" max-width="90%"
+                  <v-img :src="getPlot('p-value')" height="35vh" contain
                          style="margin:32px; position: relative">
                     <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))">
                       <v-icon small>fas fa-download</v-icon>
                     </v-btn>
 
                   </v-img>
-                  <p style="text-align: justify"> Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap</p>
+                  <!--                  <p style="text-align: justify">-->
+                  <!--                    Lorem Ipsum has been the-->
+                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
+                  <!--                    and-->
+                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
+                  <!--                    leap</p>-->
                 </div>
                 <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
-                  <v-img :src="getPlot('mappability')" max-width="90%"
+                  <v-img :src="getPlot('mappability')" height="35vh" contain
                          style="margin:32px; position: relative">
                     <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
                       <v-icon small>fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
-                  <p style="text-align: justify"> Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap</p>
+                  <!--                  <p style="text-align: justify"> Lorem Ipsum has been the-->
+                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
+                  <!--                    and-->
+                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
+                  <!--                    leap</p>-->
                 </div>
               </div>
               <div v-else style="display: flex">
@@ -471,7 +470,7 @@
                         </v-tooltip>
                       </v-tab>
                     </v-tabs>
-                    <v-img :src="getPlot(clusterMeasure+'_p-value')" max-width="80%"
+                    <v-img :src="getPlot(clusterMeasure+'_p-value')" height="35vh" contain
                            style="margin-left:32px; margin-bottom:32px; position: relative">
                       <v-btn icon small style="position: absolute; right: 0"
                              @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
@@ -479,24 +478,25 @@
                       </v-btn>
                     </v-img>
                   </div>
-                  <p style="text-align: justify"> Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap</p>
+                  <!--                  <p style="text-align: justify"> Lorem Ipsum has been the-->
+                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
+                  <!--                    and-->
+                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
+                  <!--                    leap</p>-->
                 </div>
                 <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
-                  <v-img :src="getPlot('mappability')" max-width="90%"
+                  <v-img :src="getPlot('mappability')" height="35vh" contain
                          style="margin:32px; position: relative">
-                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot('mappability'))">
                       <v-icon small>fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
-                  <p style="text-align: justify"> Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap</p>
+                  <!--                  <p style="text-align: justify"> Lorem Ipsum has been the-->
+                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
+                  <!--                    and-->
+                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
+                  <!--                    leap</p>-->
                 </div>
               </div>
             </template>
@@ -516,6 +516,7 @@ export default {
 
   props: {
     params: Object,
+    idMap: Object,
   },
   data() {
     return {
@@ -529,6 +530,7 @@ export default {
       type: undefined,
       plots: undefined,
       csvs: undefined,
+      zips: undefined,
       input: undefined,
       clusterMeasure: 'di',
       tooltips: {
@@ -576,7 +578,40 @@ export default {
       this.$http.getResultFiles(this.taskID).then(files => {
         this.plots = files.filter(file => file.type === 'png').map(file => this.getFilePath(file.name))
         this.csvs = files.filter(file => file.type === 'csv').map(file => this.getFilePath(file.name))
+        this.zips = files.filter(file => file.type === 'zip').map(file => this.getFilePath(file.name))
       }).catch(console.error)
+    },
+
+    getIDType: function (id) {
+      for (let idType of Object.keys(this.idMap)) {
+        if (this.idMap[idType].includes(id))
+          return idType
+      }
+      return undefined
+    },
+    downloadInput: function () {
+      this.download('digest_' + this.taskID + "_input.json", JSON.stringify(this.input))
+    },
+    download: function (name, content) {
+      let dl = document.createElement('a')
+      dl.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content))
+      dl.setAttribute('download', name)
+      dl.style.direction = 'none'
+      document.body.appendChild(dl)
+      dl.click()
+      document.body.removeChild(dl)
+    },
+
+    getScoreName: function () {
+      if (this.mode === 'set-set') {
+        let ref_type = this.getIDType(this.input.reference_id)
+        if (this.type === 'gene' || ref_type === 'gene') {
+          return 'Functional Relevance Score'
+        }
+        return 'Functional Relevance Score & Genetic Relevance Score'
+      } else {
+        return this.type === 'gene' ? 'Functional Relevance Score' : 'Genetic Relevance Score'
+      }
     },
 
     getCurrentURL: function () {
@@ -632,6 +667,10 @@ export default {
 
     getCSV: function (name) {
       return this.csvs.filter(csv => csv.includes(name))[0]
+    },
+
+    getZIP: function (name) {
+      return this.zips.filter(zip => zip.includes(name))[0]
     },
 
     getPlot: function (name) {
