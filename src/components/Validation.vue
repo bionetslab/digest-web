@@ -1,14 +1,13 @@
 <template>
   <div>
-    <div style="background-color: cornflowerblue; width: 100%; padding:16px; display: flex">
+    <div style="background-color: #9cc9f1; width: 100%; padding:32px; display: flex">
       <div style="width: 50%; justify-content: flex-start">
-        <v-img :src="getLogoPath()" width="80%"></v-img>
+        <v-img :src="getLogoPath()" width="100%"></v-img>
       </div>
       <div style="width: 50%; justify-content: flex-end; margin-left: auto; margin-right: 0">
-<!--        <div style=" height: 100%; display:flex; align-content: flex-end; margin-top: auto; margin-bottom: 0">-->
-          <p style="color: white">DIGEST allows the user to in silico validate a set or
-            clustering of genes as well as diseases and compute an empirical P-value.</p>
-<!--        </div>-->
+        <div style=" height: 100%;display:flex;">
+          <p style="font-size: 1.3rem; color: #1c388a; align-self: flex-end; margin-top: auto; margin-bottom: 0">In silico validation of sets or clusterings of genes or diseases.</p>
+        </div>
       </div>
       <!--      <h2 style="display: flex; justify-content: flex-start; color: white; font-size: 5rem">DIGEST</h2>-->
 

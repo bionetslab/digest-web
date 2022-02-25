@@ -72,7 +72,7 @@
                         <template v-slot:default>
                           <thead>
                           <tr>
-                            <th>{{ input.target_id }}</th>
+                            <th>{{ input.target_id[0].toUpperCase()+input.target_id.substring(1) }}</th>
                           </tr>
                           </thead>
                           <tbody>
