@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="background-color: #9cc9f1; width: 100%; padding:32px; display: flex">
+    <v-card style="background-color: #d4e6f5; width: 100%; padding:32px; display: flex;">
       <div style="width: 40%; justify-content: flex-start">
         <v-img :src="getLogoPath()" width="100%"></v-img>
       </div>
@@ -11,7 +11,7 @@
       </div>
       <!--      <h2 style="display: flex; justify-content: flex-start; color: white; font-size: 5rem">DIGEST</h2>-->
 
-    </div>
+    </v-card>
     <div
         style="width: 90%;text-align: justify; display: flex; justify-self: center; margin: 32px auto 16px;color: #484848">
       <template v-if="step===0">
