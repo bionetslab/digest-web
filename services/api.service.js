@@ -35,6 +35,7 @@ const ApiService = {
 
     validate_set(id_type, set, runs, replace, distance, background, type){
         let data = {target:set, target_id:id_type, runs: runs, replace: replace, distance:distance, background_model:background, type: type};
+        console.log(data)
         return this.post("/set",data).then(response=>{
             return response.data
         })

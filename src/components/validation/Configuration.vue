@@ -168,15 +168,6 @@
               </v-tooltip>
             </template>
           </v-checkbox>
-          <div style="justify-self: center; margin-left: auto; margin-right: 0; display: flex;width: 40vw">
-            <v-checkbox v-model="useSingleReference" @click="useMultiReference=!useSingleReference"
-                        :disabled="!useReference" label="Use single ID"
-                        style="margin-left: 16px"></v-checkbox>
-            <v-checkbox v-model="useMultiReference" @click="useSingleReference=!useMultiReference"
-                        :disabled="!useReference" label="Use multiple IDs"
-                        style="margin-left: 16px"></v-checkbox>
-
-          </div>
         </div>
         <v-alert v-if="errorReferenceID" type="error" dense>Missing Reference ID Type selection</v-alert>
         <v-alert v-if="errorReferenceIDs" type="error" dense>Missing Reference IDs</v-alert>
@@ -224,7 +215,7 @@
                 </v-tooltip>
               </template>
             </v-select>
-            <v-file-input ref="refInput" :disabled="!useReference || useSingleReference" label="Upload References"
+            <v-file-input ref="refInput" :disabled="!useReference" label="Upload References"
                           hint="Upload a file of newline separated reference IDs" dense
                           style="width: 270px; max-width: 270px; cursor: pointer"
                           v-model="referenceFile" @change="readReferenceFile" prepend-icon="" filled outlined
@@ -241,21 +232,7 @@
               </template>
             </v-file-input>
           </div>
-          <v-text-field label="Reference ID" :disabled="!useReference" v-if="useSingleReference"
-                        style="margin-left: auto; margin-right: 0; justify-self: flex-end;max-width: 40vw; "
-                        v-model="reference" filled>
-            <template v-slot:append>
-              <v-tooltip right>
-                <template v-slot:activator="{on, attrs}">
-                  <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                </template>
-                <div style="width: 250px; text-align: justify">
-                  Manually add single ID.
-                </div>
-              </v-tooltip>
-            </template>
-          </v-text-field>
-          <v-textarea :disabled="!useReference" v-else label="Reference IDs" filled
+          <v-textarea :disabled="!useReference" label="Reference IDs" filled
                       placeholder="Enter your chosen IDs newline separated..." v-model="references" no-resize
                       style="max-width: 40vw; margin-left: auto; margin-right: 0; justify-self: flex-end;">
             <template v-slot:append>
@@ -281,7 +258,7 @@
       <div style="display: flex;margin-top: 16px; padding-left: 64px; padding-right: 64px">
         <v-checkbox v-if="mode==='set'"
                     style="justify-self: flex-start; margin-right: auto; margin-left: 0; margin-top: 4px;"
-                    :disabled="!(useReference && !useSingleReference)"
+                    :disabled="!useReference"
                     v-model="enriched"
                     label="Enriched">
           <template v-slot:append>
@@ -452,8 +429,6 @@ export default {
       reference: "",
       referenceIDType: undefined,
       useReference: false,
-      useSingleReference: true,
-      useMultiReference: false,
       enriched: false,
       runs: 1000,
       replace: 100,
@@ -587,15 +562,11 @@ export default {
             this.targetIDType = EXAMPLES.gene_set.target_id_type
             this.useReference = false
             this.references = ""
-            this.useSingleReference=true
-            this.useMultiReference=false
           }
           if (example === 'ref') {
             this.readFileContent(EXAMPLES.gene_set.target,'target')
             this.targetIDType = EXAMPLES.gene_set.target_id_type
             this.useReference = true
-            this.useSingleReference = false
-            this.useMultiReference=true
             this.refType=EXAMPLES.gene_set.reference_type
             this.readFileContent(EXAMPLES.gene_set.reference,'reference')
             this.referenceIDType = EXAMPLES.gene_set.reference_id_type
@@ -620,7 +591,7 @@ export default {
       this.errorTargetIDs = this.mode === 'cluster' ? this.clusters.length === 0 : this.targets.length === 0
       if (this.useReference) {
         this.errorReferenceID = !this.referenceIDType;
-        this.errorReferenceIDs = this.useSingleReference ? this.reference.length === 0 : this.references.length === 0
+        this.errorReferenceIDs = this.references.length === 0
       } else {
         this.errorReferenceIDs = false
         this.errorReferenceID = false
@@ -640,8 +611,8 @@ export default {
         if (this.useReference) {
           params.enriched = this.enriched
           params.referenceID = this.referenceIDType
-          params.reference = this.useSingleReference ? this.reference : this.idsToList(this.references)
-          route = this.useSingleReference ? "id-set" : "set-set"
+          params.reference = this.idsToList(this.references)
+          route = "set-set"
         } else {
           route = this.mode === 'cluster' ? 'cluster' : "set"
         }

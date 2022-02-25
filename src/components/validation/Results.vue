@@ -179,21 +179,21 @@
                                 <v-icon right>fas fa-download</v-icon>
                               </v-btn>
                             </th>
-                            <th class="text-left">
+                            <th class="text-left" v-for="head in Object.keys(result.p_values.values)" :key="'p_value-head'+head">
                               <div style="white-space: nowrap">
-                                set_value
+                                {{head}}
                                 <v-tooltip right>
                                   <template v-slot:activator="{attrs, on}">
                                     <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                                   </template>
-                                  <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
+                                  <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
                                 </v-tooltip>
                               </div>
                             </th>
                           </tr>
                           </thead>
                           <tbody>
-                          <tr v-for="metric in Object.keys(result.p_values.values.set_value)" :key="metric">
+                          <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
                             <td style="margin:4px">
                               <b style="color: rgba(0,0,0,0.6)">
                                 <div style="white-space: nowrap">
@@ -206,7 +206,7 @@
                                   </v-tooltip>
                                 </div>
                               </b>
-                            <td style="margin:4px">{{ formatValue(result.p_values.values.set_value[metric]) }}</td>
+                            <td  v-for="head in Object.keys(result.p_values.values)" :key="'p_value-'+head" style="margin:4px">{{ formatValue(result.p_values.values[head][metric]) }}</td>
                           </tr>
                           </tbody>
                         </template>
@@ -291,21 +291,21 @@
                                 <v-icon right>fas fa-download</v-icon>
                               </v-btn>
                             </th>
-                            <th class="text-left">
+                            <th class="text-left" v-for="head in Object.keys(result.input_values.values)" :key="'input_'+head">
                               <div style="white-space: nowrap">
-                                set_value
+                                {{head}}
                                 <v-tooltip right>
                                   <template v-slot:activator="{attrs, on}">
                                     <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                                   </template>
-                                  <div style="width:200px; text-align: justify">{{ tooltips['set_value'] }}</div>
+                                  <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
                                 </v-tooltip>
                               </div>
                             </th>
                           </tr>
                           </thead>
                           <tbody>
-                          <tr v-for="metric in Object.keys(result.input_values.values.set_value)" :key="metric">
+                          <tr  v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric">
                             <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
                               <div style="white-space: nowrap">
                                 {{ metric }}
@@ -317,7 +317,7 @@
                                 </v-tooltip>
                               </div>
                             </b>
-                            <td style="margin:4px">{{ formatValue(result.input_values.values.set_value[metric]) }}</td>
+                            <td  v-for="head in Object.keys(result.input_values.values)" :key="'input_value-'+head" style="margin:4px">{{ formatValue(result.input_values.values[head][metric]) }}</td>
                           </tr>
                           </tbody>
                         </template>
@@ -442,31 +442,31 @@
                   <!--                  </div>-->
                   <div style="display: flex; margin-top:32px;">
                     <v-tabs vertical>
-                      <v-tab @click="clusterMeasure='di'">
-                        DI
+                      <v-tab @click="clusterMeasure='DI-based'">
+                        DI-based
                         <v-tooltip right>
                           <template v-slot:activator="{attrs, on}">
                             <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                           </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips['di'] }}</div>
+                          <div style="width:200px; text-align: justify">{{ tooltips['DI-based'] }}</div>
                         </v-tooltip>
                       </v-tab>
-                      <v-tab @click="clusterMeasure='ss'">
-                        SS
+                      <v-tab @click="clusterMeasure='SS-based'">
+                        SS-based
                         <v-tooltip right>
                           <template v-slot:activator="{attrs, on}">
                             <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                           </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips['ss'] }}</div>
+                          <div style="width:200px; text-align: justify">{{ tooltips['SS-based'] }}</div>
                         </v-tooltip>
                       </v-tab>
-                      <v-tab @click="clusterMeasure='dbi'">
-                        dbi
+                      <v-tab @click="clusterMeasure='DBI-based'">
+                        DBI-based
                         <v-tooltip right>
                           <template v-slot:activator="{attrs, on}">
                             <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                           </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips['dbi'] }}</div>
+                          <div style="width:200px; text-align: justify">{{ tooltips['DBI-based'] }}</div>
                         </v-tooltip>
                       </v-tab>
                     </v-tabs>
@@ -532,17 +532,19 @@ export default {
       csvs: undefined,
       zips: undefined,
       input: undefined,
-      clusterMeasure: 'di',
+      clusterMeasure: 'DI-based',
       tooltips: {
-        di: "Dunn Index: ratio of the cluster with the lowest density compared to the two clusters that are closest to each other.",
-        ss: "Silhouette Score: measures how well an observation is clustered and it estimates the average distance between clusters.",
-        dbi: "Davies Bouldin Index: measures how dense clusters are iin comparison to distances between each cluster pair.",
+        'DI-based': "Dunn Index: ratio of the cluster with the lowest density compared to the two clusters that are closest to each other.",
+        'SS-based': "Silhouette Score: measures how well an observation is clustered and it estimates the average distance between clusters.",
+        'DBI-based': "Davies Bouldin Index: measures how dense clusters are iin comparison to distances between each cluster pair.",
         p_values: "Empirical P-value calculated on input score(s) with respect to chosen background model.",
         set_value: "Calculated input score based on functional or genetic coherence.",
         'go.BP': "Functional coherence based on biological process annotations from gene ontology.",
         'go.CC': "Functional coherence based on cell component annotations from gene ontology.",
         'go.MF': "Functional coherence based on molecular function annotations process from gene ontology.",
-        'pathway.kegg': "Functional coherence based on pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)"
+        'pathway.kegg': "Functional coherence based on pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)",
+        'JI-based':"TODO",
+        'OC-based':'TODO'
       }
     }
   },
@@ -559,6 +561,7 @@ export default {
 
   methods: {
     saveResult: function (result) {
+      console.log(result)
       if (typeof result !== "object") {
         this.error = true
         return;

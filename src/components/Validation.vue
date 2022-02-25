@@ -1,9 +1,17 @@
 <template>
   <div>
-    <div style="background-color: cornflowerblue; width: 100%; padding:16px">
-      <h2 style="display: flex; justify-content: flex-start; color: white; font-size: 5rem">DIGEST</h2>
-      <p style="justify-content: flex-end; color: white">DIGEST allows the user to in silico validate a set or
-        clustering of genes as well as diseases and compute an empirical P-value.</p>
+    <div style="background-color: cornflowerblue; width: 100%; padding:16px; display: flex">
+      <div style="width: 50%; justify-content: flex-start">
+        <v-img :src="getLogoPath()" width="80%"></v-img>
+      </div>
+      <div style="width: 50%; justify-content: flex-end; margin-left: auto; margin-right: 0">
+<!--        <div style=" height: 100%; display:flex; align-content: flex-end; margin-top: auto; margin-bottom: 0">-->
+          <p style="color: white">DIGEST allows the user to in silico validate a set or
+            clustering of genes as well as diseases and compute an empirical P-value.</p>
+<!--        </div>-->
+      </div>
+      <!--      <h2 style="display: flex; justify-content: flex-start; color: white; font-size: 5rem">DIGEST</h2>-->
+
     </div>
     <div
         style="width: 90%;text-align: justify; display: flex; justify-self: center; margin: 32px auto 16px;color: #484848">
@@ -74,12 +82,12 @@
         <!--        </ul>-->
       </template>
     </div>
-    <div>
-      <v-divider v-if="step===0"></v-divider>
+    <div v-if="step===0">
+      <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
-      <v-subheader style="font-size: 1.5rem">Start validating
-        now!
-      </v-subheader>
+        <v-subheader style="font-size: 1.5rem">Start validating
+          now!
+        </v-subheader>
       </div>
     </div>
     <Selection v-if="step===0" @startValidationEvent="startValidation"></Selection>
@@ -139,6 +147,10 @@ export default {
   methods: {
     getIllustration: function () {
       return this.$config.STATIC_PATH + "assets/digest_summary_illustration.png"
+    },
+
+    getLogoPath: function () {
+      return this.$config.STATIC_PATH + "assets/digest_logo.png"
     },
 
     startValidation: function (data) {
