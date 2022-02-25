@@ -34,11 +34,11 @@
       <div style="display: flex; justify-content: center">
         <v-subheader>Targets</v-subheader>
       </div>
-      <v-alert v-if="errorTargetID" type="error" dense>Missing Target ID Type selection</v-alert>
-      <v-alert v-if="errorTargetIDs" type="error" dense>Missing TargetIDs</v-alert>
+      <v-alert v-if="errorTargetID" type="error" dense>Missing target ID type selection</v-alert>
+      <v-alert v-if="errorTargetIDs" type="error" dense>Missing targetIDs</v-alert>
       <div style="display: flex; width: 100%; padding-right: 64px; padding-left: 64px">
         <div>
-          <v-select label="Target ID Type" :items="targetIDTypes[type]" v-model="targetIDType"
+          <v-select label="Target ID type" :items="targetIDTypes[type]" v-model="targetIDType"
                     style="max-width: 200px" outlined dense filled>
             <template v-slot:append-outer>
               <v-tooltip right>
@@ -51,7 +51,7 @@
               </v-tooltip>
             </template>
           </v-select>
-          <v-file-input ref="tarInput" label="Upload Targets" hint="Upload a file of newline separated target IDs" dense
+          <v-file-input ref="tarInput" label="Upload targets" hint="Upload a file of newline separated target IDs" dense
                         style="width: 210px; max-width: 210px; cursor: pointer"
                         v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined
                         prepend-inner-icon="fas fa-arrow-up-from-bracket">
@@ -151,10 +151,10 @@
       <v-divider></v-divider>
       <template v-if="mode==='set'">
         <div style="display: flex; justify-content: center; padding-left: 64px; padding-right: 64px">
-          <v-subheader>References (Optional)</v-subheader>
+          <v-subheader>References (optional)</v-subheader>
         </div>
         <div style="display: flex; width: 100%; padding-left: 64px; padding-right: 64px">
-          <v-checkbox v-model="useReference" label="Use Reference"
+          <v-checkbox v-model="useReference" label="Use reference"
                       style="justify-self: flex-start; margin-right: auto">
             <template v-slot:append>
               <v-tooltip right>
@@ -162,18 +162,17 @@
                   <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                 </template>
                 <div style="width: 250px; text-align: justify">
-                  Set checkmark if the input target set should be compared to either a reference set or a single
-                  reference ID.
+                  Set checkmark if the input target set should be compared to a reference.
                 </div>
               </v-tooltip>
             </template>
           </v-checkbox>
         </div>
-        <v-alert v-if="errorReferenceID" type="error" dense>Missing Reference ID Type selection</v-alert>
-        <v-alert v-if="errorReferenceIDs" type="error" dense>Missing Reference IDs</v-alert>
+        <v-alert v-if="errorReferenceID" type="error" dense>Missing reference ID type selection</v-alert>
+        <v-alert v-if="errorReferenceIDs" type="error" dense>Missing reference IDs</v-alert>
         <div style="display: flex; width: 100%; padding-left: 64px; padding-right: 64px">
           <div>
-            <v-select v-if="type==='gene'" outlined :disabled="!useReference" filled label="Reference Type"
+            <v-select v-if="type==='gene'" outlined :disabled="!useReference" filled label="Reference type"
                       :items="refTypes" v-model="refType"
                       style="max-width: 180px" dense>
               <template v-slot:append-outer>
@@ -187,7 +186,7 @@
                 </v-tooltip>
               </template>
             </v-select>
-            <v-select v-else outlined :disabled="!useReference" filled label="Reference Type"
+            <v-select v-else outlined :disabled="!useReference" filled label="Reference type"
                       :items="[{text:'Disease',value:'disease'}]" v-model="refType"
                       style="max-width: 180px" dense>
               <template v-slot:append-outer>
@@ -196,12 +195,12 @@
                     <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 250px; text-align: justify">
-                    Select if the reference set or single ID are gene or disease IDs.
+                    Select if the reference consists of gene or disease IDs.
                   </div>
                 </v-tooltip>
               </template>
             </v-select>
-            <v-select outlined :disabled="!useReference" filled label="Reference ID Type"
+            <v-select outlined :disabled="!useReference" filled label="Reference ID type"
                       :items="targetIDTypes[refType]"
                       v-model="referenceIDType" style="max-width: 220px" dense>
               <template v-slot:append-outer>
@@ -215,7 +214,7 @@
                 </v-tooltip>
               </template>
             </v-select>
-            <v-file-input ref="refInput" :disabled="!useReference" label="Upload References"
+            <v-file-input ref="refInput" :disabled="!useReference" label="Upload references"
                           hint="Upload a file of newline separated reference IDs" dense
                           style="width: 270px; max-width: 270px; cursor: pointer"
                           v-model="referenceFile" @change="readReferenceFile" prepend-icon="" filled outlined
@@ -253,7 +252,7 @@
         <v-divider></v-divider>
       </template>
       <div style="display: flex; justify-content: center">
-        <v-subheader>Additional Parameters (Optional)</v-subheader>
+        <v-subheader>Additional parameters (optional)</v-subheader>
       </div>
       <div style="display: flex;margin-top: 16px; padding-left: 64px; padding-right: 64px">
         <v-checkbox v-if="mode==='set'"
@@ -272,7 +271,7 @@
             </v-tooltip>
           </template>
         </v-checkbox>
-        <v-select label="Similarity Measure" :items="distanceMeasures" v-model="distanceModel"
+        <v-select label="Similarity measure" :items="distanceMeasures" v-model="distanceModel"
                   :style="{'justify-self': mode==='set' ?'flex-start':'center', 'margin-left': 'auto', 'margin-right': 'auto', 'max-width': '240px'}"
                   outlined dense filled>
           <template v-slot:append-outer>
@@ -283,7 +282,7 @@
               <div style="width: 400px;">
                 <div style="display: flex">
                   <div style="width: 40%">
-                    Jaccard Index:
+                    Jaccard index:
                   </div>
                   <div style="width: 60%; text-align: justify">
                     defined as the size of the intersection divided by the size of the union of the sets
@@ -291,7 +290,7 @@
                 </div>
                 <div style="display: flex; margin-top: 8px;">
                   <div style="width: 40%">
-                    Overlap Coefficient:
+                    Overlap coefficient:
                   </div>
                   <div style="width: 60%; text-align: justify">
                     defined as the size of the intersection divided by the size of the smaller of the two sets
@@ -312,7 +311,7 @@
               <div style="width: 400px;">
                 <div style="display: flex">
                   <div style="width: 40%">
-                    Complete:
+                    Fully randomized:
                   </div>
                   <div style="width: 60%; text-align: justify">
                     Model draws genes uniformly without replacement to compute fully randomized gene sets of target set
@@ -445,13 +444,13 @@ export default {
         {text: "Disease", value: "disease"},
       ],
       distanceMeasures: [
-        {text: "Jaccard Index", value: "jaccard"},
-        {text: "Overlap Coefficient", value: "overlap"}
+        {text: "Jaccard index", value: "jaccard"},
+        {text: "Overlap coefficient", value: "overlap"}
       ],
       backgroundModel: "complete",
       backgroundModels: [
-        {text: "Fully Randomized", value: "complete"},
-        {text: "Term Preserving", value: "term-pres"}
+        {text: "Fully randomized", value: "complete"},
+        {text: "Term-size preserving", value: "term-pres"}
       ],
       targetIDTypes: this.idMap
     }
