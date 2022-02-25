@@ -541,11 +541,11 @@ export default {
         p_values: "Empirical P-value calculated on input score(s) with respect to chosen background model.",
         set_value: "Calculated input score based on functional or genetic coherence.",
         'GO.BP': "based on functional coherence of biological process annotations from Gene Ontology (GO).",
-        'go.CC': "based on functional coherence of cell component annotations from Gene Ontology (GO).",
-        'go.MF': "based on functional coherence of molecular function annotations process from Gene Ontology (GO).",
+        'GO.CC': "based on functional coherence of cell component annotations from Gene Ontology (GO).",
+        'GO.MF': "based on functional coherence of molecular function annotations process from Gene Ontology (GO).",
         'KEGG': "based on functional coherence of pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)",
-        'JI-based':"TODO",
-        'OC-based':'TODO'
+        'JI-based':"Jaccard Index based: calculated by the intersection of two sets divided by the union of both.",
+        'OC-based':"Overlap Coefficient based: calculated by the intersection of two sets divided by the size of the smaller set."
       }
     }
   },
