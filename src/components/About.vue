@@ -14,6 +14,16 @@
         significance of candidate mechanisms with regard to functional and genetic coherence and enables the computation
         of empirical P-values with just a few mouse clicks.</p>
 
+      <b style="font-size: 1.5rem">Resources</b>
+      <div>
+        <div><v-btn icon><a style="text-decoration: none" target="_blank" href="https://pypi.org/project/biodigest/"><v-icon>fab fa-python</v-icon></a></v-btn>Python package (biodigest)</div>
+        <div><v-btn icon><a style="text-decoration: none" target="_blank" href="https://github.com/bionetslab/digest"><v-icon>fab fa-github</v-icon></a></v-btn>DIGEST source code</div>
+        <div><v-btn icon><a style="text-decoration: none" target="_blank" href="https://github.com/bionetslab/digest-tutorial/blob/main/Tutorial.ipynb"><v-icon>fas fa-graduation-cap</v-icon></a></v-btn>DIGEST tutorial material</div>
+
+
+      </div>
+
+
       <b style="font-size: 1.5rem">Contact</b>
       <div>
         <span><v-btn icon><a style="text-decoration: none" :href="'mailto:'+getKAMail()"><v-icon>fas fa-envelope</v-icon></a></v-btn>klaudia.adamowicz(_at-]uni-hamburg.de</span>
