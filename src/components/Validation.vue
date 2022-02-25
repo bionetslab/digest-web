@@ -1,10 +1,10 @@
 <template>
   <div>
     <div style="background-color: #9cc9f1; width: 100%; padding:32px; display: flex">
-      <div style="width: 50%; justify-content: flex-start">
+      <div style="width: 40%; justify-content: flex-start">
         <v-img :src="getLogoPath()" width="100%"></v-img>
       </div>
-      <div style="width: 50%; justify-content: flex-end; margin-left: auto; margin-right: 0">
+      <div style="width: 60%; justify-content: flex-end; margin-left: auto; margin-right: 0">
         <div style=" height: 100%;display:flex;">
           <p style="font-size: 1.3rem; color: #1c388a; align-self: flex-end; margin-top: auto; margin-bottom: 0">In silico validation of sets or clusterings of genes or diseases.</p>
         </div>
