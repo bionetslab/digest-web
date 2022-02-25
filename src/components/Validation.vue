@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card style="background-color: #d4e6f5; width: 100%; padding:32px; display: flex;">
-      <div style="width: 40%; justify-content: flex-start">
+      <div style="width:32%; justify-content: flex-start">
         <v-img :src="getLogoPath()" width="100%"></v-img>
       </div>
       <div style="width: 60%; justify-content: flex-end; margin-left: auto; margin-right: 0">

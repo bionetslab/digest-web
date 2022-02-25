@@ -8,7 +8,7 @@
         </v-subheader>
       </div>
       <div v-if="result===undefined">
-        <v-progress-linear :color="error?'error':'primary'" indeterminate></v-progress-linear>
+        <v-progress-linear :color="error?'error':'primary'" :indeterminate="progress===undefined" :value="progress"></v-progress-linear>
         <div style="width: 100%; display: flex; justify-content: center; margin-top:8px;">
           <i v-if="taskID && !result">You may return to your results later using the following URL: <a
               :href="getCurrentURL()">{{ getCurrentURL() }}</a></i>
@@ -531,6 +531,7 @@ export default {
       plots: undefined,
       csvs: undefined,
       zips: undefined,
+      progress: undefined,
       input: undefined,
       clusterMeasure: 'DI-based',
       tooltips: {
@@ -637,6 +638,8 @@ export default {
         this.queueStats = response.stats
         if (response.status)
           this.status = response.status
+        if(response.progress)
+          this.progress=response.progress*100
         if (response.failed)
           this.error = true
         if (response.done) {
