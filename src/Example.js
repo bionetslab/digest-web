@@ -104,7 +104,7 @@ export const disease_set={
 }
 
 export const disease_cluster={
-    target_id_type: "icd-10",
+    target_id_type: "ICD-10",
     target: "I00\tI00-I02\tAcute rheumatic fever\n" +
         "I01\tI00-I02\tAcute rheumatic fever\n" +
         "I02\tI00-I02\tAcute rheumatic fever\n" +
