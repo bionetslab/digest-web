@@ -532,15 +532,15 @@ export default {
       input: undefined,
       clusterMeasure: 'di',
       tooltips: {
-        di: "Dunn Index:",
+        di: "Dunn Index: ratio of the cluster with the lowest density compared to the two clusters that are closest to each other.",
         ss: "Silhouette Score: measures how well an observation is clustered and it estimates the average distance between clusters.",
-        dbi: "Davies Bouldin Index:",
-        p_values: "Empirical P-value calculated using random runs from chosen background model.",
-        set_value: "Calvulated value solely based on the input without the background model.",
-        'go.BP': "Biological Process based on Gene Ontology.",
-        'go.CC': "Cell Component based on Gene Ontology.",
-        'go.MF': "Molecular Function based on Gene Ontology.",
-        'pathway.kegg': "Pathways from Kyoto Encyclopedia of Genes and Genomes (KEGG)"
+        dbi: "Davies Bouldin Index: measures how dense clusters are iin comparison to distances between each cluster pair.",
+        p_values: "Empirical P-value calculated on input score(s) with respect to chosen background model.",
+        set_value: "Calculated input score based on functional or genetic coherence.",
+        'go.BP': "Functional coherence based on biological process annotations from gene ontology.",
+        'go.CC': "Functional coherence based on cell component annotations from gene ontology.",
+        'go.MF': "Functional coherence based on molecular function annotations process from gene ontology.",
+        'pathway.kegg': "Functional coherence based on pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)"
       }
     }
   },
