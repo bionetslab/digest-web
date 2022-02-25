@@ -36,7 +36,7 @@
         </template>
         <template v-else>
           <ul>
-            <h4>Sets can be validated reference-free, against a reference set or an single id. </h4><br>
+            <h4>Sets can be validated reference-free, against a reference set or a single id. </h4><br>
                 <li><b>set reference-free</b>: Assesses whether the internal functional or genetic coherence of the genes contained is statistically significant.</li>
                 <li><b>set against set</b>: Assesses whether the functional or genetic similarity of each element in the target set separately is statistically significant to the reference.
                 For this purpose, all annotations or only the enriched ones of the reference can be used.</li>
