@@ -272,7 +272,7 @@
             </v-tooltip>
           </template>
         </v-checkbox>
-        <v-select label="Distance Measure" :items="distanceMeasures" v-model="distanceModel"
+        <v-select label="Similarity Measure" :items="distanceMeasures" v-model="distanceModel"
                   :style="{'justify-self': mode==='set' ?'flex-start':'center', 'margin-left': 'auto', 'margin-right': 'auto', 'max-width': '240px'}"
                   outlined dense filled>
           <template v-slot:append-outer>
@@ -321,7 +321,7 @@
                 </div>
                 <div style="display: flex; margin-top: 8px;">
                   <div style="width: 40%">
-                    Term size preserving:
+                    Term-size preserving:
                   </div>
                   <div style="width: 60%; text-align: justify">
                     Model maintains some information from target set and constructs randomized gene sets where the
@@ -446,11 +446,11 @@ export default {
       ],
       distanceMeasures: [
         {text: "Jaccard Index", value: "jaccard"},
-        {text: "Overlap coefficient", value: "overlap"}
+        {text: "Overlap Coefficient", value: "overlap"}
       ],
       backgroundModel: "complete",
       backgroundModels: [
-        {text: "Complete", value: "complete"},
+        {text: "Fully Randomized", value: "complete"},
         {text: "Term Preserving", value: "term-pres"}
       ],
       targetIDTypes: this.idMap

@@ -46,7 +46,7 @@
                 <div style="width:50%; justify-content: center; display: flex">
                   <div v-if="mode==='cluster'">
                     <div style=" margin:16px">
-                      <b>Clusters</b>
+                      <b>Clusterings</b>
                       <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
                         <template v-slot:default>
                           <thead>
