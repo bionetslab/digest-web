@@ -6,7 +6,7 @@
       </div>
       <div style="width: 60%; justify-content: flex-end; margin-left: auto; margin-right: 0">
         <div style=" height: 100%;display:flex;">
-          <p style="font-size: 1.3rem; color: #1c388a; align-self: flex-end; margin-top: auto; margin-bottom: 0">In silico validation of sets or clusterings of genes or diseases.</p>
+          <p style="font-size: 1.3rem; color: #1c388a; align-self: flex-end; margin-top: auto; margin-bottom: 0">In silico validation of sets and clusterings of genes or diseases.</p>
         </div>
       </div>
       <!--      <h2 style="display: flex; justify-content: flex-start; color: white; font-size: 5rem">DIGEST</h2>-->
