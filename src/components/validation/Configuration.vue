@@ -266,7 +266,7 @@
                 <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
               </template>
               <div style="width: 250px; text-align: justify">
-                Set checkmark, if only enriched attributes of the reference set should be used.
+                Set checkmark, if only enriched annotations of the reference set should be used.
               </div>
             </v-tooltip>
           </template>
@@ -314,7 +314,7 @@
                     Fully randomized:
                   </div>
                   <div style="width: 60%; text-align: justify">
-                    Model draws genes uniformly without replacement to compute fully randomized gene sets of target set
+                    Model draws {{ type }} uniformly without replacement to compute fully randomized {{ type }} sets of target set
                     size.
                   </div>
                 </div>
@@ -323,7 +323,7 @@
                     Term-size preserving:
                   </div>
                   <div style="width: 60%; text-align: justify">
-                    Model maintains some information from target set and constructs randomized gene sets where the
+                    Model maintains some information from target set and constructs randomized {{ type }} sets where the
                     distribution of the contained {{ type }}s' annotation set sizes (approximately) matches the
                     distribution
                     of the annotation set sizes of the {{ type }} contained in target set.

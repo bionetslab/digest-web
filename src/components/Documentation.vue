@@ -40,70 +40,124 @@
       </div>
       <b id="web-app" style="font-size: 1.5rem; padding-top:48px;">Web Application</b>
       <div style="text-align: justify; margin-bottom: 48px">
-        DIGEST is a (“validation of <b>di</b>sease and <b>ge</b>ne <b>s</b>ets or
-        clus<b>t</b>erings”), is a Python-based validation tool available as a webinterface, as a <a
-          href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
-        <a href="https://digest-validation.net/documentation" target="_blank">REST API</a>. DIGEST greatly facilitates
-        <i>in silico</i> validation of gene and disease sets or clusterings via fully
-        automated validation pipelines comprising disease and gene ID mapping, enrichment analysis, comparisons of
-        shared
-        genes and variants, and background distribution estimation. Moreover, functionality is provided to automatically
-        update the external databases used by the pipelines. DIGEST hence allows the user to assess the statistical
-        significance of candidate mechanisms with regard to functional and genetic coherence and enables the computation
-        of empirical P-values with just a few mouse clicks.
+        In order to simplify the use and to allow access to the validation even for users without any programming experience,
+        we offer a web service that allows a quick and easy validation and calculation of statistical significance with just a few clicks.
       </div>
       <div style="padding-left: 16px">
         <b id="validation-modes" style="font-size: 1.25rem; padding-top:48px;">Validation Modes</b>
-        <div style="text-align: justify; margin-bottom: 48px"> DIGEST is a (“validation of <b>di</b>sease and <b>ge</b>ne
-          <b>s</b>ets or
-          clus<b>t</b>erings”), is a Python-based validation tool available as a webinterface, as a <a
-              href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
-          <a href="https://digest-validation.net/documentation" target="_blank">REST API</a>. DIGEST greatly facilitates
-          <i>in silico</i> validation of gene and disease sets or clusterings via fully
-          automated validation pipelines comprising disease and gene ID mapping, enrichment analysis, comparisons of
-          shared
-          genes and variants, and background distribution estimation. Moreover, functionality is provided to
-          automatically
-          update the external databases used by the pipelines. DIGEST hence allows the user to assess the statistical
-          significance of candidate mechanisms with regard to functional and genetic coherence and enables the
-          computation.
+        <div style="text-align: justify; margin-bottom: 48px">
+          <b>Set</b>
+          <ul>
+            <li><b>Reference-free</b><br> If a set of IDs is entered without reference, the individual IDs are checked
+              in pairs for similarity and converted to a distance measure. For this purpose, functional annotations or,
+              in the case of disease sets, additional genetic annotations are used to determine a functional and genetic
+              coherence. The average distance with respect to the respective annotations is returned as relevance scores.</li>
+            <li><b>Against reference</b><br> All annotations from the reference set that are assigned to at least
+              one reference ID are combined as a comparison set. As an exception, there is an optional enriched mode for
+              gen reference IDs, where the assigned annotations are limited to only the enriched ones. This is used to
+              compare each target ID separately based on the values annotated to that ID. If the target ID matches the
+              reference annotation set in at least one annotation, this ID is considered to be associated. The relevance
+              score in this mode is the number of target IDs identified as related. </li><br>
+            In both reference-free and reference set modes, random target sets are generated based on a user-selected
+            background model, with which relevance scores are calculated in the same way. These are finally used to
+            determine the significance of the target set entered by the user with the help of empirical p-values.
+          </ul>
+          <b>Clustering</b><br><ul>Here, clustering is assessed using 3 well-known cluster quality measures,
+          the Dunn Index, the Silhouette Score, and the, Davies-Bouldin index. In all of these quality measures, intra
+          distances within clusters and inter distances between them are calculated and used. To determine these
+          distances, pairwise distance measures are required, which are calculated the same way as in the reference-free
+          set mode. For each functional and genetic annotation, depending on whether the cluster IDs originate from
+          genes or diseases, three scores are given, one for each of the quality scores described above, in contrast to
+          the set mode, where one relevance score is calculated for each.<br>
+          Finally, with a background model, not the IDs but the cluster assignments are randomly reassigned,
+          while the size and distribution of the respective clusters as well as the original IDs are preserved.
+          The relevance scores calculated based on the new randomly generated clusterings are used here to determine
+          the significance of quality measure values on the clustering passed by the user with the help of empirical P-values.</ul>
         </div>
       </div>
 
       <div style="padding-left: 16px">
         <b id="parameters" style="font-size: 1.25rem; padding-top:48px;">Parameters</b>
-        <div style="text-align: justify; margin-bottom: 48px"> DIGEST is a (“validation of <b>di</b>sease and <b>ge</b>ne
-          <b>s</b>ets or
-          clus<b>t</b>erings”), is a Python-based validation tool available as a webinterface, as a <a
-              href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
-          <a href="https://digest-validation.net/documentation" target="_blank">Parameters</a>. DIGEST greatly
-          facilitates
-          <i>in silico</i> validation of gene and disease sets or clusterings via fully
-          automated validation pipelines comprising disease and gene ID mapping, enrichment analysis, comparisons of
-          shared
-          genes and variants, and background distribution estimation. Moreover, functionality is provided to
-          automatically
-          update the external databases used by the pipelines. DIGEST hence allows the user to assess the statistical
-          significance of candidate mechanisms with regard to functional and genetic coherence and enables the
-          computation.
+        <div style="text-align: justify; margin-bottom: 48px">
+          <ul>
+            <li><b>Targets</b><ul>
+              <li><b>Target ID type:</b> To ensure a validation fit for the input, it is important to select the correct ID
+                type of your input. At *** you can check the supported ID types, which will also be showed in the drop-down
+                during the setup.</li>
+              <li><b>Upload targets:</b> Upload a file with your IDs. It is important to have the correct format in the file.
+                Inside the file the IDs should be new line separated. Additionally for the clustering, the cluster assignment
+                should be tab separated next to the id. <i>The files should not have a header!</i></li>
+              <li><b>Target IDs field:</b> After using the upload function, your IDs will be visible in this field.
+                Here you can freely change individual entries to your desire. If you don't want to use the upload function,
+                you can also just insert your input manually.</li>
+            </ul>
+              <li><b>References</b> (optional in set mode)</li>
+              <ul>
+                <li><b>Reference type:</b> Choose the type of the reference to ensure the correct validation.
+                  The reference can consist of either disease or gene IDs independent of the target reference type.</li>
+                <li><b>Reference ID type:</b> Similar to the target ID type, a correct selection of the ID type is necessary.
+                  The reference ID type does not have to be of the same type as the target.</li>
+                <li><b>Upload reference:</b> Easy way to load the reference ID(s) from a file. Keep in mind to have the
+                  correct format inside the file described under <i>upload targets</i>.</li>
+                <li><b>Reference IDs field:</b> Uploaded IDs will show up in this field and allow individual changes.
+                  This field can also be used to insert your reference manually. Keep in mind that a reference consisting
+                  of a single ID is sufficient.</li>
+              </ul>
+            <li><b>Enriched:</b> If you use a reference gene set of more than one element, you can limit the functional
+              annotations of the reference to only enriched ones that will later function as the comparison set for the
+              target annotations.</li>
+            <li><b>Similarity measure</b><ul>
+              The similarity of IDs is determined based on assigned annotations. For this purpose, the respective sets
+              of annotations are evaluated by one of two possible units of measurement. Choose wisely, as depending on
+              the similarity measure, the results can change immensely.
+              <li><b>Jaccard index:</b> This measure calculates the similarity by dividing the intersection if two sets
+                with the union of them. This measure is not directly influenced by the individual sizes of the sets and
+                therefore wouldn't favor real subsets during comparison.</li>
+              <li><b>Overlap coefficient:</b> Here the measure calculated by dividing the intersection of two sets by the
+                length of the smaller set. Here the size of sets has a great influence and in addition this measure for
+                example will identify subsets as perfect similarity.</li>
+            </ul></li>
+            <li><b>Background model</b><ul>
+              Models to create random input sets to compare against the original target input for generation of empirical P-values.
+              <li><b>Fully randomized in clustering mode:</b> For this purpose, the assignment of the clusters is shuffled,
+                whereby the number and the distribution of the clusters as well as the original IDs are retained. </li>
+              <li><b>Fully randomized in set mode:</b> Here the original target IDs added by the user are exchanged with other
+                randomly chosen IDs of the same type, while the size of the set remains the same.</li>
+              <li><b>Term-size preserving in set mode:</b> As in the fully randomize model, the target IDs are replaced,
+                but more than just the size of the set is preserved. Here, the IDs are replaced by other IDs of the same
+                type that also have approximately the same number of functional and/or genetic annotations.</li>
+            </ul></li>
+            <li><b>Runs:</b> This is the number of random target inputs generated by the selected background model that
+              are used for the significance calculation. We recommend a number of at least 1000 to calculate meaningful
+              empirical P-values. </li>
+            <li><b>Replace:</b> If a selected background model should not change cluster assignments or replace IDs of
+              the entire user target input, you can specify here in percent how much of the original input per run should be
+              affected by the background model. The default value is 100, which means that the entire input is affected.</li>
+          </ul>
         </div>
       </div>
 
       <div style="padding-left: 16px">
         <b id="results" style="font-size: 1.25rem; padding-top:48px;">Results</b>
-        <div style="text-align: justify; margin-bottom: 48px"> DIGEST is a (“validation of <b>di</b>sease and <b>ge</b>ne
-          <b>s</b>ets or
-          clus<b>t</b>erings”), is a Python-based validation tool available as a webinterface, as a <a
-              href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
-          <a href="https://digest-validation.net/documentation" target="_blank">REST API</a>. DIGEST greatly facilitates
-          <i>in silico</i> validation of gene and disease sets or clusterings via fully
-          automated validation pipelines comprising disease and gene ID mapping, enrichment analysis, comparisons of
-          shared
-          genes and variants, and background distribution estimation. Moreover, functionality is provided to
-          automatically
-          update the external databases used by the pipelines. DIGEST hence allows the user to assess the statistical
-          significance of candidate mechanisms with regard to functional and genetic coherence and enables the
-          computation.
+        <div style="text-align: justify; margin-bottom: 48px">
+          Depending on the input types for the targets and optionally also the reference, functional annotations based on
+          biological process, molecular function and cell component from <i>Gene Ontology (GO)</i> and <i>KEGG</i> pathways,
+          as well as genetic annotations based on shared genes and variants from <i>DisGeNET</i>, are used for validation.
+          <ul><br>
+            <li><b>P-value table:</b> The most important result to be found in the section are the calculated
+              <b>empirical P-values</b> using the selected background model and other parameters that indicate the
+              significance of the calculated relevance scores derived from the input.</li>
+            <li><b>Relevance score(s) table:</b> For completeness, the user receives a table with the functional or
+              genetic relevance score(s) determined for solely their input.</li>
+            <li><b>P-value plot:</b> In addition, the calculated P-values are displayed in a plot with a plotted cut-off
+              line at 0.05, which can be used directly by the user for a presentation of the results.</li>
+            <li><b>Mappability plot:</b> Since the annotations are taken from biological databases, which are known to
+              have a study bias whereby some IDs have a high number of annotations and others have no annotations, the
+              last plot shows which frequency of input IDs had non-empty annotations.</li>
+          </ul><br>
+          All results are downloadable individually and as a whole in a zip. In addition, the user can download his setup
+          including input and all parameter selections. The results get their own URL with a fixed ID, which can be used
+          to return to the results at any time.
         </div>
       </div>
 
@@ -432,19 +486,15 @@
       </div>
 
       <b id="package" style="font-size: 1.5rem; padding-top:48px;">Python package</b>
-      <div style="text-align: justify; margin-bottom: 48px"> DIGEST is a (“validation of <b>di</b>sease and <b>ge</b>ne
-        <b>s</b>ets or
-        clus<b>t</b>erings”), is a Python-based validation tool available as a webinterface, as a <a
-            href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
-        <a href="https://digest-validation.net/documentation" target="_blank">Execution Routes</a>. DIGEST greatly
-        facilitates
-        <i>in silico</i> validation of gene and disease sets or clusterings via fully
-        automated validation pipelines comprising disease and gene ID mapping, enrichment analysis, comparisons of
-        shared
-        genes and variants, and background distribution estimation. Moreover, functionality is provided to automatically
-        update the external databases used by the pipelines. DIGEST hence allows the user to assess the statistical
-        significance of candidate mechanisms with regard to functional and genetic coherence and enables the computation
-        of empirical P-values with just a few mouse clicks.
+      <div style="text-align: justify; margin-bottom: 48px">
+        DIGEST can also be included and used by the user in their own python code. For this purpose, DIGEST has been
+        published as a python package named <a href="https://pypi.org/project/biodigest/">biodigest</a> on Pypi
+        to ensure easy installation.<br>
+        <code>pip install biodigest</code><br>
+        There is also a detailed How-To to find, which explains the exact procedure, the required method calls and all
+        parameters in all details. To make it even easier, a notebook is also published that explains the use of the
+        python package step by step using the examples integrated on the website.<br><br>
+        <i>DIGEST is open source.</i>
       </div>
     </div>
   </div>
