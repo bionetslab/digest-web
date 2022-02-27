@@ -547,7 +547,7 @@
 
         </div>
         <div style="display:flex; justify-content: center; width: 100%">
-          <v-select label="Background model" :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels" :disabled="mode==='cluster'" v-model="backgroundModel"
+          <v-select label="Background model" :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels" v-model="backgroundModel"
                     style="max-width: 260px"
                  outlined dense filled>
             <template v-slot:append-outer>
@@ -634,7 +634,7 @@
               </v-tooltip>
             </template>
           </v-select>
-          <v-select label="Background model" :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels" :disabled="mode==='cluster'" v-model="backgroundModel"
+          <v-select label="Background model" :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels" v-model="backgroundModel"
                     :style="{'justify-self': 'flex-end', 'margin-right' :mode==='set' ? 0: 'auto', 'margin-left': 'auto', 'max-width': '220px'}
                  " outlined dense filled>
             <template v-slot:append-outer>
