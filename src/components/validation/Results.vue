@@ -8,13 +8,14 @@
         </v-subheader>
       </div>
       <div v-if="result===undefined">
-        <v-progress-linear :color="error?'error':'primary'" :indeterminate="progress===undefined" :value="progress"></v-progress-linear>
+        <v-progress-linear :color="error?'error':'primary'" :indeterminate="progress===undefined"
+                           :value="progress"></v-progress-linear>
         <div style="width: 100%; display: flex; justify-content: center; margin-top:8px;">
           <i v-if="taskID && !result">You may return to your results later using the following URL: <a
               :href="getCurrentURL()">{{ getCurrentURL() }}</a></i>
         </div>
       </div>
-      <div v-else style="padding-left: 64px; padding-right: 64px">
+      <div v-else :style="{'padding-left': isMobile() ? '16px':'64px', 'padding-right': isMobile() ? '16px': '64px'}">
         <v-tabs v-model="resultTab" centered>
           <v-tabs-slider color="primary"></v-tabs-slider>
           <v-tab>
@@ -42,8 +43,8 @@
               </v-tooltip>
             </div>
             <div v-if="input" style="margin-top: 32px; margin-bottom: 32px">
-              <div style="display: flex">
-                <div style="width:50%; justify-content: center; display: flex">
+              <div v-if="isMobile()">
+                <div style="display:flex; justify-content: center; width: 100%">
                   <div v-if="mode==='cluster'">
                     <div style=" margin:16px">
                       <b>Clusterings</b>
@@ -65,14 +66,15 @@
                       </v-simple-table>
                     </div>
                   </div>
-                  <div v-else style="display: flex">
+                  <div v-else>
+                    <!--                    <div style="display:flex; justify-content: center; width: 100%">-->
                     <div style=" margin:16px">
                       <b>Targets</b>
                       <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
                         <template v-slot:default>
                           <thead>
                           <tr>
-                            <th>{{ input.target_id[0].toUpperCase()+input.target_id.substring(1) }}</th>
+                            <th>{{ input.target_id[0].toUpperCase() + input.target_id.substring(1) }}</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -107,11 +109,12 @@
                         </template>
                       </v-simple-table>
                     </div>
+                    <!--                    </div>-->
                   </div>
                 </div>
-                <div style="display: flex; justify-content: center;">
-                  <div style="display: flex; align-self: center; margin-top: auto; margin-bottom: auto;">
-                    <div>
+                <div>
+                  <div style="display:flex; justify-content: center; width: 100%">
+                    <div style="margin: 16px">
                       <b>Configuration</b>
                       <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
                         <template v-slot:default>
@@ -134,21 +137,107 @@
                   </div>
                 </div>
               </div>
-              <div style="display: flex; justify-content: center; margin-top: 16px;">
-                <v-btn @click="downloadInput()">
-                  <v-icon left>fas fa-download</v-icon>
-                  Download Input
-                </v-btn>
+              <div v-else>
+                <div style="display: flex">
+                  <div style="width:50%; justify-content: center; display: flex">
+                    <div v-if="mode==='cluster'">
+                      <div style=" margin:16px">
+                        <b>Clusterings</b>
+                        <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+                          <template v-slot:default>
+                            <thead>
+                            <tr>
+                              <th>{{ input.target_id }}</th>
+                              <th>cluster</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="tar in input.target" :key="'cluster'+tar.id">
+                              <td style="margin:4px">{{ tar.id }}</td>
+                              <td style="margin:4px">{{ tar.cluster }}</td>
+                            </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                      </div>
+                    </div>
+                    <div v-else style="display: flex">
+                      <div style=" margin:16px">
+                        <b>Targets</b>
+                        <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+                          <template v-slot:default>
+                            <thead>
+                            <tr>
+                              <th>{{ input.target_id[0].toUpperCase() + input.target_id.substring(1) }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="tar in input.target" :key="'set'+tar">
+                              <td style="margin:4px">{{ tar }}</td>
+                            </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                      </div>
+                      <div style=" margin:16px; margin-left:64px" v-if="input.reference_id">
+                        <b>Reference{{ typeof input.reference === 'string' ? '' : 's' }}</b>
+                        <v-simple-table dense style="max-height: 300px; overflow-y: scroll;">
+                          <template v-slot:default>
+                            <thead>
+                            <tr>
+                              <th>{{ input.reference_id }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <template v-if="typeof input.reference !== 'string'">
+                              <tr v-for="ref in input.reference" :key="'ref'+ref">
+                                <td style="margin:4px">{{ ref }}</td>
+                              </tr>
+                            </template>
+                            <template v-else>
+                              <tr>
+                                <td style="margin:4px">{{ input.reference }}</td>
+                              </tr>
+                            </template>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: center;">
+                    <div style="margin: 16px">
+                      <b>Configuration</b>
+                      <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+                        <template v-slot:default>
+                          <thead>
+                          <tr>
+                            <th>Parameter</th>
+                            <th>Value</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="param in Object.keys(input).filter(k=>!k.includes('target') && !k.includes('reference'))"
+                              :key="'conf-'+param">
+                            <td style="margin: 4px">{{ param }}</td>
+                            <td style="margin:4px">{{ input[param] }}</td>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 16px;">
+                  <v-btn @click="downloadInput()">
+                    <v-icon left>fas fa-download</v-icon>
+                    Download Input
+                  </v-btn>
+                </div>
               </div>
             </div>
-            <!--            <v-divider></v-divider>-->
-            <!--            <div style="display:flex; justify-content: center">-->
-            <!--              <v-subheader>Absolute Input Scores</v-subheader>-->
-            <!--            </div>-->
-            <!--            <div style="display: flex;">-->
-            <!--            </div>-->
           </v-tab-item>
-          <v-tab-item>
+          <v-tab-item style="width: 100%">
             <div style="display:flex">
               <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular results
               </v-subheader>
@@ -162,9 +251,9 @@
                 <div>Download all files as .zip</div>
               </v-tooltip>
             </div>
-            <div style="display: flex">
+            <div :style="{display: isMobile() ? '':'flex'}">
               <div
-                  style="width: 50%; align-self: center; margin-top: auto; margin-bottom: auto; padding-top:16px; padding-bottom: 16px;">
+                  :style="{width: isMobile()?'100%':'50%', 'align-self': 'center', 'margin-top': 'auto', 'margin-bottom': 'auto', 'padding-top':'16px', 'padding-bottom': '16px'}">
                 <div style=" justify-content: center; display: flex">
                   <div>
                     <b>Empirical P-values</b>
@@ -179,9 +268,10 @@
                                 <v-icon right>fas fa-download</v-icon>
                               </v-btn>
                             </th>
-                            <th class="text-left" v-for="head in Object.keys(result.p_values.values)" :key="'p_value-head'+head">
+                            <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
+                                :key="'p_value-head'+head">
                               <div style="white-space: nowrap">
-                                {{head}}
+                                {{ head }}
                                 <v-tooltip right>
                                   <template v-slot:activator="{attrs, on}">
                                     <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
@@ -206,14 +296,16 @@
                                   </v-tooltip>
                                 </div>
                               </b>
-                            <td  v-for="head in Object.keys(result.p_values.values)" :key="'p_value-'+head" style="margin:4px">{{ formatValue(result.p_values.values[head][metric]) }}</td>
+                            <td v-for="head in Object.keys(result.p_values.values)" :key="'p_value-'+head"
+                                style="margin:4px">{{ formatValue(result.p_values.values[head][metric]) }}
+                            </td>
                           </tr>
                           </tbody>
                         </template>
                       </v-simple-table>
                     </div>
                     <div v-else>
-                      <div style="display: flex">
+                      <div>
                         <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
                           <template v-slot:default>
                             <thead>
@@ -276,7 +368,7 @@
                 </div>
               </div>
               <div
-                  style="width: 50%; align-self: center; margin-top: auto; margin-bottom: auto; padding-top:16px; padding-bottom: 16px;">
+                  :style="{width: isMobile()? '100%' :'50%', 'align-self': 'center', 'margin-top': 'auto', 'margin-bottom': 'auto', 'padding-top':'16px', 'padding-bottom': '16px'}">
                 <div style=" justify-content: center; display: flex">
                   <div>
                     <b>{{ getScoreName() }}</b>
@@ -291,9 +383,10 @@
                                 <v-icon right>fas fa-download</v-icon>
                               </v-btn>
                             </th>
-                            <th class="text-left" v-for="head in Object.keys(result.input_values.values)" :key="'input_'+head">
+                            <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
+                                :key="'input_'+head">
                               <div style="white-space: nowrap">
-                                {{head}}
+                                {{ head }}
                                 <v-tooltip right>
                                   <template v-slot:activator="{attrs, on}">
                                     <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
@@ -305,7 +398,7 @@
                           </tr>
                           </thead>
                           <tbody>
-                          <tr  v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric">
+                          <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric">
                             <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
                               <div style="white-space: nowrap">
                                 {{ metric }}
@@ -317,7 +410,9 @@
                                 </v-tooltip>
                               </div>
                             </b>
-                            <td  v-for="head in Object.keys(result.input_values.values)" :key="'input_value-'+head" style="margin:4px">{{ formatValue(result.input_values.values[head][metric]) }}</td>
+                            <td v-for="head in Object.keys(result.input_values.values)" :key="'input_value-'+head"
+                                style="margin:4px">{{ formatValue(result.input_values.values[head][metric]) }}
+                            </td>
                           </tr>
                           </tbody>
                         </template>
@@ -403,44 +498,27 @@
               <v-subheader>Summary figures</v-subheader>
             </div>
             <template v-if="plots">
-              <div style="display: flex; justify-content: center" v-if="mode!=='cluster'">
-                <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
-                  <v-img :src="getPlot('p-value')" height="35vh" contain
-                         style="margin:32px; position: relative">
-                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))">
-                      <v-icon small>fas fa-download</v-icon>
-                    </v-btn>
-
-                  </v-img>
-                  <!--                  <p style="text-align: justify">-->
-                  <!--                    Lorem Ipsum has been the-->
-                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
-                  <!--                    and-->
-                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
-                  <!--                    leap</p>-->
-                </div>
-                <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
-                  <v-img :src="getPlot('mappability')" height="35vh" contain
-                         style="margin:32px; position: relative">
-                    <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
-                      <v-icon small>fas fa-download</v-icon>
-                    </v-btn>
-                  </v-img>
-                  <!--                  <p style="text-align: justify"> Lorem Ipsum has been the-->
-                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
-                  <!--                    and-->
-                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
-                  <!--                    leap</p>-->
-                </div>
-              </div>
-              <div v-else style="display: flex">
-                <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
-                  <!--                  <div style="width: 100%; display: flex; justify-content: center">-->
-                  <!--                    <v-select dense outlined filled v-model="clusterMeasure"-->
-                  <!--                              :items="[{text:'DI',value:'di'},{text:'SS',value:'ss'},{text:'DBI',value:'dbi'}]"-->
-                  <!--                              style="max-width: 100px;"></v-select>-->
-                  <!--                  </div>-->
-                  <div style="display: flex; margin-top:32px;">
+              <div v-if="isMobile()">
+                <template v-if="mode!=='cluster'">
+                  <div style="width: 100%; display: flex; justify-content: center">
+                    <v-img :src="getPlot('p-value')" width="60%" contain
+                           style="margin:32px; position: relative">
+                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))">
+                        <v-icon small>fas fa-download</v-icon>
+                      </v-btn>
+                    </v-img>
+                  </div>
+                  <div style="width: 100%; display: flex; justify-content: center">
+                    <v-img :src="getPlot('mappability')" width="60%" contain
+                           style="margin:32px; position: relative">
+                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
+                        <v-icon small>fas fa-download</v-icon>
+                      </v-btn>
+                    </v-img>
+                  </div>
+                </template>
+                <template v-else>
+                  <div style="width: 90%; display: flex; justify-content: center">
                     <v-tabs vertical>
                       <v-tab @click="clusterMeasure='DI-based'">
                         DI-based
@@ -470,33 +548,95 @@
                         </v-tooltip>
                       </v-tab>
                     </v-tabs>
-                    <v-img :src="getPlot(clusterMeasure+'_p-value')" height="35vh" contain
-                           style="margin-left:32px; margin-bottom:32px; position: relative">
+                    <v-img :src="getPlot(clusterMeasure+'_p-value')" width="60%" contain
+                           style="position: relative">
+                    </v-img>
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </div>
+                  <div style="width: 100%; display: flex; justify-content: center">
+                    <v-img :src="getPlot('mappability')" width="60%" contain
+                           style="margin:32px; position: relative">
                       <v-btn icon small style="position: absolute; right: 0"
-                             @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
+                             @click="downloadFile(getPlot('mappability'))">
+                        <v-icon small>fas fa-download</v-icon>
+                      </v-btn>
+                    </v-img>
+
+                  </div>
+                </template>
+              </div>
+              <div v-else>
+                <div style="display: flex; justify-content: center" v-if="mode!=='cluster'">
+                  <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
+                    <v-img :src="getPlot('p-value')" height="35vh" contain
+                           style="margin:32px; position: relative">
+                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))">
                         <v-icon small>fas fa-download</v-icon>
                       </v-btn>
                     </v-img>
                   </div>
-                  <!--                  <p style="text-align: justify"> Lorem Ipsum has been the-->
-                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
-                  <!--                    and-->
-                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
-                  <!--                    leap</p>-->
+                  <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
+                    <v-img :src="getPlot('mappability')" height="35vh" contain
+                           style="margin:32px; position: relative">
+                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
+                        <v-icon small>fas fa-download</v-icon>
+                      </v-btn>
+                    </v-img>
+                  </div>
                 </div>
-                <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
-                  <v-img :src="getPlot('mappability')" height="35vh" contain
-                         style="margin:32px; position: relative">
-                    <v-btn icon small style="position: absolute; right: 0"
-                           @click="downloadFile(getPlot('mappability'))">
-                      <v-icon small>fas fa-download</v-icon>
-                    </v-btn>
-                  </v-img>
-                  <!--                  <p style="text-align: justify"> Lorem Ipsum has been the-->
-                  <!--                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type-->
-                  <!--                    and-->
-                  <!--                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the-->
-                  <!--                    leap</p>-->
+                <div v-else style="display: flex">
+                  <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
+                    <div style="display: flex; margin-top:32px;">
+                      <v-tabs vertical>
+                        <v-tab @click="clusterMeasure='DI-based'">
+                          DI-based
+                          <v-tooltip right>
+                            <template v-slot:activator="{attrs, on}">
+                              <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                            </template>
+                            <div style="width:200px; text-align: justify">{{ tooltips['DI-based'] }}</div>
+                          </v-tooltip>
+                        </v-tab>
+                        <v-tab @click="clusterMeasure='SS-based'">
+                          SS-based
+                          <v-tooltip right>
+                            <template v-slot:activator="{attrs, on}">
+                              <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                            </template>
+                            <div style="width:200px; text-align: justify">{{ tooltips['SS-based'] }}</div>
+                          </v-tooltip>
+                        </v-tab>
+                        <v-tab @click="clusterMeasure='DBI-based'">
+                          DBI-based
+                          <v-tooltip right>
+                            <template v-slot:activator="{attrs, on}">
+                              <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                            </template>
+                            <div style="width:200px; text-align: justify">{{ tooltips['DBI-based'] }}</div>
+                          </v-tooltip>
+                        </v-tab>
+                      </v-tabs>
+                      <v-img :src="getPlot(clusterMeasure+'_p-value')" height="35vh" contain
+                             style="margin-left:32px; margin-bottom:32px; position: relative">
+                        <v-btn icon small style="position: absolute; right: 0"
+                               @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
+                          <v-icon small>fas fa-download</v-icon>
+                        </v-btn>
+                      </v-img>
+                    </div>
+                  </div>
+                  <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
+                    <v-img :src="getPlot('mappability')" height="35vh" contain
+                           style="margin:32px; position: relative">
+                      <v-btn icon small style="position: absolute; right: 0"
+                             @click="downloadFile(getPlot('mappability'))">
+                        <v-icon small>fas fa-download</v-icon>
+                      </v-btn>
+                    </v-img>
+                  </div>
                 </div>
               </div>
             </template>
@@ -544,8 +684,8 @@ export default {
         'GO.CC': "based on functional coherence of cell component annotations from Gene Ontology (GO).",
         'GO.MF': "based on functional coherence of molecular function annotations process from Gene Ontology (GO).",
         'KEGG': "based on functional coherence of pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)",
-        'JI-based':"Jaccard Index based: calculated by the intersection of two sets divided by the union of both.",
-        'OC-based':"Overlap Coefficient based: calculated by the intersection of two sets divided by the size of the smaller set."
+        'JI-based': "Jaccard Index based: calculated by the intersection of two sets divided by the union of both.",
+        'OC-based': "Overlap Coefficient based: calculated by the intersection of two sets divided by the size of the smaller set."
       }
     }
   },
@@ -596,6 +736,9 @@ export default {
     downloadInput: function () {
       this.download('digest_' + this.taskID + "_input.json", JSON.stringify(this.input))
     },
+    isMobile: function () {
+      return navigator.userAgentData.mobile
+    },
     download: function (name, content) {
       let dl = document.createElement('a')
       dl.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content))
@@ -638,8 +781,8 @@ export default {
         this.queueStats = response.stats
         if (response.status)
           this.status = response.status
-        if(response.progress)
-          this.progress=response.progress*100
+        if (response.progress)
+          this.progress = response.progress * 100
         if (response.failed)
           this.error = true
         if (response.done) {

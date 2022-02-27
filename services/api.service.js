@@ -57,6 +57,7 @@ const ApiService = {
 
     validate_cluster(target_id, target, runs, replace, distance, background, type){
         let data = {target:target, target_id:target_id, runs: runs, replace: replace, distance:distance, background_model:background, type: type}
+        console.log(data)
         return this.post("/cluster",data).then(response=>{
             return response.data
         })

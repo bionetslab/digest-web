@@ -20,7 +20,7 @@
          style="position: absolute;  display:flex; background-color: rgba(255,255,255,0.6); width: 100%; height: 100%; top: 0; left: 0">
       <div style="align-self: center; margin-top: auto; margin-bottom: auto; ">
         <v-card-title style="color:#484848">{{title}}</v-card-title>
-        <v-card-subtitle v-show="hover">{{text}}
+        <v-card-subtitle v-show="hover" :style="{'font-size': isMobile() ? '0.8rem' :'1rem','line-height': isMobile() ? '0.8rem' :'1rem'}">{{text}}
         </v-card-subtitle>
         <v-card-actions v-show="hover">
           <div style="width: 100%; display: flex; justify-content: center">
@@ -52,7 +52,9 @@ export default {
     }
   },
   methods:{
-
+      isMobile: function(){
+        return navigator.userAgentData.mobile
+      },
   }
 }
 </script>
