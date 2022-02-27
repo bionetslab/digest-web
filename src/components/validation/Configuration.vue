@@ -547,7 +547,7 @@
 
         </div>
         <div style="display:flex; justify-content: center; width: 100%">
-          <v-select label="Background model" :items="backgroundModels" v-model="backgroundModel"
+          <v-select label="Background model" :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels" :disabled="mode==='cluster'" v-model="backgroundModel"
                     style="max-width: 260px"
                  outlined dense filled>
             <template v-slot:append-outer>
@@ -634,7 +634,7 @@
               </v-tooltip>
             </template>
           </v-select>
-          <v-select label="Background model" :items="backgroundModels" v-model="backgroundModel"
+          <v-select label="Background model" :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels" :disabled="mode==='cluster'" v-model="backgroundModel"
                     :style="{'justify-self': 'flex-end', 'margin-right' :mode==='set' ? 0: 'auto', 'margin-left': 'auto', 'max-width': '220px'}
                  " outlined dense filled>
             <template v-slot:append-outer>
@@ -785,7 +785,7 @@ export default {
         {text: "Jaccard index", value: "jaccard"},
         {text: "Overlap coefficient", value: "overlap"}
       ],
-      backgroundModel: "complete",
+      backgroundModel: this.mode==='cluster' ? 'term-pres' : "complete",
       backgroundModels: [
         {text: "Fully randomized", value: "complete"},
         {text: "Term-size preserving", value: "term-pres"}
@@ -901,12 +901,16 @@ export default {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
             this.targetIDType = EXAMPLES.gene_set.target_id_type
             this.useReference = false
+            this.enriched = false
+            this.backgroundModel = 'complete'
             this.references = ""
           }
           if (example === 'ref') {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
             this.targetIDType = EXAMPLES.gene_set.target_id_type
             this.useReference = true
+            this.enriched = true
+            this.backgroundModel = 'term-pres'
             this.refType = EXAMPLES.gene_set.reference_type
             this.readFileContent(EXAMPLES.gene_set.reference, 'reference')
             this.referenceIDType = EXAMPLES.gene_set.reference_id_type
@@ -914,6 +918,7 @@ export default {
         } else {
           this.readFileContent(EXAMPLES.disease_set.target, 'target')
           this.targetIDType = EXAMPLES.disease_set.target_id_type
+          this.backgroundModel = 'term-pres'
         }
       } else {
         if (type === 'gene') {
