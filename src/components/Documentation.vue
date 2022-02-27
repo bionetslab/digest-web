@@ -322,7 +322,7 @@
                     <td>background_model</td>
                     <td>string</td>
                     <td>complete</td>
-                    <td><code>{distance:'complete'}</code></td>
+                    <td><code>{background_model:'complete'}</code></td>
                     <td>Sets the background model, determining how sets for p-value calculation are sampled. Has to be
                       one of <code>['complete','term-pres']</code></td>
                   </tr>
