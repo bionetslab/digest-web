@@ -511,7 +511,7 @@
                   <div style="width: 100%; display: flex; justify-content: center">
                     <v-img :src="getPlot('mappability')" width="80%" contain
                            style="margin:32px; position: relative">
-                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
+                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('mappability'))">
                         <v-icon small>fas fa-download</v-icon>
                       </v-btn>
                     </v-img>
@@ -581,7 +581,7 @@
                   <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
                     <v-img :src="getPlot('mappability')" height="35vh" contain
                            style="margin:32px; position: relative">
-                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile('mappability')">
+                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('mappability'))">
                         <v-icon small>fas fa-download</v-icon>
                       </v-btn>
                     </v-img>
