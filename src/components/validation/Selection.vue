@@ -1,5 +1,5 @@
 <template>
-  <div :style="{width: '100%', display: isMobile() ? '': 'flex', 'justify-content': 'center', padding: isMobile() ? '32px' :''}">
+  <div :style="{width: '100%', display: isMobile() ? '': 'flex', 'justify-content': 'center', padding: isMobile() ? '8px' :''}">
     <TypeCard title="Set" text="Validate gene or disease sets w.r.t. functional or genetic coherence." :mobile="isMobile()">
       <template v-slot:default>
         <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">

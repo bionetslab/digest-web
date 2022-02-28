@@ -14,7 +14,7 @@
             <router-link style="text-decoration: none" to="/about">About</router-link>
           </v-btn>
       </v-toolbar>
-      <v-card v-if="isMobile()" style="justify-self: center; min-height: 100vh; margin-left: auto; margin-right: auto; top: 60px">
+      <v-card v-if="isMobile()" style="min-height: 100vh; top: 60px">
         <router-view></router-view>
       </v-card>
       <v-card v-else style="width: 70vw; justify-self: center; margin-left: auto; margin-right: auto; top: 60px">

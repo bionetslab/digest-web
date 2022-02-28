@@ -10,7 +10,7 @@
         <v-icon right>fas fa-angle-right</v-icon>
       </v-btn>
     </div>
-    <div style="display: flex;">
+    <div :style="{display: isMobile() ? '': 'flex'}">
       <v-btn v-if="!isMobile()" color="error" @click="$emit('resetEvent')"
              style="justify-self: left; margin-right: auto;">
         <v-icon left>fas fa-angle-left</v-icon>

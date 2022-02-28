@@ -1,15 +1,15 @@
 <template>
-  <v-card :style="{width: '50%', padding: isMobile() ? '8px' :'', height: '100%', position:'relative'}" :elevation="hover ? 10:0"
+  <v-card :style="{width: '50%', padding: isMobile() ? '4px' :'', height: '100%', position:'relative'}" :elevation="hover ? 10:0"
           :flat="!hover"
           @mouseenter="hover=true" @mouseleave="hover=false">
     <div>
-      <v-card-title v-if="mobile" style="font-size: 1.75rem; margin-bottom: 8px">
+      <v-card-title v-if="mobile" style="font-size: 1.25rem; margin-bottom: 8px">
         {{title}}
       </v-card-title>
-      <v-card-subtitle v-if="mobile" style="color: #00000099; font-size: 1.25rem">{{text}}</v-card-subtitle>
+      <v-card-subtitle v-if="mobile" style="color: #00000099; font-size: 0.8rem">{{text}}</v-card-subtitle>
       <v-img
           class="white--text align-end"
-          :style="{margin: isMobile()? '8px 15% 16px' : '8px 15% 48px', position: 'relative'}"
+          :style="{margin: isMobile()? '4px 15% 8px' : '8px 15% 48px', position: 'relative'}"
           width="70%"
           :src="image"
       >
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div v-if="mobile" style="display: flex; justify-content: center; margin-bottom: 8px">
-      <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})" rounded style="font-size: large">
+      <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})" rounded style="font-size: smaller">
         <v-icon left style="margin-right:4px ">fas fa-play</v-icon>
         Validate
       </v-btn>

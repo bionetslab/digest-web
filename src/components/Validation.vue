@@ -1,19 +1,18 @@
 <template>
   <div>
-    <v-card style="background-color: #d4e6f5; width: 100%; padding:32px; display: flex;">
+    <v-card :style="{'background-color': '#d4e6f5', width: '100%', padding: isMobile() ? '16px' :'32px', display: 'flex'}">
       <div :style="{width:  '32%',  'justify-content': 'flex-start'}">
         <v-img :src="getLogoPath()" width="100%"></v-img>
       </div>
       <div style="width: 60%; justify-content: flex-end; margin-left: auto; margin-right: 0">
         <div style=" height: 100%;display:flex;">
-          <p style="font-size: 1.3rem; color: #1c388a; align-self: flex-end; margin-top: auto; margin-bottom: 0">In silico validation of sets and clusterings of genes or diseases.</p>
+          <p :style="{'font-size': isMobile() ? '1rem' : '1.3rem', color: '#1c388a', 'align-self': 'flex-end', 'margin-top': 'auto', 'margin-bottom': 0}">In silico validation of sets and clusterings of genes or diseases.</p>
         </div>
       </div>
-      <!--      <h2 style="display: flex; justify-content: flex-start; color: white; font-size: 5rem">DIGEST</h2>-->
 
     </v-card>
-    <div style="display: flex; justify-content: center; margin-top: 32px;">
-      <v-subheader :style="{'font-size': isMobile() ? '2rem' : '1.5rem'}">How does DIGEST work?
+    <div style="display: flex; justify-content: center; margin-top: 32px;" v-if="step===0">
+      <v-subheader :style="{'font-size': isMobile() ? '1.4rem' : '1.5rem'}">How does DIGEST work?
       </v-subheader>
     </div>
     <div
@@ -27,7 +26,7 @@
     <div v-if="step===0">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center; margin-top:32px">
-        <v-subheader :style="{'font-size': isMobile() ? '2rem' : '1.5rem'}">Start validating
+        <v-subheader :style="{'font-size': isMobile() ? '1.4rem' : '1.5rem'}">Start validating
           now!
         </v-subheader>
       </div>
