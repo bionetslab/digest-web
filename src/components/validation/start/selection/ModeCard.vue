@@ -1,26 +1,30 @@
 <template>
-  <v-card style="width: 50%; height: 100%; position:relative;" :elevation="hover ? 10:0"
+  <v-card :style="{width: '50%', padding: isMobile() ? '8px' :'', height: '100%', position:'relative'}" :elevation="hover ? 10:0"
           :flat="!hover"
           @mouseenter="hover=true" @mouseleave="hover=false">
     <div>
+      <v-card-title v-if="mobile" style="font-size: 1.75rem; margin-bottom: 8px">
+        {{title}}
+      </v-card-title>
+      <v-card-subtitle v-if="mobile" style="color: #00000099; font-size: 1.25rem">{{text}}</v-card-subtitle>
       <v-img
           class="white--text align-end"
-          style="margin:8px 15% 48px; position: relative"
+          :style="{margin: isMobile()? '8px 15% 16px' : '8px 15% 48px', position: 'relative'}"
           width="70%"
           :src="image"
       >
       </v-img>
     </div>
-    <div v-show="!hover" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex">
+    <div v-if="!mobile" v-show="!hover" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex">
       <div style="align-self: flex-end; justify-self: center; margin: auto auto 0;">
         <v-card-title style="color:#484848"><i>{{title}}</i></v-card-title>
       </div>
     </div>
-    <div v-show="hover"
+    <div v-if="!mobile" v-show="hover"
          style="position: absolute;  display:flex; background-color: rgba(255,255,255,0.6); width: 100%; height: 100%; top: 0; left: 0">
       <div style="align-self: center; margin-top: auto; margin-bottom: auto; ">
         <v-card-title style="color:#484848">{{title}}</v-card-title>
-        <v-card-subtitle v-show="hover" :style="{'font-size': isMobile() ? '0.8rem' :'1rem','line-height': isMobile() ? '0.8rem' :'1rem'}">{{text}}
+        <v-card-subtitle v-show="hover" :style="{'font-size': '1rem','line-height': '1rem'}">{{text}}
         </v-card-subtitle>
         <v-card-actions v-show="hover">
           <div style="width: 100%; display: flex; justify-content: center">
@@ -31,13 +35,18 @@
         </v-card-actions>
       </div>
     </div>
+    <div v-if="mobile" style="display: flex; justify-content: center; margin-bottom: 8px">
+      <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})" rounded style="font-size: large">
+        <v-icon left style="margin-right:4px ">fas fa-play</v-icon>
+        Validate
+      </v-btn>
+    </div>
   </v-card>
 </template>
 
 <script>
 export default {
   name: "ModeCard",
-
 
   props:{
     title:String,
@@ -49,8 +58,13 @@ export default {
   data(){
     return{
       hover:false,
+      mobile: false,
     }
   },
+  created() {
+    this.mobile= this.isMobile()
+  },
+
   methods:{
       isMobile: function(){
         let check = false;
