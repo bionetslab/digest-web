@@ -318,7 +318,8 @@
                               </th>
                               <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
                                   :key="'p_'+head">
-                                <div style="white-space: nowrap; cursor: pointer" @click="clusterMeasure=head">
+                                <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
+                                     @click="clusterMeasure=head">
                                   <span v-show="head !== clusterMeasure">{{ head }}</span>
                                   <b style="color: cornflowerblue; text-decoration: underline"
                                      v-show="head===clusterMeasure">{{
@@ -338,8 +339,8 @@
                             </thead>
                             <tbody>
                             <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
-                              <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
-                                <div style="white-space: nowrap">
+                              <td :style="{margin: mobile ? '1px':'4px'}"><b style="color: rgba(0,0,0,0.6)">
+                                <div :style="{'white-space': mobile ? '' : 'nowrap'}">
                                   {{ metric }}
                                   <v-tooltip right>
                                     <template v-slot:activator="{attrs, on}">
@@ -349,7 +350,8 @@
                                   </v-tooltip>
                                 </div>
                               </b></td>
-                              <td style="margin:4px" v-for="head in Object.keys(result.p_values.values)"
+                              <td :style="{margin: mobile ? '1px':'4px', padding: mobile ? '0 1px' :''}"
+                                  v-for="head in Object.keys(result.p_values.values)"
                                   :key="metric+head">
                                 <b style="color: cornflowerblue; " v-show="head===clusterMeasure">{{
                                     formatValue(result.p_values.values[head][metric])
@@ -432,7 +434,8 @@
                               </th>
                               <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
                                   :key="'p_'+head">
-                                <div style="white-space: nowrap; cursor: pointer" @click="clusterMeasure=head">
+                                <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
+                                     @click="clusterMeasure=head">
                                   <span v-show="head !== clusterMeasure">{{ head }}</span>
                                   <b style="color: cornflowerblue; text-decoration: underline"
                                      v-show="head===clusterMeasure">{{
@@ -462,8 +465,8 @@
                             <tbody>
                             <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])"
                                 :key="metric">
-                              <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
-                                <div style="white-space: nowrap">
+                              <td :style="{margin: mobile ? '1px':'4px'}"><b style="color: rgba(0,0,0,0.6)">
+                                <div :style="{'white-space': mobile ? '' : 'nowrap'}">
                                   {{ metric }}
                                   <v-tooltip right>
                                     <template v-slot:activator="{attrs, on}">
@@ -473,7 +476,8 @@
                                   </v-tooltip>
                                 </div>
                               </b></td>
-                              <td style="margin:4px" v-for="head in Object.keys(result.input_values.values)"
+                              <td :style="{margin: mobile ? '1px':'4px', padding: mobile ? '0 1px' :''}"
+                                  v-for="head in Object.keys(result.input_values.values)"
                                   :key="metric+head">
                                 <b style="color: cornflowerblue; " v-show="head===clusterMeasure">{{
                                     formatValue(result.input_values.values[head][metric])
@@ -500,72 +504,95 @@
             <template v-if="plots">
               <div v-if="isMobile()">
                 <template v-if="mode!=='cluster'">
-                  <div style="width: 100%; display: flex; justify-content: center">
-                    <v-img :src="getPlot('p-value')" width="80%" contain
-                           style="margin:32px; position: relative">
-                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))">
-                        <v-icon small>fas fa-download</v-icon>
-                      </v-btn>
-                    </v-img>
-                  </div>
-                  <div style="width: 100%; display: flex; justify-content: center">
-                    <v-img :src="getPlot('mappability')" width="80%" contain
-                           style="margin:32px; position: relative">
-                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('mappability'))">
-                        <v-icon small>fas fa-download</v-icon>
-                      </v-btn>
-                    </v-img>
-                  </div>
+                  <v-container>
+                    <v-col>
+                      <v-row justify="center">
+<!--                        <div style="width: 100%; display: flex; justify-content: center">-->
+                          <v-img :src="getPlot('p-value')" contain
+                                 style="position: relative">
+                            <v-btn icon small style="position: absolute; right: 0"
+                                   @click="downloadFile(getPlot('p-value'))">
+                              <v-icon small>fas fa-download</v-icon>
+                            </v-btn>
+                          </v-img>
+                          <!--                      </div>-->
+                      </v-row>
+                      <v-row>
+<!--                        <div style="width: 100%; display: flex; justify-content: center">-->
+                          <v-img :src="getPlot('mappability')" contain
+                                 style="position: relative">
+                            <v-btn icon small style="position: absolute; right: 0"
+                                   @click="downloadFile(getPlot('mappability'))">
+                              <v-icon small>fas fa-download</v-icon>
+                            </v-btn>
+                          </v-img>
+<!--                        </div>-->
+                      </v-row>
+                    </v-col>
+                  </v-container>
                 </template>
                 <template v-else>
-                  <div style="width: 90%; display: flex; justify-content: center">
-                    <v-tabs vertical>
-                      <v-tab @click="clusterMeasure='DI-based'">
-                        DI-based
-                        <v-tooltip right>
-                          <template v-slot:activator="{attrs, on}">
-                            <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips['DI-based'] }}</div>
-                        </v-tooltip>
-                      </v-tab>
-                      <v-tab @click="clusterMeasure='SS-based'">
-                        SS-based
-                        <v-tooltip right>
-                          <template v-slot:activator="{attrs, on}">
-                            <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips['SS-based'] }}</div>
-                        </v-tooltip>
-                      </v-tab>
-                      <v-tab @click="clusterMeasure='DBI-based'">
-                        DBI-based
-                        <v-tooltip right>
-                          <template v-slot:activator="{attrs, on}">
-                            <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips['DBI-based'] }}</div>
-                        </v-tooltip>
-                      </v-tab>
-                    </v-tabs>
-                    <v-img :src="getPlot(clusterMeasure+'_p-value')" width="80%" contain
-                           style="position: relative">
-                    </v-img>
-                    <v-btn icon small style="position: absolute; right: 0"
-                           @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
-                      <v-icon small>fas fa-download</v-icon>
-                    </v-btn>
-                  </div>
-                  <div style="width: 100%; display: flex; justify-content: center">
-                    <v-img :src="getPlot('mappability')" width="80%" contain
-                           style="margin:32px; position: relative">
-                      <v-btn icon small style="position: absolute; right: 0"
-                             @click="downloadFile(getPlot('mappability'))">
-                        <v-icon small>fas fa-download</v-icon>
-                      </v-btn>
-                    </v-img>
-
-                  </div>
+                  <v-container>
+                    <v-col>
+                      <v-row justify="center">
+                        <v-container>
+                          <v-col>
+                            <v-row>
+                              <v-tabs vertical>
+                                <v-tab @click="clusterMeasure='DI-based'">
+                                  DI-based
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips['DI-based'] }}</div>
+                                  </v-tooltip>
+                                </v-tab>
+                                <v-tab @click="clusterMeasure='SS-based'">
+                                  SS-based
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips['SS-based'] }}</div>
+                                  </v-tooltip>
+                                </v-tab>
+                                <v-tab @click="clusterMeasure='DBI-based'">
+                                  DBI-based
+                                  <v-tooltip right>
+                                    <template v-slot:activator="{attrs, on}">
+                                      <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                                    </template>
+                                    <div style="width:200px; text-align: justify">{{ tooltips['DBI-based'] }}</div>
+                                  </v-tooltip>
+                                </v-tab>
+                              </v-tabs>
+                            </v-row>
+                          </v-col>
+                          <v-col>
+                            <v-row>
+                              <v-img :src="getPlot(clusterMeasure+'_p-value')" contain
+                                     style="position: relative">
+                                <v-btn icon small style="position: absolute; right: 0"
+                                       @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
+                                  <v-icon small>fas fa-download</v-icon>
+                                </v-btn>
+                              </v-img>
+                            </v-row>
+                          </v-col>
+                        </v-container>
+                      </v-row>
+                      <v-row justify="center">
+                        <v-img :src="getPlot('mappability')" contain
+                               style="margin:32px; position: relative">
+                          <v-btn icon small style="position: absolute; right: 0"
+                                 @click="downloadFile(getPlot('mappability'))">
+                            <v-icon small>fas fa-download</v-icon>
+                          </v-btn>
+                        </v-img>
+                      </v-row>
+                    </v-col>
+                  </v-container>
                 </template>
               </div>
               <div v-else>
@@ -581,7 +608,8 @@
                   <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
                     <v-img :src="getPlot('mappability')" height="35vh" contain
                            style="margin:32px; position: relative">
-                      <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('mappability'))">
+                      <v-btn icon small style="position: absolute; right: 0"
+                             @click="downloadFile(getPlot('mappability'))">
                         <v-icon small>fas fa-download</v-icon>
                       </v-btn>
                     </v-img>
@@ -802,7 +830,8 @@ export default {
       if (typeof value === "number") {
         let s = value + ""
         let idx = s.indexOf(".")
-        return s.length > 8 ? s.substring(0, Math.max(8, idx)) : s
+        let decimals = this.isMobile() ? 4 : 6;
+        return s.length > (decimals + 2) ? s.substring(0, Math.max(decimals + 2, idx)) : s
       }
       return value
     },
