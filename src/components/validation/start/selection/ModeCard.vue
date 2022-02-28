@@ -23,10 +23,10 @@
     <div v-if="!mobile" v-show="hover"
          style="position: absolute;  display:flex; background-color: rgba(255,255,255,0.6); width: 100%; height: 100%; top: 0; left: 0">
       <div style="align-self: center; margin-top: auto; margin-bottom: auto; ">
-        <v-card-title style="color:#484848">{{title}}</v-card-title>
-        <v-card-subtitle v-show="hover" :style="{'font-size': '1rem','line-height': '1rem'}">{{text}}
+        <v-card-title style="color:#484848; margin-bottom: 16px">{{title}}</v-card-title>
+        <v-card-subtitle style="font-size: 1rem; line-height: 1rem; margin-bottom: 16px}">{{text}}
         </v-card-subtitle>
-        <v-card-actions v-show="hover">
+        <v-card-actions>
           <div style="width: 100%; display: flex; justify-content: center">
             <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})">
               Validate

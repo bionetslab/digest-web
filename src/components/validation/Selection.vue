@@ -6,7 +6,7 @@
           <ModeCard :image="getCardImage('set','gene')" type="gene" mode="set"
                     text="Validate gene sets w.r.t. functional coherence." title="Gene"
                     @startValidationEvent="validationEvent" style="padding-top:1.22%; padding-bottom: 1.22%"></ModeCard>
-          <v-divider vertical style="z-index: 99"></v-divider>
+          <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
           <ModeCard :image="getCardImage('set','disease')" type="disease" mode="set"
                     style="padding-top:1.2%; padding-bottom: 1.2%"
                     text="Validate disease sets w.r.t. genetic coherence." title="Disease"
@@ -21,7 +21,7 @@
           <ModeCard :image="getCardImage('cluster','gene')" type="gene" mode="cluster"
                     text="Validate gene clustering w.r.t. functional coherence." title="Gene"
                     @startValidationEvent="validationEvent"></ModeCard>
-          <v-divider vertical style="z-index: 99"></v-divider>
+          <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
           <ModeCard :image="getCardImage('cluster','disease')" type="disease" mode="cluster"
                     text="Validate disease clustering w.r.t. genetic coherence." title="Disease"
                     @startValidationEvent="validationEvent"></ModeCard>
