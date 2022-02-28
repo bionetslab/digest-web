@@ -1,41 +1,41 @@
 <template>
   <div>
-    <v-card :style="{'background-color': '#d4e6f5', width: '100%', padding: isMobile() ? '16px' :'32px', display: 'flex'}">
+    <v-card :style="{'background-color': '#d4e6f5', width: '100%', padding: mobile ? '16px' :'32px', display: 'flex'}">
       <div :style="{width:  '32%',  'justify-content': 'flex-start'}">
         <v-img :src="getLogoPath()" width="100%"></v-img>
       </div>
       <div style="width: 60%; justify-content: flex-end; margin-left: auto; margin-right: 0">
         <div style=" height: 100%;display:flex;">
-          <p :style="{'font-size': isMobile() ? '1rem' : '1.3rem', color: '#1c388a', 'align-self': 'flex-end', 'margin-top': 'auto', 'margin-bottom': 0}">In silico validation of sets and clusterings of genes or diseases.</p>
+          <p :style="{'font-size': mobile ? '1rem' : '1.3rem', color: '#1c388a', 'align-self': 'flex-end', 'margin-top': 'auto', 'margin-bottom': 0}">In silico validation of sets and clusterings of genes or diseases.</p>
         </div>
       </div>
 
     </v-card>
     <div style="display: flex; justify-content: center; margin-top: 32px;" v-if="step===0">
-      <v-subheader :style="{'font-size': isMobile() ? '1.4rem' : '1.5rem'}">How does DIGEST work?
+      <v-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem'}">How does DIGEST work?
       </v-subheader>
     </div>
     <div
         style="width: 90%;text-align: justify; display: flex; justify-self: center; margin: 16px auto 16px;color: #484848">
       <template v-if="step===0">
         <div style="display: flex; justify-content: center; width: 100%">
-          <v-img :src="getIllustration()" :max-width="isMobile() ? '90%' : '70%'"/>
+          <v-img :src="getIllustration()" :max-width="mobile ? '90%' : '70%'"/>
         </div>
       </template>
     </div>
     <div v-if="step===0">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center; margin-top:32px">
-        <v-subheader :style="{'font-size': isMobile() ? '1.4rem' : '1.5rem'}">Start validating
+        <v-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem'}">Start validating
           now!
         </v-subheader>
       </div>
     </div>
-    <Selection v-if="step===0" @startValidationEvent="startValidation"></Selection>
-    <Configuration v-else-if="step===1" @resetEvent="resetValidation" :mode="params.mode" :type="params.type"
+    <Selection v-if="step===0" @startValidationEvent="startValidation" :mobile="mobile"></Selection>
+    <Configuration v-else-if="step===1" @resetEvent="resetValidation" :mode="params.mode" :mobile="mobile" :type="params.type"
                    :id-map="idMap"
                    @validationEvent="validate"></Configuration>
-    <Results v-else-if="step===2" @resetEvent="resetValidation" :params="params" :id-map="idMap"></Results>
+    <Results v-else-if="step===2" @resetEvent="resetValidation" :params="params" :id-map="idMap" :mobile="mobile"></Results>
   </div>
 </template>
 
@@ -59,6 +59,7 @@ export default {
         type: undefined,
       },
       result: undefined,
+      mobile: this.isMobile(),
       idMap: {
         "gene": [
           {text: "Entrez ID", value: "entrez"},

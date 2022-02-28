@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar elevation="4" dense :style="{'padding-left': isMobile()? '5vw': '15vw', 'padding-right': isMobile()? '5vw':'15vw', position: 'fixed', 'z-index': 1000, width: '100%'}">
-          <v-toolbar-title style="cursor:pointer;" @click="$router.push('/'); $router.go()">DIGEST</v-toolbar-title>
-          <v-spacer></v-spacer>
+      <v-toolbar elevation="4" dense :style="{'padding-left': isMobile()? '0': '15vw', 'padding-right': isMobile()? '5vw':'15vw', position: 'fixed', 'z-index': 1000, width: '100%'}">
+          <v-toolbar-title v-if="!isMobile()" style="cursor:pointer;" @click="$router.push('/'); $router.go()">DIGEST</v-toolbar-title>
+          <v-spacer v-if="!isMobile()"></v-spacer>
           <v-btn depressed plain @click="checkRouting()">
             <router-link style="text-decoration: none" to="/">Home</router-link>
           </v-btn>
@@ -29,7 +29,9 @@
 export default {
   name: 'App',
 
-  components: {},
+  components: {
+
+  },
   watch:{
     '$route' (to, from){
       console.log(to)
