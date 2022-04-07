@@ -133,7 +133,7 @@
                       </div>
                     </div>
                     <div style="display:flex; justify-content: center; width: 100%" v-if="input.reference_id">
-                      <div >
+                      <div>
                         <b>Reference{{ typeof input.reference === 'string' ? '' : 's' }}</b>
                         <v-simple-table dense style="max-height: 300px; overflow-y: scroll;">
                           <template v-slot:default>
@@ -649,31 +649,14 @@
                           <v-col>
                             <v-row>
                               <v-tabs vertical v-model="clusterMeasureIdx">
-                                <v-tab @click="clusterMeasure='DI-based'">
-                                  DI-based
+                                <v-tab v-for="measure in measureMap['clustering']" @click="clusterMeasure=measure;"
+                                       :key="measure+'_p-value_plots'">
+                                  {{ measure }}
                                   <v-tooltip right>
                                     <template v-slot:activator="{attrs, on}">
                                       <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                                     </template>
-                                    <div style="width:200px; text-align: justify">{{ tooltips['DI-based'] }}</div>
-                                  </v-tooltip>
-                                </v-tab>
-                                <v-tab @click="clusterMeasure='SS-based'">
-                                  SS-based
-                                  <v-tooltip right>
-                                    <template v-slot:activator="{attrs, on}">
-                                      <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                                    </template>
-                                    <div style="width:200px; text-align: justify">{{ tooltips['SS-based'] }}</div>
-                                  </v-tooltip>
-                                </v-tab>
-                                <v-tab @click="clusterMeasure='DBI-based'">
-                                  DBI-based
-                                  <v-tooltip right>
-                                    <template v-slot:activator="{attrs, on}">
-                                      <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                                    </template>
-                                    <div style="width:200px; text-align: justify">{{ tooltips['DBI-based'] }}</div>
+                                    <div style="width:200px; text-align: justify">{{ tooltips[measure] }}</div>
                                   </v-tooltip>
                                 </v-tab>
                               </v-tabs>
@@ -729,31 +712,14 @@
                   <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
                     <div style="display: flex; margin-top:32px;">
                       <v-tabs vertical v-model="clusterMeasureIdx">
-                        <v-tab @click="clusterMeasure='DI-based';">
-                          DI-based
+                        <v-tab v-for="measure in measureMap['clustering']" @click="clusterMeasure=measure;"
+                               :key="measure+'_p-value_plots'">
+                          {{ measure }}
                           <v-tooltip right>
                             <template v-slot:activator="{attrs, on}">
                               <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                             </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips['DI-based'] }}</div>
-                          </v-tooltip>
-                        </v-tab>
-                        <v-tab @click="clusterMeasure='SS-based'">
-                          SS-based
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips['SS-based'] }}</div>
-                          </v-tooltip>
-                        </v-tab>
-                        <v-tab @click="clusterMeasure='DBI-based'">
-                          DBI-based
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips['DBI-based'] }}</div>
+                            <div style="width:200px; text-align: justify">{{ tooltips[measure] }}</div>
                           </v-tooltip>
                         </v-tab>
                       </v-tabs>
@@ -775,6 +741,40 @@
                       </v-btn>
                     </v-img>
                   </div>
+                </div>
+              </div>
+              <div id="plots2" style="display: flex; justify-content: center">
+                <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
+                  <div style="display: flex; margin-top:32px;">
+                    <v-tabs vertical>
+                      <v-tab v-for="measure in termMap[mode]" @click="distributionMeasure=measure;"
+                             :key="measure+'_distribution_plots'">
+                        {{ measure }}
+                        <v-tooltip right>
+                          <template v-slot:activator="{attrs, on}">
+                            <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                          </template>
+                          <div style="width:200px; text-align: justify">{{ tooltips[measure] }}</div>
+                        </v-tooltip>
+                      </v-tab>
+                    </v-tabs>
+                    <v-img :src="getPlot(getDistPlotName())" height="35vh" contain
+                           style="margin-left:32px; margin-bottom:32px; position: relative">
+                      <v-btn icon small style="position: absolute; right: 0"
+                             @click="downloadFile(getDistPlotName())">
+                        <v-icon small>fas fa-download</v-icon>
+                      </v-btn>
+                    </v-img>
+                  </div>
+                </div>
+                <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
+                  <v-img :src="getPlot('sankey')" height="35vh" contain
+                         style="margin:32px; position: relative">
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot('sankey'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </v-img>
                 </div>
               </div>
             </template>
@@ -817,6 +817,14 @@ export default {
       input: undefined,
       clusterMeasure: 'DI-based',
       clusterMeasureIdx: 0,
+      measureMap: {
+        'clustering': ['DI-based', 'SS-based', 'DBI-based'],
+      },
+      termMap: {
+        'cluster': ['GO.BP', 'GO.CC', 'GO.MF', 'KEGG'],
+        'set': ['KEGG', 'JI-based', 'OC-based']
+      },
+      distributionMeasure: "",
       tooltips: {
         'DI-based': "Dunn Index: ratio of the cluster with the lowest density compared to the two clusters that are closest to each other.",
         'SS-based': "Silhouette Score: measures how well an observation is clustered and it estimates the average distance between clusters.",
@@ -841,6 +849,7 @@ export default {
     } else {
       this.execute()
     }
+    this.distributionMeasure = this.termMap[this.mode][0]
   },
 
   methods: {
@@ -909,6 +918,12 @@ export default {
     },
     isMobile: function () {
       return this.mobile
+    },
+
+    getDistPlotName: function () {
+      if (this.mode === "cluster")
+        return this.clusterMeasure + "-" + this.distributionMeasure + "_distribution"
+      return this.distributionMeasure + "_distribution"
     },
     download: function (name, content) {
       let dl = document.createElement('a')
@@ -995,7 +1010,10 @@ export default {
     },
 
     getPlot: function (name) {
-      return this.plots.filter(plot => plot.includes(name))[0]
+      let url = this.plots.filter(plot => plot.includes(name))[0]
+      if (url)
+        return url
+      return "https://www.schulz-grafik.de/wp-content/uploads/2018/03/placeholder.png"
     },
 
     execute: function () {

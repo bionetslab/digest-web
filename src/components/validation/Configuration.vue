@@ -563,7 +563,7 @@
           <v-select label="Background model"
                     :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels"
                     v-model="backgroundModel"
-                    style="max-width: 260px"
+                    style="max-width: 360px"
                     outlined dense filled>
             <template v-slot:append-outer>
               <v-tooltip right>
@@ -654,7 +654,7 @@
           <v-select label="Background model"
                     :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels"
                     v-model="backgroundModel"
-                    :style="{'justify-self': 'flex-end', 'margin-right' :mode==='set' ? 0: 'auto', 'margin-left': 'auto', 'max-width': '220px'}
+                    :style="{'justify-self': 'flex-end', 'margin-right' :mode==='set' ? 0: 'auto', 'margin-left': 'auto', 'max-width': '260px'}
                  " outlined dense filled>
             <template v-slot:append-outer>
               <v-tooltip right>
