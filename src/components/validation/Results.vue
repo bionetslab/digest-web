@@ -65,51 +65,111 @@
                         </template>
                       </v-simple-table>
                     </div>
+                    <div v-if="type==='gene'">
+                      <div>
+                        <v-tooltip right>
+                          <template v-slot:activator="{on, attrs}">
+                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                              <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">Functional
+                                enrichment (all)</a>
+                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                            </v-chip>
+                          </template>
+                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                            target
+                            genes in g:Profiler.
+                          </div>
+                        </v-tooltip>
+                      </div>
+                      <div v-for="cluster in getClusterNames(input.target)"
+                           :key="cluster+'_gprofiler'">
+                        <v-tooltip right>
+                          <template v-slot:activator="{on, attrs}">
+                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                              <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
+                                 target="_blank">Functional
+                                enrichment ({{ cluster }})</a>
+                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                            </v-chip>
+                          </template>
+                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                            {{ cluster }} cluster
+                            genes in g:Profiler.
+                          </div>
+                        </v-tooltip>
+                      </div>
+                    </div>
                   </div>
                   <div v-else>
-                    <!--                    <div style="display:flex; justify-content: center; width: 100%">-->
-                    <div style=" margin:16px">
-                      <b>Targets</b>
-                      <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
-                        <template v-slot:default>
-                          <thead>
-                          <tr>
-                            <th>{{ input.target_id[0].toUpperCase() + input.target_id.substring(1) }}</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr v-for="tar in input.target" :key="'set'+tar">
-                            <td style="margin:4px">{{ tar }}</td>
-                          </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </div>
-                    <div style=" margin:16px; margin-left:64px" v-if="input.reference_id">
-                      <b>Reference{{ typeof input.reference === 'string' ? '' : 's' }}</b>
-                      <v-simple-table dense style="max-height: 300px; overflow-y: scroll;">
-                        <template v-slot:default>
-                          <thead>
-                          <tr>
-                            <th>{{ input.reference_id }}</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <template v-if="typeof input.reference !== 'string'">
-                            <tr v-for="ref in input.reference" :key="'ref'+ref">
-                              <td style="margin:4px">{{ ref }}</td>
-                            </tr>
-                          </template>
-                          <template v-else>
+                    <div style="display:flex; justify-content: center; width: 100%">
+                      <div style=" margin:16px">
+                        <b>Targets</b>
+                        <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+                          <template v-slot:default>
+                            <thead>
                             <tr>
-                              <td style="margin:4px">{{ input.reference }}</td>
+                              <th>{{ input.target_id[0].toUpperCase() + input.target_id.substring(1) }}</th>
                             </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="tar in input.target" :key="'set'+tar">
+                              <td style="margin:4px">{{ tar }}</td>
+                            </tr>
+                            </tbody>
                           </template>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
+                        </v-simple-table>
+                        <v-tooltip right v-if="type==='gene'">
+                          <template v-slot:activator="{on, attrs}">
+                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                              <a :href="getGProfilerUrl(input.target)" target="_blank">Functional
+                                enrichment</a>
+                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                            </v-chip>
+                          </template>
+                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                            genes in g:Profiler.
+                          </div>
+                        </v-tooltip>
+                      </div>
                     </div>
-                    <!--                    </div>-->
+                    <div style="display:flex; justify-content: center; width: 100%" v-if="input.reference_id">
+                      <div >
+                        <b>Reference{{ typeof input.reference === 'string' ? '' : 's' }}</b>
+                        <v-simple-table dense style="max-height: 300px; overflow-y: scroll;">
+                          <template v-slot:default>
+                            <thead>
+                            <tr>
+                              <th>{{ input.reference_id }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <template v-if="typeof input.reference !== 'string'">
+                              <tr v-for="ref in input.reference" :key="'ref'+ref">
+                                <td style="margin:4px">{{ ref }}</td>
+                              </tr>
+                            </template>
+                            <template v-else>
+                              <tr>
+                                <td style="margin:4px">{{ input.reference }}</td>
+                              </tr>
+                            </template>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                        <v-tooltip right v-if="type==='gene'">
+                          <template v-slot:activator="{on, attrs}">
+                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                              <a :href="getGProfilerUrl(input.reference)" target="_blank">Functional
+                                enrichment</a>
+                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                            </v-chip>
+                          </template>
+                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                            genes in g:Profiler.
+                          </div>
+                        </v-tooltip>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -159,6 +219,40 @@
                             </tbody>
                           </template>
                         </v-simple-table>
+                        <div v-if="type==='gene'">
+                          <div>
+                            <v-tooltip right>
+                              <template v-slot:activator="{on, attrs}">
+                                <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                                  <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">Functional
+                                    enrichment (all)</a>
+                                  <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                                </v-chip>
+                              </template>
+                              <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                                target
+                                genes in g:Profiler.
+                              </div>
+                            </v-tooltip>
+                          </div>
+                          <div v-for="cluster in getClusterNames(input.target)"
+                               :key="cluster+'_gprofiler'">
+                            <v-tooltip right>
+                              <template v-slot:activator="{on, attrs}">
+                                <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                                  <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
+                                     target="_blank">Functional
+                                    enrichment ({{ cluster }})</a>
+                                  <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                                </v-chip>
+                              </template>
+                              <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                                {{ cluster }} cluster
+                                genes in g:Profiler.
+                              </div>
+                            </v-tooltip>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div v-else style="display: flex">
@@ -178,6 +272,18 @@
                             </tbody>
                           </template>
                         </v-simple-table>
+                        <v-tooltip right>
+                          <template v-slot:activator="{on, attrs}" v-if="type==='gene'">
+                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                              <a :href="getGProfilerUrl(input.target, input.target_id)" target="_blank">Functional
+                                enrichment</a>
+                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                            </v-chip>
+                          </template>
+                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                            genes in g:Profiler.
+                          </div>
+                        </v-tooltip>
                       </div>
                       <div style=" margin:16px; margin-left:64px" v-if="input.reference_id">
                         <b>Reference{{ typeof input.reference === 'string' ? '' : 's' }}</b>
@@ -202,6 +308,18 @@
                             </tbody>
                           </template>
                         </v-simple-table>
+                        <v-tooltip right>
+                          <template v-slot:activator="{on, attrs}" v-if="getIDType(input.reference_id)==='gene'">
+                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
+                              <a :href="getGProfilerUrl(input.reference, input.reference_id)" target="_blank">Functional
+                                enrichment</a>
+                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                            </v-chip>
+                          </template>
+                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                            genes in g:Profiler.
+                          </div>
+                        </v-tooltip>
                       </div>
                     </div>
                   </div>
@@ -237,6 +355,7 @@
               </div>
             </div>
           </v-tab-item>
+
           <v-tab-item style="width: 100%">
             <div style="display:flex">
               <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular results
@@ -319,7 +438,7 @@
                               <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
                                   :key="'p_'+head">
                                 <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
-                                     @click="clusterMeasure=head">
+                                     @click="clusterMeasure=head; clusterMeasureIdx=Object.keys(result.input_values.values).indexOf(head)">
                                   <span v-show="head !== clusterMeasure">{{ head }}</span>
                                   <b style="color: cornflowerblue; text-decoration: underline"
                                      v-show="head===clusterMeasure">{{
@@ -435,7 +554,7 @@
                               <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
                                   :key="'p_'+head">
                                 <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
-                                     @click="clusterMeasure=head">
+                                     @click="clusterMeasure=head; clusterMeasureIdx=Object.keys(result.input_values.values).indexOf(head)">
                                   <span v-show="head !== clusterMeasure">{{ head }}</span>
                                   <b style="color: cornflowerblue; text-decoration: underline"
                                      v-show="head===clusterMeasure">{{
@@ -450,15 +569,6 @@
                                     <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
                                   </v-tooltip>
                                 </div>
-                                <!--                                <div style="white-space: nowrap">-->
-                                <!--                                  {{ head }}-->
-                                <!--                                  <v-tooltip right>-->
-                                <!--                                    <template v-slot:activator="{attrs, on}">-->
-                                <!--                                      <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
-                                <!--                                    </template>-->
-                                <!--                                    <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>-->
-                                <!--                                  </v-tooltip>-->
-                                <!--                                </div>-->
                               </th>
                             </tr>
                             </thead>
@@ -507,26 +617,26 @@
                   <v-container>
                     <v-col>
                       <v-row justify="center">
-<!--                        <div style="width: 100%; display: flex; justify-content: center">-->
-                          <v-img :src="getPlot('p-value')" contain
-                                 style="position: relative">
-                            <v-btn icon small style="position: absolute; right: 0"
-                                   @click="downloadFile(getPlot('p-value'))">
-                              <v-icon small>fas fa-download</v-icon>
-                            </v-btn>
-                          </v-img>
-                          <!--                      </div>-->
+                        <!--                        <div style="width: 100%; display: flex; justify-content: center">-->
+                        <v-img :src="getPlot('p-value')" contain
+                               style="position: relative">
+                          <v-btn icon small style="position: absolute; right: 0"
+                                 @click="downloadFile(getPlot('p-value'))">
+                            <v-icon small>fas fa-download</v-icon>
+                          </v-btn>
+                        </v-img>
+                        <!--                      </div>-->
                       </v-row>
                       <v-row>
-<!--                        <div style="width: 100%; display: flex; justify-content: center">-->
-                          <v-img :src="getPlot('mappability')" contain
-                                 style="position: relative">
-                            <v-btn icon small style="position: absolute; right: 0"
-                                   @click="downloadFile(getPlot('mappability'))">
-                              <v-icon small>fas fa-download</v-icon>
-                            </v-btn>
-                          </v-img>
-<!--                        </div>-->
+                        <!--                        <div style="width: 100%; display: flex; justify-content: center">-->
+                        <v-img :src="getPlot('mappability')" contain
+                               style="position: relative">
+                          <v-btn icon small style="position: absolute; right: 0"
+                                 @click="downloadFile(getPlot('mappability'))">
+                            <v-icon small>fas fa-download</v-icon>
+                          </v-btn>
+                        </v-img>
+                        <!--                        </div>-->
                       </v-row>
                     </v-col>
                   </v-container>
@@ -538,7 +648,7 @@
                         <v-container>
                           <v-col>
                             <v-row>
-                              <v-tabs vertical>
+                              <v-tabs vertical v-model="clusterMeasureIdx">
                                 <v-tab @click="clusterMeasure='DI-based'">
                                   DI-based
                                   <v-tooltip right>
@@ -618,8 +728,8 @@
                 <div v-else style="display: flex">
                   <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
                     <div style="display: flex; margin-top:32px;">
-                      <v-tabs vertical>
-                        <v-tab @click="clusterMeasure='DI-based'">
+                      <v-tabs vertical v-model="clusterMeasureIdx">
+                        <v-tab @click="clusterMeasure='DI-based';">
                           DI-based
                           <v-tooltip right>
                             <template v-slot:activator="{attrs, on}">
@@ -706,6 +816,7 @@ export default {
       progress: undefined,
       input: undefined,
       clusterMeasure: 'DI-based',
+      clusterMeasureIdx: 0,
       tooltips: {
         'DI-based': "Dunn Index: ratio of the cluster with the lowest density compared to the two clusters that are closest to each other.",
         'SS-based': "Silhouette Score: measures how well an observation is clustered and it estimates the average distance between clusters.",
@@ -748,6 +859,34 @@ export default {
     downloadFile: function (name) {
       window.open(name)
     },
+    printVar: function (value) {
+      console.log(value)
+    },
+    getClusterNames: function (clustering) {
+      const uniq = []
+      clustering.map(e => e.cluster).forEach(e => {
+        if (uniq.indexOf(e) === -1)
+          uniq.push(e)
+      })
+      return uniq
+    },
+
+    getGProfilerUrl: function (list) {
+      const queryString = list.join('%0A');
+      const url = 'http://biit.cs.ut.ee/gprofiler/gost?' +
+          'organism=hsapiens&' +
+          `query=${queryString}&` +
+          'ordered=false&' +
+          'all_results=false&' +
+          'no_iea=false&' +
+          'combined=false&' +
+          'measure_underrepresentation=false&' +
+          'domain_scope=annotated&' +
+          'significance_threshold_method=g_SCS&' +
+          'user_threshold=0.05&' +
+          'sources=GO:MF,GO:CC,GO:BP,KEGG,TF,REAC,MIRNA,HPA,CORUM,HP,WP'
+      return url
+    },
 
     loadPlots: function () {
       this.$http.getResultFiles(this.taskID).then(files => {
@@ -759,8 +898,9 @@ export default {
 
     getIDType: function (id) {
       for (let idType of Object.keys(this.idMap)) {
-        if (this.idMap[idType].includes(id))
+        if (this.idMap[idType].map(e => e.value).includes(id)) {
           return idType
+        }
       }
       return undefined
     },
