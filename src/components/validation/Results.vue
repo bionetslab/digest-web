@@ -65,40 +65,6 @@
                         </template>
                       </v-simple-table>
                     </div>
-                    <div v-if="type==='gene'">
-                      <div>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
-                              <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">Functional
-                                enrichment (all)</a>
-                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                            </v-chip>
-                          </template>
-                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all
-                            target
-                            genes in g:Profiler.
-                          </div>
-                        </v-tooltip>
-                      </div>
-                      <div v-for="cluster in getClusterNames(input.target)"
-                           :key="cluster+'_gprofiler'">
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
-                              <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
-                                 target="_blank">Functional
-                                enrichment ({{ cluster }})</a>
-                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                            </v-chip>
-                          </template>
-                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all
-                            {{ cluster }} cluster
-                            genes in g:Profiler.
-                          </div>
-                        </v-tooltip>
-                      </div>
-                    </div>
                   </div>
                   <div v-else>
                     <div style="display:flex; justify-content: center; width: 100%">
@@ -118,18 +84,6 @@
                             </tbody>
                           </template>
                         </v-simple-table>
-                        <v-tooltip right v-if="type==='gene'">
-                          <template v-slot:activator="{on, attrs}">
-                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
-                              <a :href="getGProfilerUrl(input.target)" target="_blank">Functional
-                                enrichment</a>
-                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                            </v-chip>
-                          </template>
-                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
-                            genes in g:Profiler.
-                          </div>
-                        </v-tooltip>
                       </div>
                     </div>
                     <div style="display:flex; justify-content: center; width: 100%" v-if="input.reference_id">
@@ -156,18 +110,6 @@
                             </tbody>
                           </template>
                         </v-simple-table>
-                        <v-tooltip right v-if="type==='gene'">
-                          <template v-slot:activator="{on, attrs}">
-                            <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
-                              <a :href="getGProfilerUrl(input.reference)" target="_blank">Functional
-                                enrichment</a>
-                              <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                            </v-chip>
-                          </template>
-                          <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
-                            genes in g:Profiler.
-                          </div>
-                        </v-tooltip>
                       </div>
                     </div>
                   </div>
@@ -219,40 +161,6 @@
                             </tbody>
                           </template>
                         </v-simple-table>
-                        <div v-if="type==='gene'">
-                          <div>
-                            <v-tooltip right>
-                              <template v-slot:activator="{on, attrs}">
-                                <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
-                                  <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">Functional
-                                    enrichment (all)</a>
-                                  <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                                </v-chip>
-                              </template>
-                              <div style="width: 200px; text-align: justify">Show the functional enrichment for all
-                                target
-                                genes in g:Profiler.
-                              </div>
-                            </v-tooltip>
-                          </div>
-                          <div v-for="cluster in getClusterNames(input.target)"
-                               :key="cluster+'_gprofiler'">
-                            <v-tooltip right>
-                              <template v-slot:activator="{on, attrs}">
-                                <v-chip outlined v-on="on" v-bind="attrs" small style="margin-top: 8px">
-                                  <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
-                                     target="_blank">Functional
-                                    enrichment ({{ cluster }})</a>
-                                  <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                                </v-chip>
-                              </template>
-                              <div style="width: 200px; text-align: justify">Show the functional enrichment for all
-                                {{ cluster }} cluster
-                                genes in g:Profiler.
-                              </div>
-                            </v-tooltip>
-                          </div>
-                        </div>
                       </div>
                     </div>
                     <div v-else style="display: flex">
@@ -353,6 +261,78 @@
                   Download Input
                 </v-btn>
               </div>
+              <div style="display:flex;">
+                <v-subheader style="justify-self: center; margin-left: auto; margin-top:32px; margin-right: auto">
+                  External resources
+                </v-subheader>
+              </div>
+              <v-container>
+                <v-row justify="center">
+                  <v-col :cols="3" style=" margin:16px" v-if="type==='gene'">
+                    <b>Functional enrichment (g:Profiler)</b>
+                    <v-container v-if="mode==='cluster'">
+                      <v-row justify="center">
+                        <v-col cols="12">
+                          <v-tooltip right>
+                            <template v-slot:activator="{on, attrs}">
+                              <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                                <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">All</a>
+                                <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                              </v-chip>
+                            </template>
+                            <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                              target
+                              genes in g:Profiler.
+                            </div>
+                          </v-tooltip>
+                          <v-tooltip right v-for="cluster in getClusterNames(input.target)"
+                                     :key="cluster+'_gprofiler'">
+                            <template v-slot:activator="{on, attrs}">
+                              <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                                <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
+                                   target="_blank">{{ cluster }}</a>
+                                <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                              </v-chip>
+                            </template>
+                            <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                              {{ cluster }} cluster
+                              genes in g:Profiler.
+                            </div>
+                          </v-tooltip>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                    <v-container v-else>
+                      <v-row justify="center">
+                        <v-col cols="12">
+                          <v-tooltip right>
+                            <template v-slot:activator="{on, attrs}">
+                              <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                                <a :href="getGProfilerUrl(input.target)" target="_blank">Targets</a>
+                                <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                              </v-chip>
+                            </template>
+                            <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                              genes in g:Profiler.
+                            </div>
+                          </v-tooltip>
+                          <v-tooltip right v-if="input.reference">
+                            <template v-slot:activator="{on, attrs}">
+                              <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                                <a :href="getGProfilerUrl(input.reference)" target="_blank">References</a>
+                                <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                              </v-chip>
+                            </template>
+                            <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                              genes in g:Profiler.
+                            </div>
+                          </v-tooltip>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-col>
+                </v-row>
+              </v-container>
             </div>
           </v-tab-item>
 
@@ -742,6 +722,9 @@
                     </v-img>
                   </div>
                 </div>
+              </div>
+              <div style="display: flex; justify-content: center">
+                <v-subheader>Extended summary figures</v-subheader>
               </div>
               <div id="plots2" style="display: flex; justify-content: center">
                 <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
