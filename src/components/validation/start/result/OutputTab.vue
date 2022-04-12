@@ -13,416 +13,330 @@
         <div>Download all files as .zip</div>
       </v-tooltip>
     </div>
-    <div :style="{display: isMobile() ? '':'flex'}">
-      <div
-          :style="{width: isMobile()?'100%':'50%', 'align-self': 'center', 'margin-top': 'auto', 'margin-bottom': 'auto', 'padding-top':'16px', 'padding-bottom': '16px'}">
-        <div style=" justify-content: center; display: flex">
+    <v-container>
+      <v-row justify="center" style="padding-top:16px; padding-bottom: 16px">
+        <v-col cols="12" lg="6" style="display: flex; justify-content: center">
           <div>
             <b>Empirical P-values</b>
-            <div v-if="mode!=='cluster'" style="display: flex">
-              <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                <template v-slot:default>
-                  <thead>
-                  <tr>
-                    <th>
-                      <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
-                             style="margin:4px">
-                        <v-icon right>fas fa-download</v-icon>
-                      </v-btn>
-                    </th>
-                    <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
-                        :key="'p_value-head'+head">
-                      <div style="white-space: nowrap">
-                        {{ head }}
-                        <v-tooltip right>
-                          <template v-slot:activator="{attrs, on}">
-                            <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
-                        </v-tooltip>
-                      </div>
-                    </th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
-                    <td style="margin:4px">
-                      <b style="color: rgba(0,0,0,0.6)">
-                        <div style="white-space: nowrap">
-                          {{ metric }}
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                          </v-tooltip>
-                        </div>
-                      </b>
-                    <td v-for="head in Object.keys(result.p_values.values)" :key="'p_value-'+head"
-                        style="margin:4px">{{ formatValue(result.p_values.values[head][metric]) }}
-                    </td>
-                  </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </div>
-            <div v-else>
-              <div>
-                <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                  <template v-slot:default>
-                    <thead>
-                    <tr>
-                      <th>
-                        <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
-                               style="margin:4px">
-                          <v-icon right>fas fa-download</v-icon>
-                        </v-btn>
-                      </th>
-                      <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
-                          :key="'p_'+head">
-                        <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
-                             @click="clusterMeasure=head; clusterMeasureIdx=Object.keys(result.input_values.values).indexOf(head)">
-                          <span v-show="head !== clusterMeasure">{{ head }}</span>
-                          <b style="color: cornflowerblue; text-decoration: underline"
-                             v-show="head===clusterMeasure">{{
-                              head
-                            }}</b>
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
-                                      v-bind="attrs" v-on="on">far fa-question-circle
-                              </v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
-                          </v-tooltip>
-                        </div>
-                      </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
-                      <td :style="{margin: mobile ? '1px':'4px'}"><b style="color: rgba(0,0,0,0.6)">
-                        <div :style="{'white-space': mobile ? '' : 'nowrap'}">
-                          {{ metric }}
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                          </v-tooltip>
-                        </div>
-                      </b></td>
-                      <td :style="{margin: mobile ? '1px':'4px', padding: mobile ? '0 1px' :''}"
-                          v-for="head in Object.keys(result.p_values.values)"
-                          :key="metric+head">
-                        <b style="color: cornflowerblue; " v-show="head===clusterMeasure">{{
-                            formatValue(result.p_values.values[head][metric])
-                          }}</b>
-                        <span v-show="head !== clusterMeasure">{{
-                            formatValue(result.p_values.values[head][metric])
-                          }}</span>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-          :style="{width: isMobile()? '100%' :'50%', 'align-self': 'center', 'margin-top': 'auto', 'margin-bottom': 'auto', 'padding-top':'16px', 'padding-bottom': '16px'}">
-        <div style=" justify-content: center; display: flex">
-          <div>
-            <b>{{ getScoreName() }}</b>
-            <div v-if="mode!=='cluster'" style="display: flex">
-              <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                <template v-slot:default>
-                  <thead>
-                  <tr>
-                    <th>
-                      <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
-                             style="margin:4px">
-                        <v-icon right>fas fa-download</v-icon>
-                      </v-btn>
-                    </th>
-                    <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
-                        :key="'input_'+head">
-                      <div style="white-space: nowrap">
-                        {{ head }}
-                        <v-tooltip right>
-                          <template v-slot:activator="{attrs, on}">
-                            <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
-                        </v-tooltip>
-                      </div>
-                    </th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric">
-                    <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
-                      <div style="white-space: nowrap">
+            <v-simple-table v-if="mode!=='cluster'">
+              <template v-slot:default>
+                <thead>
+                <tr>
+                  <th>
+                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
+                           style="margin:4px">
+                      <v-icon right>fas fa-download</v-icon>
+                    </v-btn>
+                  </th>
+                  <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
+                      :key="'p_value-head'+head">
+                    <div style="white-space: nowrap">
+                      {{ head }}
+                      <v-tooltip right>
+                        <template v-slot:activator="{attrs, on}">
+                          <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                        </template>
+                        <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
+                      </v-tooltip>
+                    </div>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric"
+                    @click="distributionMeasure=metric" style="cursor: pointer">
+                  <td style="margin:4px">
+                    <b style="color: rgba(0,0,0,0.6)">
+                      <div style="white-space: nowrap"
+                           :style="{color: distributionMeasure===metric ? 'cornflowerblue':''}">
                         {{ metric }}
                         <v-tooltip right>
                           <template v-slot:activator="{attrs, on}">
-                            <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                            <v-icon small v-bind="attrs" v-on="on" :color="distributionMeasure===metric ? 'primary':''">
+                              far fa-question-circle
+                            </v-icon>
                           </template>
                           <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
                         </v-tooltip>
                       </div>
                     </b>
-                    <td v-for="head in Object.keys(result.input_values.values)" :key="'input_value-'+head"
-                        style="margin:4px">{{ formatValue(result.input_values.values[head][metric]) }}
-                    </td>
-                  </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </div>
-            <div v-else>
-              <div style="display: flex">
-                <v-simple-table style="justify-self: flex-start; margin-right: auto; margin-left: auto">
-                  <template v-slot:default>
-                    <thead>
-                    <tr>
-                      <th>
-                        <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
-                               style="margin:4px">
-                          <v-icon right>fas fa-download</v-icon>
-                        </v-btn>
-                      </th>
-                      <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
-                          :key="'p_'+head">
-                        <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
-                             @click="clusterMeasure=head; clusterMeasureIdx=Object.keys(result.input_values.values).indexOf(head)">
-                          <span v-show="head !== clusterMeasure">{{ head }}</span>
-                          <b style="color: cornflowerblue; text-decoration: underline"
-                             v-show="head===clusterMeasure">{{
-                              head
-                            }}</b>
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
-                                      v-bind="attrs" v-on="on">far fa-question-circle
-                              </v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
-                          </v-tooltip>
-                        </div>
-                      </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])"
-                        :key="metric">
-                      <td :style="{margin: mobile ? '1px':'4px'}"><b style="color: rgba(0,0,0,0.6)">
-                        <div :style="{'white-space': mobile ? '' : 'nowrap'}">
-                          {{ metric }}
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
-                          </v-tooltip>
-                        </div>
-                      </b></td>
-                      <td :style="{margin: mobile ? '1px':'4px', padding: mobile ? '0 1px' :''}"
-                          v-for="head in Object.keys(result.input_values.values)"
-                          :key="metric+head">
-                        <b style="color: cornflowerblue; " v-show="head===clusterMeasure">{{
-                            formatValue(result.input_values.values[head][metric])
-                          }}</b>
-                        <span v-show="head !== clusterMeasure">{{
-                            formatValue(result.input_values.values[head][metric])
-                          }}</span>
-                        <!--                                {{ formatValue(result.input_values.values[head][metric]) }}-->
-                      </td>
-                    </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </div>
-            </div>
+                  <td v-for="head in Object.keys(result.p_values.values)" :key="'p_value-'+head"
+                      style="margin:4px">
+                  <span v-show="distributionMeasure!==metric">{{formatValue(result.p_values.values[head][metric]) }}</span>
+                  <b v-show="distributionMeasure === metric" style="color: cornflowerblue">{{formatValue(result.p_values.values[head][metric]) }}</b>
+                  </td>
+                </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+            <v-simple-table v-if="mode==='cluster'">
+              <template v-slot:default>
+                <thead>
+                <tr>
+                  <th>
+                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
+                           style="margin:4px">
+                      <v-icon right>fas fa-download</v-icon>
+                    </v-btn>
+                  </th>
+                  <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
+                      :key="'p_'+head">
+                    <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
+                         @click="clusterMeasure=head; clusterMeasureIdx=Object.keys(result.p_values.values).indexOf(head)">
+                      <span v-show="head !== clusterMeasure">{{ head }}</span>
+                      <b style="color: cornflowerblue; text-decoration: underline"
+                         v-show="head===clusterMeasure">{{
+                          head
+                        }}</b>
+                      <v-tooltip right>
+                        <template v-slot:activator="{attrs, on}">
+                          <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
+                                  v-bind="attrs" v-on="on">far fa-question-circle
+                          </v-icon>
+                        </template>
+                        <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
+                      </v-tooltip>
+                    </div>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="metric in Object.keys(Object.values(result.p_values.values)[0])" :key="metric">
+                  <td :style="{margin: mobile ? '1px':'4px'}" @click="distributionMeasure=metric">
+                    <b style="color: rgba(0,0,0,0.6); cursor: pointer">
+                      <div :style="{'white-space': mobile ? '' : 'nowrap'}">
+                        <b v-show="metric===distributionMeasure"
+                           style="color: cornflowerblue; text-decoration: underline">{{ metric }}</b>
+                        <span v-show="metric !== distributionMeasure">{{ metric }}</span>
+                        <v-tooltip right>
+                          <template v-slot:activator="{attrs, on}">
+                            <v-icon right small v-bind="attrs" v-on="on"
+                                    :color="metric===distributionMeasure? 'primary': ''">far fa-question-circle
+                            </v-icon>
+                          </template>
+                          <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                        </v-tooltip>
+                      </div>
+                    </b></td>
+                  <td :style="{margin: mobile ? '1px':'4px'}"
+                      v-for="head in Object.keys(result.p_values.values)"
+                      :key="metric+head" style="cursor: pointer"
+                      @click="distributionMeasure=metric; clusterMeasure=head;clusterMeasureIdx=Object.keys(result.input_values.values).indexOf(head) ">
+                    <b v-show="head===clusterMeasure || metric===distributionMeasure"
+                       :style="{'color':'cornflowerblue','text-decoration': (head===clusterMeasure && metric===distributionMeasure) ? 'underline':'none'}">{{
+                        formatValue(result.p_values.values[head][metric])
+                      }}</b>
+                    <span v-show="head !== clusterMeasure && metric!==distributionMeasure">{{
+                        formatValue(result.p_values.values[head][metric])
+                      }}</span>
+                  </td>
+                </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
           </div>
-        </div>
-      </div>
-    </div>
-    <v-divider></v-divider>
-    <div style="display: flex; justify-content: center">
-      <v-subheader>Summary figures</v-subheader>
-    </div>
+        </v-col>
+        <v-col cols="12" lg="6" style="display: flex; justify-content: center">
+          <div>
+            <b>{{ getScoreName() }}</b>
+            <v-simple-table style="max-width:500px" v-if="mode!=='cluster'">
+              <template v-slot:default>
+                <thead>
+                <tr>
+                  <th>
+                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
+                           style="margin:4px">
+                      <v-icon right>fas fa-download</v-icon>
+                    </v-btn>
+                  </th>
+                  <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
+                      :key="'input_'+head">
+                    <div style="white-space: nowrap">
+                      {{ head }}
+                      <v-tooltip right>
+                        <template v-slot:activator="{attrs, on}">
+                          <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                        </template>
+                        <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
+                      </v-tooltip>
+                    </div>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric" @click="distributionMeasure=metric" style="cursor: pointer">
+                  <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
+                    <div style="white-space: nowrap" :style="{color: distributionMeasure===metric ? 'cornflowerblue':''}">
+                      {{ metric }}
+                      <v-tooltip right>
+                        <template v-slot:activator="{attrs, on}">
+                          <v-icon small v-bind="attrs" v-on="on" :color="distributionMeasure===metric ? 'primary':''">far fa-question-circle</v-icon>
+                        </template>
+                        <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                      </v-tooltip>
+                    </div>
+                  </b>
+                  <td v-for="head in Object.keys(result.input_values.values)" :key="'input_value-'+head"
+                      style="margin:4px"><span v-show="distributionMeasure!==metric">{{formatValue(result.input_values.values[head][metric]) }}</span>
+                  <b v-show="distributionMeasure === metric" style="color: cornflowerblue">{{formatValue(result.input_values.values[head][metric]) }}</b>
+                  </td>
+                </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+            <v-simple-table v-if="mode==='cluster'">
+              <template v-slot:default>
+                <thead>
+                <tr>
+                  <th>
+                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
+                           style="margin:4px">
+                      <v-icon right>fas fa-download</v-icon>
+                    </v-btn>
+                  </th>
+                  <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
+                      :key="'p_'+head">
+                    <div :style="{'white-space': mobile ? '': 'nowrap', cursor: 'pointer'}"
+                         @click="clusterMeasure=head; clusterMeasureIdx=Object.keys(result.input_values.values).indexOf(head)">
+                      <span v-show="head !== clusterMeasure">{{ head }}</span>
+                      <b style="color: cornflowerblue; text-decoration: underline"
+                         v-show="head===clusterMeasure">{{
+                          head
+                        }}</b>
+                      <v-tooltip right>
+                        <template v-slot:activator="{attrs, on}">
+                          <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
+                                  v-bind="attrs" v-on="on">far fa-question-circle
+                          </v-icon>
+                        </template>
+                        <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
+                      </v-tooltip>
+                    </div>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])"
+                    :key="metric">
+                  <td :style="{margin: mobile ? '1px':'4px'}"><b style="color: rgba(0,0,0,0.6); cursor: pointer"
+                                                                 @click="distributionMeasure=metric">
+                    <div :style="{'white-space': mobile ? '' : 'nowrap'}">
+                      <b v-show="metric===distributionMeasure"
+                         style="color: cornflowerblue; text-decoration: underline">{{ metric }}</b>
+                      <span v-show="metric !== distributionMeasure">{{ metric }}</span>
+                      <v-tooltip right>
+                        <template v-slot:activator="{attrs, on}">
+                          <v-icon right small v-bind="attrs" v-on="on"
+                                  :color="metric===distributionMeasure? 'primary': ''">far fa-question-circle
+                          </v-icon>
+                        </template>
+                        <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
+                      </v-tooltip>
+                    </div>
+                  </b></td>
+                  <td :style="{margin: mobile ? '1px':'4px'}"
+                      v-for="head in Object.keys(result.input_values.values)"
+                      :key="metric+head" style="cursor: pointer"
+                      @click="distributionMeasure=metric; clusterMeasure=head;clusterMeasureIdx=Object.keys(result.input_values.values).indexOf(head)">
+                    <b v-show="head===clusterMeasure || metric===distributionMeasure"
+                       :style="{'color':'cornflowerblue','text-decoration': (head===clusterMeasure && metric===distributionMeasure) ? 'underline':'none'}">{{
+                        formatValue(result.input_values.values[head][metric])
+                      }}</b>
+                    <span v-show="head !== clusterMeasure && metric!==distributionMeasure">{{
+                        formatValue(result.input_values.values[head][metric])
+                      }}</span>
+                    <!--                                {{ formatValue(result.input_values.values[head][metric]) }}-->
+                  </td>
+                </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
     <template v-if="plots">
-      <div v-if="isMobile()">
-        <template v-if="mode!=='cluster'">
-          <v-container>
-            <v-col>
-              <v-row justify="center">
-                <!--                        <div style="width: 100%; display: flex; justify-content: center">-->
-                <v-img :src="getPlot('p-value')" contain
-                       style="position: relative">
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot('p-value'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-                <!--                      </div>-->
-              </v-row>
-              <v-row>
-                <!--                        <div style="width: 100%; display: flex; justify-content: center">-->
-                <v-img :src="getPlot('mappability')" contain
-                       style="position: relative">
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot('mappability'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-                <!--                        </div>-->
-              </v-row>
-            </v-col>
-          </v-container>
-        </template>
-        <template v-else>
-          <v-container>
-            <v-col>
-              <v-row justify="center">
-                <v-container>
-                  <v-col>
-                    <v-row>
-                      <v-tabs vertical v-model="clusterMeasureIdx">
-                        <v-tab v-for="measure in measureMap['clustering']" @click="clusterMeasure=measure;"
-                               :key="measure+'_p-value_plots'">
-                          {{ measure }}
-                          <v-tooltip right>
-                            <template v-slot:activator="{attrs, on}">
-                              <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                            </template>
-                            <div style="width:200px; text-align: justify">{{ tooltips[measure] }}</div>
-                          </v-tooltip>
-                        </v-tab>
-                      </v-tabs>
-                    </v-row>
-                  </v-col>
-                  <v-col>
-                    <v-row>
-                      <v-img :src="getPlot(clusterMeasure+'_p-value')" contain
-                             style="position: relative">
-                        <v-btn icon small style="position: absolute; right: 0"
-                               @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
-                          <v-icon small>fas fa-download</v-icon>
-                        </v-btn>
-                      </v-img>
-                    </v-row>
-                  </v-col>
-                </v-container>
-              </v-row>
-              <v-row justify="center">
-                <v-img :src="getPlot('mappability')" contain
-                       style="margin:32px; position: relative">
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot('mappability'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-              </v-row>
-            </v-col>
-          </v-container>
-        </template>
-      </div>
-      <div v-else>
-        <div style="display: flex; justify-content: center" v-if="mode!=='cluster'">
-          <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
-            <v-img :src="getPlot('p-value')" height="35vh" contain
-                   style="margin:32px; position: relative">
-              <v-btn icon small style="position: absolute; right: 0" @click="downloadFile(getPlot('p-value'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
-          </div>
-          <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
-            <v-img :src="getPlot('mappability')" height="35vh" contain
-                   style="margin:32px; position: relative">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot('mappability'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
-          </div>
-        </div>
-        <div v-else style="display: flex">
-          <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
-            <div style="display: flex; margin-top:32px;">
-              <v-tabs vertical v-model="clusterMeasureIdx">
-                <v-tab v-for="measure in measureMap['clustering']" @click="clusterMeasure=measure;"
-                       :key="measure+'_p-value_plots'">
-                  {{ measure }}
-                  <v-tooltip right>
-                    <template v-slot:activator="{attrs, on}">
-                      <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                    </template>
-                    <div style="width:200px; text-align: justify">{{ tooltips[measure] }}</div>
-                  </v-tooltip>
-                </v-tab>
-              </v-tabs>
-              <v-img :src="getPlot(clusterMeasure+'_p-value')" height="35vh" contain
-                     style="margin-left:32px; margin-bottom:32px; position: relative">
-                <v-btn icon small style="position: absolute; right: 0"
-                       @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
-                  <v-icon small>fas fa-download</v-icon>
-                </v-btn>
-              </v-img>
-            </div>
-          </div>
-          <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
-            <v-img :src="getPlot('mappability')" height="35vh" contain
-                   style="margin:32px; position: relative">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot('mappability'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
-          </div>
-        </div>
-      </div>
+      <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
-        <v-subheader>Extended summary figures</v-subheader>
+        <v-subheader>Annotation selection</v-subheader>
       </div>
-      <div id="plots2" style="display: flex; justify-content: center">
-        <div style="align-self: flex-start; margin-right: auto; margin-left: 0; width: 40%">
-          <div style="display: flex; margin-top:32px;">
-            <v-tabs vertical>
-              <v-tab v-for="measure in termMap[mode]" @click="distributionMeasure=measure;"
-                     :key="measure+'_distribution_plots'">
-                {{ measure }}
-                <v-tooltip right>
-                  <template v-slot:activator="{attrs, on}">
-                    <v-icon right small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                  </template>
-                  <div style="width:200px; text-align: justify">{{ tooltips[measure] }}</div>
-                </v-tooltip>
-              </v-tab>
-            </v-tabs>
-            <v-img :src="getPlot(getDistPlotName())" height="35vh" contain
-                   style="margin-left:32px; margin-bottom:32px; position: relative">
+      <v-container>
+        <v-row justify="center" style="padding-top:16px; padding-bottom: 16px">
+          <v-col cols="7" md="3" v-if="mode==='cluster'" style="display: flex; justify-content: center">
+            <v-select label="Scoring type" style="max-width: 200px" dense outlined filled
+                      :items="measureMap['clustering']" v-model="clusterMeasure"></v-select>
+          </v-col>
+          <v-col cols="7" md="3" style="display: flex; justify-content: center">
+            <v-select label="Annotation type" style="max-width: 200px" dense outlined filled :items="termMap[type]"
+                      v-model="distributionMeasure"></v-select>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-divider></v-divider>
+      <div style="display: flex; justify-content: center">
+        <v-subheader>Significance figures</v-subheader>
+      </div>
+      <v-container>
+        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+          <v-col cols="12" sm="5">
+            <v-img :src="getPlot('p-value')" contain style="position: relative; width: 80%" v-if="mode!=='cluster'">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot('p-value'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+            <v-img :src="getPlot(clusterMeasure+'_p-value')" contain v-if="mode==='cluster'"
+                   style="position: relative; " width="80%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col cols="12" sm="5">
+            <v-img :src="getPlot(getDistPlotName())" contain
+                   style="position: relative" width="80%">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getDistPlotName())">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
-          </div>
-        </div>
-        <div style="align-self: flex-end; margin-right: 0; margin-left: auto; width: 40%">
-          <v-img :src="getPlot(getSankeyPlotName())" height="35vh" contain
-                 style="margin:32px; position: relative">
-            <v-btn icon small style="position: absolute; right: 0"
-                   @click="downloadFile(getPlot(getSankeyPlotName()))">
-              <v-icon small>fas fa-download</v-icon>
-            </v-btn>
-          </v-img>
-        </div>
+          </v-col>
+        </v-row>
+
+      </v-container>
+      <v-divider></v-divider>
+      <div style="display: flex; justify-content: center">
+        <v-subheader>Mappability figures</v-subheader>
       </div>
+      <v-container>
+        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+          <v-col cols="12" sm="6">
+            <v-img :src="getPlot('mappability')" contain style="margin:16px; position: relative" width="80%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot('mappability'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-img :src="getPlot(getAnnotationPlotName())" contain style="margin:16px; position: relative" width="80%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getAnnotationPlotName())">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-img :src="getPlot(getSankeyPlotName())" contain style="margin:16px; position: relative" width="80%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getSankeyPlotName())">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
   </div>
 </template>
@@ -436,6 +350,7 @@ export default {
     csvs: Array,
     plots: Array,
     result: Object,
+    referenceType: String,
     mobile: {
       type: Boolean,
       default: false,
@@ -454,23 +369,25 @@ export default {
         'GO.MF': "based on functional coherence of molecular function annotations process from Gene Ontology (GO).",
         'KEGG': "based on functional coherence of pathways annotations from Kyoto Encyclopedia of Genes and Genomes (KEGG)",
         'JI-based': "Jaccard Index based: calculated by the intersection of two sets divided by the union of both.",
-        'OC-based': "Overlap Coefficient based: calculated by the intersection of two sets divided by the size of the smaller set."
+        'OC-based': "Overlap Coefficient based: calculated by the intersection of two sets divided by the size of the smaller set.",
+        'related_variants': 'TODO',
+        'related_genes': 'TODO',
       },
       clusterMeasure: 'DI-based',
       clusterMeasureIdx: 0,
+      distributionMeasure: '',
       measureMap: {
         'clustering': ['DI-based', 'SS-based', 'DBI-based'],
       },
       termMap: {
-        'cluster': ['GO.BP', 'GO.CC', 'GO.MF', 'KEGG'],
-        'set': ['KEGG', 'JI-based', 'OC-based']
+        'gene': ['GO.BP', 'GO.CC', 'GO.MF', 'KEGG'],
+        'disease': ['related_genes', 'related_variants', 'KEGG']
       },
-      distributionMeasure: "",
     }
   },
 
   created() {
-    this.distributionMeasure = this.termMap[this.mode][0]
+    this.distributionMeasure = this.termMap[this.type][0]
   },
 
   methods: {
@@ -493,16 +410,11 @@ export default {
       if (url)
         return url
       return "https://www.schulz-grafik.de/wp-content/uploads/2018/03/placeholder.png"
-    }
-    ,
-    isMobile: function () {
-      return this.mobile
     },
 
     getScoreName: function () {
       if (this.mode === 'set-set') {
-        let ref_type = this.getIDType(this.input.reference_id)
-        if (this.type === 'gene' || ref_type === 'gene') {
+        if (this.type === 'gene' || this.referenceType === 'gene') {
           return 'Functional relevance score'
         }
         return 'Functional relevance score & genetic relevance score'
@@ -512,12 +424,12 @@ export default {
     },
 
     getSankeyPlotName: function () {
-      if (this.mode === "cluster")
-        return this.clusterMeasure + "-" + this.distributionMeasure + "_distribution"
-      return this.distributionMeasure + "_distribution"
+      return this.distributionMeasure + "_sankey"
     },
 
-
+    getAnnotationPlotName: function () {
+      return this.distributionMeasure + "_annotation_distribution"
+    },
     getDistPlotName: function () {
       if (this.mode === "cluster")
         return this.clusterMeasure + "_" + this.distributionMeasure + "_distribution"
@@ -526,10 +438,12 @@ export default {
 
     formatValue: function (value) {
       if (typeof value === "number") {
-        let s = value + ""
-        let idx = s.indexOf(".")
-        let decimals = this.isMobile() ? 4 : 6;
-        return s.length > (decimals + 2) ? s.substring(0, Math.max(decimals + 2, idx)) : s
+        value = value + ""
+      }
+      if(typeof value === "string") {
+        let idx = value.indexOf(".")
+        let decimals = this.mobile ? 4 : 6;
+        return value.length > (decimals + 2) ? value.substring(0, Math.max(decimals + 2, idx)) : value
       }
       return value
     },

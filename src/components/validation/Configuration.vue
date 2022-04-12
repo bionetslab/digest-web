@@ -16,19 +16,20 @@
         <v-icon left>fas fa-angle-left</v-icon>
         Back
       </v-btn>
-      <div v-if="mode==='set' && type==='gene'"  :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample('set', 'gene', 'set')">
+      <div v-if="(mode==='set' || mode ==='network') && type==='gene'"
+           :class="{flex_self_center:!mobile, example_div_width:mobile}">
+        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample(mode, 'gene', mode)">
           <v-icon left>far fa-lightbulb</v-icon>
           Set only Example
         </v-btn>
       </div>
-      <div v-if="mode==='set' && type==='gene'"  :class="{flex_self_center:!mobile, example_div_width:mobile}">
+      <div v-if="mode==='set' && type==='gene'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
         <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample('set', 'gene', 'ref')">
           <v-icon left>far fa-lightbulb</v-icon>
           Reference Example
         </v-btn>
       </div>
-      <div v-if="mode==='cluster' && type==='gene'"  :class="{flex_self_center:!mobile, example_div_width:mobile}">
+      <div v-if="mode==='cluster' && type==='gene'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
         <v-btn color="primary" :class="{flex_self_center:mobile}" outlined
                @click="loadExample('cluster', 'gene')">
           <v-icon left>far fa-lightbulb</v-icon>
@@ -36,15 +37,16 @@
         </v-btn>
       </div>
       <div v-if="mode==='cluster' && type==='disease'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn  color="primary" :class="{flex_self_center:mobile}"
+        <v-btn color="primary" :class="{flex_self_center:mobile}"
                outlined
                @click="loadExample('cluster', 'disease')">
           <v-icon left>far fa-lightbulb</v-icon>
           Example
         </v-btn>
       </div>
-      <div v-if="mode==='set' && type==='disease'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn  color="primary" outlined :class="{flex_self_center:mobile}"
+      <div v-if="(mode==='set' || mode ==='network') && type==='disease'"
+           :class="{flex_self_center:!mobile, example_div_width:mobile}">
+        <v-btn color="primary" outlined :class="{flex_self_center:mobile}"
                @click="loadExample('set', 'disease')">
           <v-icon left>far fa-lightbulb</v-icon>
           Example
@@ -63,174 +65,61 @@
       </div>
       <v-alert v-if="errorTargetID" type="error" dense>Missing target ID type selection</v-alert>
       <v-alert v-if="errorTargetIDs" type="error" dense>Missing targetIDs</v-alert>
-      <div v-if="!isMobile()" style="display: flex; width: 100%; padding-right: 64px; padding-left: 64px">
-        <div>
-          <v-select label="Target ID type" :items="targetIDTypes[type]" v-model="targetIDType"
-                    style="max-width: 200px" outlined dense filled>
-            <template v-slot:append-outer>
-              <v-tooltip right>
-                <template v-slot:activator="{on, attrs}">
-                  <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+      <v-container :class="{border_mobile:mobile, border:!mobile}">
+        <v-row justify="center">
+          <v-col cols="12" sm="4" :class="{'flex_content_center':mobile}">
+            <div style="padding-top: 16px">
+              <v-select label="Target ID type" :items="targetIDTypes[type]" v-model="targetIDType"
+                        style="max-width: 210px; min-width: 210px" outlined dense filled>
+                <template v-slot:append-outer>
+                  <v-tooltip right>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify">
+                      ID type of inserted target IDs. Click on the drop-down to see the supported types.
+                    </div>
+                  </v-tooltip>
                 </template>
-                <div style="width: 250px; text-align: justify">
-                  ID type of inserted target IDs. Click on the drop-down to see the supported types.
-                </div>
-              </v-tooltip>
-            </template>
-          </v-select>
-          <v-file-input ref="tarInput" label="Upload targets" hint="Upload a file of newline separated target IDs"
-                        dense
-                        style="width: 210px; max-width: 210px; cursor: pointer"
-                        v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined
-                        prepend-inner-icon="fas fa-arrow-up-from-bracket">
-            <template v-slot:append-outer>
-              <v-tooltip right>
-                <template v-slot:activator="{on, attrs}">
-                  <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+              </v-select>
+              <v-file-input ref="tarInput" label="Upload targets" hint="Upload a file of newline separated target IDs"
+                            dense
+                            style="width: 210px; max-width: 210px; cursor: pointer"
+                            v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined
+                            prepend-inner-icon="fas fa-arrow-up-from-bracket">
+                <template v-slot:append-outer>
+                  <v-tooltip right>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify">
+                      Upload of file with target IDs that are separated by a newline in the file.
+                    </div>
+                  </v-tooltip>
                 </template>
-                <div style="width: 250px; text-align: justify">
-                  Upload of file with target IDs that are separated by a newline in the file.
-                </div>
-              </v-tooltip>
-            </template>
-          </v-file-input>
-        </div>
-        <v-textarea v-if="mode==='set'" label="Target IDs" v-model="targets"
-                    style="max-width: 40vw; margin-left: auto; margin-right: 0; justify-self: flex-end" no-resize
-                    filled
-                    placeholder="Enter your chosen IDs newline separated...">
-          <template v-slot:append>
-            <v-tooltip right>
-              <template v-slot:activator="{on, attrs}">
-                <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far
-                  fa-question-circle
-                </v-icon>
-              </template>
-              <div style="width: 250px; text-align: justify">
-                Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be
-                changed or deleted as desired.
-              </div>
-            </v-tooltip>
-          </template>
-        </v-textarea>
-        <v-data-table v-if="mode==='cluster'" item-key="id" :items="clusters"
-                      style="max-width: 40vw; margin-left: auto; margin-right: 0; justify-self: flex-end" dense
-                      :headers="clusterHeaders">
-          <template v-slot:item.action="{item}">
-            <v-tooltip right>
-              <template v-slot:activator="{on, attrs}">
-                <v-btn icon v-on="on" v-bind="attrs" @click="removeClusterEntry(item)" small>
-                  <v-icon>far fa-trash-can</v-icon>
-                </v-btn>
-              </template>
-              <div style="width: 200px; text-align: justify">
-                Remove entry from cluster list!
-              </div>
-            </v-tooltip>
-          </template>
-          <template v-slot:body.append="{headers}">
-            <tr>
-              <td :style="{'text-align':headers[0].align}">
-                <v-text-field dense label="id" style="margin-bottom: -16px; margin-top:16px;padding-bottom: 6px"
-                              v-model="clusterIDModel">
-                  <template v-slot:append-outer>
-                    <v-tooltip right>
-                      <template v-slot:activator="{on, attrs}">
-                        <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                      </template>
-                      <div style="width: 250px; text-align: justify">
-                        Insert ID of target ID type.
-                      </div>
-                    </v-tooltip>
-                  </template>
-                </v-text-field>
-              </td>
-              <td :style="{'text-align':headers[1].align}">
-                <v-text-field dense label="cluster"
-                              style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"
-                              v-model="clusterModel">
-                  <template v-slot:append-outer>
-                    <v-tooltip right>
-                      <template v-slot:activator="{on, attrs}">
-                        <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                      </template>
-                      <div style="width: 250px; text-align: justify">
-                        Add assigned Cluster. Names and/or numbers are supported.
-                      </div>
-                    </v-tooltip>
-                  </template>
-                </v-text-field>
-              </td>
-              <td :style="{'text-align':headers[2].align, 'width':headers[2].width}">
+              </v-file-input>
+            </div>
+          </v-col>
+          <v-col cols="12" md="8" :class="{'flex_content_center':mobile}">
+            <v-textarea v-if="mode==='set'" label="Target IDs" v-model="targets" :class="{ 'ta_mobile':mobile }" no-resize
+                        filled
+                        placeholder="Enter your chosen IDs newline separated...">
+              <template v-slot:append>
                 <v-tooltip right>
-                  <template v-slot:activator="{attrs, on}">
-                    <v-btn v-on="on" v-bind="attrs" icon @click="addClusterEntry()" small>
-                      <v-icon>far fa-square-plus</v-icon>
-                    </v-btn>
+                  <template v-slot:activator="{on, attrs}">
+                    <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far
+                      fa-question-circle
+                    </v-icon>
                   </template>
-                  <div style="width: 200px; text-align: justify">
-                    Add custom entry to cluster list!
+                  <div style="width: 250px; text-align: justify">
+                    Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be
+                    changed or deleted as desired.
                   </div>
                 </v-tooltip>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </div>
-      <div v-else>
-        <div style="width: 100%; padding-right: 64px; padding-left: 64px">
-          <v-select label="Target ID type" :items="targetIDTypes[type]" v-model="targetIDType"
-                    style="max-width: 200px;display: flex;justify-self: center; margin: auto" outlined dense filled>
-            <template v-slot:append-outer>
-              <v-tooltip right>
-                <template v-slot:activator="{on, attrs}">
-                  <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                </template>
-                <div style="width: 250px; text-align: justify">
-                  ID type of inserted target IDs. Click on the drop-down to see the supported types.
-                </div>
-              </v-tooltip>
-            </template>
-          </v-select>
-          <v-file-input ref="tarInput" label="Upload targets" hint="Upload a file of newline separated target IDs"
-                        dense
-                        style="width: 210px; max-width: 210px; cursor: pointer;display: flex;justify-self: center; margin: auto"
-                        v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined
-                        prepend-inner-icon="fas fa-arrow-up-from-bracket">
-            <template v-slot:append-outer>
-              <v-tooltip right>
-                <template v-slot:activator="{on, attrs}">
-                  <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                </template>
-                <div style="width: 250px; text-align: justify">
-                  Upload of file with target IDs that are separated by a newline in the file.
-                </div>
-              </v-tooltip>
-            </template>
-          </v-file-input>
-        </div>
-        <div style="display: flex; justify-content: center; margin: auto">
-          <v-textarea v-if="mode==='set'" label="Target IDs" v-model="targets"
-                      style="padding:16px" no-resize
-                      filled
-                      placeholder="Enter your chosen IDs newline separated...">
-            <template v-slot:append>
-              <v-tooltip right>
-                <template v-slot:activator="{on, attrs}">
-                  <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far
-                    fa-question-circle
-                  </v-icon>
-                </template>
-                <div style="width: 250px; text-align: justify">
-                  Manually add IDs newline separated. After inserting IDs manually or with a file upload, IDs can be
-                  changed or deleted as desired.
-                </div>
-              </v-tooltip>
-            </template>
-          </v-textarea>
-          <div style="display: flex; justify-self: center; margin: auto">
-            <v-data-table v-if="mode==='cluster'" item-key="id" :items="clusters"
-                          style="padding: 16px; margin-left: auto; margin-right: 0; justify-self: flex-end" dense
+              </template>
+            </v-textarea>
+            <v-data-table v-if="mode==='cluster'" item-key="id" :items="clusters" :class="{ 'ta_mobile':mobile }"
+                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end" dense
                           :headers="clusterHeaders">
               <template v-slot:item.action="{item}">
                 <v-tooltip right>
@@ -292,10 +181,11 @@
                 </tr>
               </template>
             </v-data-table>
-          </div>
-        </div>
-      </div>
+          </v-col>
+        </v-row>
+      </v-container>
       <v-divider></v-divider>
+      <!--TODO continue from here-->
       <template v-if="mode==='set'">
         <div style="display: flex; justify-content: center;">
           <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">References (optional)</v-subheader>
@@ -694,7 +584,8 @@
         </div>
       </div>
       <div
-          style="display: flex;justify-content: center; margin-bottom: 32px; margin-top: 16px;" :class="{margin_normal:!mobile, margin_mobile:mobile}">
+          style="display: flex;justify-content: center; margin-bottom: 32px; margin-top: 16px;"
+          :class="{margin_normal:!mobile, margin_mobile:mobile}">
         <v-slider label="Runs" min="100" max="10000" step="100" v-model="runs" dense>
           <template v-slot:prepend>
             <v-text-field v-model="runs" single-line type="number"
@@ -714,7 +605,8 @@
         </v-slider>
       </div>
       <div
-          style="display: flex;justify-content: center; margin-bottom: 32px; margin-top: 16px" :class="{margin_normal:!mobile, margin_mobile:mobile}">
+          style="display: flex;justify-content: center; margin-bottom: 32px; margin-top: 16px"
+          :class="{margin_normal:!mobile, margin_mobile:mobile}">
         <v-slider label="Replace" min="1" max="100" step="1" v-model="replace" dense>
           <template v-slot:prepend>
             <v-text-field v-model="replace" single-line type="number"
@@ -922,7 +814,7 @@ export default {
       this.notification.show = true
     },
     loadExample: function (mode, type, example) {
-      if (mode === 'set') {
+      if (mode === 'set' || mode === 'network') {
         if (type === 'gene') {
           if (example === 'set') {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
@@ -931,6 +823,9 @@ export default {
             this.enriched = false
             this.backgroundModel = 'complete'
             this.references = ""
+          }
+          if (example === 'network') {
+            console.log("TODO network example")
           }
           if (example === 'ref') {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
@@ -943,9 +838,13 @@ export default {
             this.referenceIDType = EXAMPLES.gene_set.reference_id_type
           }
         } else {
-          this.readFileContent(EXAMPLES.disease_set.target, 'target')
-          this.targetIDType = EXAMPLES.disease_set.target_id_type
-          this.backgroundModel = 'term-pres'
+          if (example === 'network') {
+            console.log("TODO network example")
+          } else {
+            this.readFileContent(EXAMPLES.disease_set.target, 'target')
+            this.targetIDType = EXAMPLES.disease_set.target_id_type
+            this.backgroundModel = 'term-pres'
+          }
         }
       } else {
         if (type === 'gene') {
@@ -1008,6 +907,10 @@ export default {
   justify-self: center
   margin: auto
 
+.flex_content_center
+  justify-content: center
+  display: flex
+
 .example_div_width
   width: 100%
   display: flex
@@ -1015,13 +918,32 @@ export default {
 
 .sh_mobile
   font-size: 1.2rem
+
+.ta_mobile
+  padding: 0
+
+.ta_not_mobile
+  max-width: 40vw
+  margin-left: auto
+  margin-right: 0
+  justify-self: flex-end
+
 .sh
   font-size: 1.5rem
   margin-left: 64px
   margin-right: 64px
+
 .margin_normal
   padding-left: 64px
   padding-right: 64px
+
+.border
+  padding-right: 64px
+  padding-left: 64px
+
+.border_mobile
+  padding-right: 16px
+  padding-left: 16px
 .margin_mobile
   padding-left: 8px
   padding-right: 8px

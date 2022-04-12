@@ -29,12 +29,11 @@
         <v-divider></v-divider>
         <v-tabs-items v-model="resultTab">
           <v-tab-item>
-            <InputTab @downloadEvent="downloadFile" :type="type" :mode="mode" :mobile="mobile" :input="input" :zips="zips"></InputTab>
+            <InputTab @downloadEvent="downloadFile" :id-map="idMap" :type="type" :mode="mode" :mobile="mobile" :input="input" :zips="zips"></InputTab>
           </v-tab-item>
 
           <v-tab-item style="width: 100%">
-<!--           <OutputTab @downloadEvent="downloadFile" :result="result" :plots="plots" :csvs="csvs" :type="type" :mode="mode" :mobile="mobile"></OutputTab>-->
-            <OutputTabTest @downloadEvent="downloadFile" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :type="type" :mode="mode" ></OutputTabTest>
+            <OutputTab @downloadEvent="downloadFile" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :type="type" :mode="mode" :reference-type="getIDType(input.reference_id)"></OutputTab>
           </v-tab-item>
         </v-tabs-items>
       </div>
@@ -45,12 +44,11 @@
 
 <script>
 
-// import OutputTab from "@/components/validation/start/result/OutputTab";
+import OutputTab from "@/components/validation/start/result/OutputTab";
 import InputTab from "@/components/validation/start/result/InputTab";
-import OutputTabTest from "@/components/validation/start/result/OutputTabTest";
 export default {
   name: "Results",
-  components: {OutputTabTest, InputTab},
+  components: {OutputTab, InputTab},
   props: {
     params: Object,
     idMap: Object,

@@ -316,6 +316,7 @@ export default {
     input: Object,
     mode:String,
     type: String,
+    idMap: Object,
     mobile: {
       type: Boolean,
       default: false,

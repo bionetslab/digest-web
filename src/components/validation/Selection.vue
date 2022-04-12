@@ -1,34 +1,62 @@
 <template>
-  <div :style="{width: '100%', display: isMobile() ? '': 'flex', 'justify-content': 'center', padding: isMobile() ? '8px' :''}">
-    <TypeCard title="Set" text="Validate gene or disease sets w.r.t. functional or genetic coherence." :mobile="isMobile()">
-      <template v-slot:default>
-        <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
-          <ModeCard :image="getCardImage('set','gene')" type="gene" mode="set"
-                    text="Validate gene sets w.r.t. functional coherence." title="Gene" :mobile="mobile"
-                    @startValidationEvent="validationEvent" style="padding-top:1.22%; padding-bottom: 1.22%"></ModeCard>
-          <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
-          <ModeCard :image="getCardImage('set','disease')" type="disease" mode="set"
-                    style="padding-top:1.2%; padding-bottom: 1.2%"
-                    text="Validate disease sets w.r.t. genetic coherence." title="Disease"
-                    @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
-        </div>
-      </template>
-    </TypeCard>
-    <TypeCard title="Clustering" text="Validate gene or disease clusterings w.r.t. functional or genetic
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="10" md="6">
+        <TypeCard title="Set" text="Validate gene or disease sets w.r.t. functional or genetic coherence." :mobile="isMobile()">
+          <template v-slot:default>
+            <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
+              <ModeCard :image="getCardImage('set','gene')" type="gene" mode="set"
+                        text="Validate gene sets w.r.t. functional coherence." title="Gene" :mobile="mobile"
+                        @startValidationEvent="validationEvent" style="padding-top:1.22%; padding-bottom: 1.22%"></ModeCard>
+              <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
+              <ModeCard :image="getCardImage('set','disease')" type="disease" mode="set"
+                        style="padding-top:1.2%; padding-bottom: 1.2%"
+                        text="Validate disease sets w.r.t. genetic coherence." title="Disease"
+                        @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
+            </div>
+          </template>
+        </TypeCard>
+      </v-col>
+      <v-col cols="10" md="6">
+        <TypeCard title="Clustering" text="Validate gene or disease clusterings w.r.t. functional or genetic
         coherence." :mobile="isMobile()">
-      <template v-slot:default>
-        <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
-          <ModeCard :image="getCardImage('cluster','gene')" type="gene" mode="cluster"
-                    text="Validate gene clustering w.r.t. functional coherence." title="Gene"
-                    @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
-          <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
-          <ModeCard :image="getCardImage('cluster','disease')" type="disease" mode="cluster"
-                    text="Validate disease clustering w.r.t. genetic coherence." title="Disease"
-                    @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
-        </div>
-      </template>
-    </TypeCard>
-  </div>
+          <template v-slot:default>
+            <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
+              <ModeCard :image="getCardImage('cluster','gene')" type="gene" mode="cluster"
+                        text="Validate gene clustering w.r.t. functional coherence." title="Gene"
+                        @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
+              <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
+              <ModeCard :image="getCardImage('cluster','disease')" type="disease" mode="cluster"
+                        text="Validate disease clustering w.r.t. genetic coherence." title="Disease"
+                        @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
+            </div>
+          </template>
+        </TypeCard>
+      </v-col>
+      <v-col cols="10" md="6">
+        <TypeCard title="Network" text="TODO" :mobile="isMobile()">
+          <template v-slot:default>
+            <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
+              <ModeCard :image="getCardImage('cluster','gene')" type="gene" mode="network"
+                        text="TODO" title="Gene"
+                        @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
+              <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
+              <ModeCard :image="getCardImage('cluster','disease')" type="disease" mode="network"
+                        text="TODO" title="Disease"
+                        @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
+            </div>
+          </template>
+        </TypeCard>
+      </v-col>
+    </v-row>
+  </v-container>
+
+
+
+<!--  <div :style="{width: '100%', display: isMobile() ? '': 'flex', 'justify-content': 'center', padding: isMobile() ? '8px' :''}">-->
+<!--   -->
+<!--    -->
+<!--  </div>-->
 </template>
 
 <script>
