@@ -89,6 +89,7 @@
                   <v-file-input ref="tarInput" label="Upload targets"
                                 hide-details
                                 dense
+                                single-line
                                 style="width: 210px; max-width: 210px; cursor: pointer"
                                 v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined
                                 prepend-inner-icon="fas fa-arrow-up-from-bracket">
@@ -101,7 +102,7 @@
                           Upload of file with target IDs that are separated by a newline in the file.
                         </div>
                         <div style="width: 250px; text-align: justify" v-if="mode === 'network'">
-                          Upload an edge list or .sif network file with target IDs.
+                          Upload a single column node list, edge list or .sif network file with target IDs.
                         </div>
                       </v-tooltip>
                     </template>
@@ -111,7 +112,8 @@
             </v-container>
           </v-col>
           <v-col cols="12" lg="8" :class="{'flex_content_center':mobile}">
-            <v-textarea v-if="mode==='set'" label="Target IDs" v-model="targets" :class="{ 'ta_mobile':mobile }"
+            <v-textarea v-if="mode==='set' || mode==='network'" label="Target IDs" v-model="targets"
+                        :class="{ 'ta_mobile':mobile }"
                         no-resize
                         filled
                         placeholder="Enter your chosen IDs newline separated...">
@@ -192,85 +194,85 @@
                 </tr>
               </template>
             </v-data-table>
-            <v-data-table v-if="mode==='network'" item-key="id" :items="edges" :class="{ 'ta_mobile':mobile }"
-                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end" dense
-                          :headers="networkHeaders">
-              <template v-slot:item.action="{item}">
-                <v-tooltip right>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-btn icon v-on="on" v-bind="attrs" @click="removeEdgeEntry(item)" small>
-                      <v-icon>far fa-trash-can</v-icon>
-                    </v-btn>
-                  </template>
-                  <div style="width: 200px; text-align: justify">
-                    Remove entry from edge list!
-                  </div>
-                </v-tooltip>
-              </template>
-              <template v-slot:body.append="{headers}">
-                <tr>
-                  <td :style="{'text-align':headers[0].align}">
-                    <v-text-field dense label="ID1" style="margin-bottom: -16px; margin-top:16px;padding-bottom: 6px"
-                                  v-model="edgeID1Model">
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width: 250px; text-align: justify">
-                            Insert ID of node1.
-                          </div>
-                        </v-tooltip>
-                      </template>
-                    </v-text-field>
-                  </td>
-                  <td :style="{'text-align':headers[1].align}">
-                    <v-text-field dense label="ID2"
-                                  style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"
-                                  v-model="edgeID2Model">
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width: 250px; text-align: justify">
-                            Insert ID of node2.
-                          </div>
-                        </v-tooltip>
-                      </template>
-                    </v-text-field>
-                  </td>
-                  <td :style="{'text-align':headers[1].align}">
-                    <v-text-field dense label="Edge type"
-                                  style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"
-                                  v-model="edgeNameModel">
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width: 250px; text-align: justify">
-                            (optional) Add an edge type.
-                          </div>
-                        </v-tooltip>
-                      </template>
-                    </v-text-field>
-                  </td>
-                  <td :style="{'text-align':headers[2].align, 'width':headers[2].width}">
-                    <v-tooltip right>
-                      <template v-slot:activator="{attrs, on}">
-                        <v-btn v-on="on" v-bind="attrs" icon @click="addEdgeEntry()" small>
-                          <v-icon>far fa-square-plus</v-icon>
-                        </v-btn>
-                      </template>
-                      <div style="width: 200px; text-align: justify">
-                        Add new entry to entry list!
-                      </div>
-                    </v-tooltip>
-                  </td>
-                </tr>
-              </template>
-            </v-data-table>
+            <!--            <v-data-table v-if="mode==='network'" item-key="id" :items="edges" :class="{ 'ta_mobile':mobile }"-->
+            <!--                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end" dense-->
+            <!--                          :headers="networkHeaders">-->
+            <!--              <template v-slot:item.action="{item}">-->
+            <!--                <v-tooltip right>-->
+            <!--                  <template v-slot:activator="{on, attrs}">-->
+            <!--                    <v-btn icon v-on="on" v-bind="attrs" @click="removeEdgeEntry(item)" small>-->
+            <!--                      <v-icon>far fa-trash-can</v-icon>-->
+            <!--                    </v-btn>-->
+            <!--                  </template>-->
+            <!--                  <div style="width: 200px; text-align: justify">-->
+            <!--                    Remove entry from edge list!-->
+            <!--                  </div>-->
+            <!--                </v-tooltip>-->
+            <!--              </template>-->
+            <!--              <template v-slot:body.append="{headers}">-->
+            <!--                <tr>-->
+            <!--                  <td :style="{'text-align':headers[0].align}">-->
+            <!--                    <v-text-field dense label="ID1" style="margin-bottom: -16px; margin-top:16px;padding-bottom: 6px"-->
+            <!--                                  v-model="edgeID1Model">-->
+            <!--                      <template v-slot:append-outer>-->
+            <!--                        <v-tooltip right>-->
+            <!--                          <template v-slot:activator="{on, attrs}">-->
+            <!--                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
+            <!--                          </template>-->
+            <!--                          <div style="width: 250px; text-align: justify">-->
+            <!--                            Insert ID of node1.-->
+            <!--                          </div>-->
+            <!--                        </v-tooltip>-->
+            <!--                      </template>-->
+            <!--                    </v-text-field>-->
+            <!--                  </td>-->
+            <!--                  <td :style="{'text-align':headers[1].align}">-->
+            <!--                    <v-text-field dense label="ID2"-->
+            <!--                                  style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"-->
+            <!--                                  v-model="edgeID2Model">-->
+            <!--                      <template v-slot:append-outer>-->
+            <!--                        <v-tooltip right>-->
+            <!--                          <template v-slot:activator="{on, attrs}">-->
+            <!--                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
+            <!--                          </template>-->
+            <!--                          <div style="width: 250px; text-align: justify">-->
+            <!--                            Insert ID of node2.-->
+            <!--                          </div>-->
+            <!--                        </v-tooltip>-->
+            <!--                      </template>-->
+            <!--                    </v-text-field>-->
+            <!--                  </td>-->
+            <!--                  <td :style="{'text-align':headers[1].align}">-->
+            <!--                    <v-text-field dense label="Edge type"-->
+            <!--                                  style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"-->
+            <!--                                  v-model="edgeNameModel">-->
+            <!--                      <template v-slot:append-outer>-->
+            <!--                        <v-tooltip right>-->
+            <!--                          <template v-slot:activator="{on, attrs}">-->
+            <!--                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
+            <!--                          </template>-->
+            <!--                          <div style="width: 250px; text-align: justify">-->
+            <!--                            (optional) Add an edge type.-->
+            <!--                          </div>-->
+            <!--                        </v-tooltip>-->
+            <!--                      </template>-->
+            <!--                    </v-text-field>-->
+            <!--                  </td>-->
+            <!--                  <td :style="{'text-align':headers[2].align, 'width':headers[2].width}">-->
+            <!--                    <v-tooltip right>-->
+            <!--                      <template v-slot:activator="{attrs, on}">-->
+            <!--                        <v-btn v-on="on" v-bind="attrs" icon @click="addEdgeEntry()" small>-->
+            <!--                          <v-icon>far fa-square-plus</v-icon>-->
+            <!--                        </v-btn>-->
+            <!--                      </template>-->
+            <!--                      <div style="width: 200px; text-align: justify">-->
+            <!--                        Add new entry to entry list!-->
+            <!--                      </div>-->
+            <!--                    </v-tooltip>-->
+            <!--                  </td>-->
+            <!--                </tr>-->
+            <!--              </template>-->
+            <!--            </v-data-table>-->
           </v-col>
         </v-row>
       </v-container>
@@ -398,6 +400,37 @@
         </v-container>
         <v-divider></v-divider>
       </template>
+      <template v-if="mode === 'network'">
+        <div style="display: flex; justify-content: center">
+          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>
+        </div>
+        <v-container style="margin-bottom: 32px">
+          <v-row justify="center">
+            <v-col cols="12" :lg="6" :md="8" :sm="10" class="flex_content_center">
+              <v-file-input ref="networkInput" label="Network"
+                            hide-details
+                            dense
+                            single-line
+                            show-size
+                            style="width: 210px; max-width: 80% ;  cursor: pointer"
+                            v-model="networkFile" prepend-icon="fas fa-arrow-up-from-bracket" filled outlined
+                            prepend-inner-icon="">
+                <template v-slot:append-outer>
+                  <v-tooltip right>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    </template>
+                    <div>
+                      Upload a network with {{ type }} nodes in sif or graphml format.
+                    </div>
+                  </v-tooltip>
+                </template>
+              </v-file-input>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-divider></v-divider>
+      </template>
       <div style="display: flex; justify-content: center">
         <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Additional parameters (optional)</v-subheader>
       </div>
@@ -461,7 +494,7 @@
                   </v-col>
                   <v-col class="flex_content_center" cols="12" md="12" :lg="mode==='set' || mode==='network'?4:6">
                     <v-select label="Background model"
-                              :items="mode==='cluster' ? backgroundModels.filter(e=>e.value==='term-pres') : backgroundModels"
+                              :items="getBackgroundModelItems()"
                               v-model="backgroundModel"
                               hide-details
                               style="max-width: 260px; min-width: 250px;" outlined dense filled>
@@ -611,6 +644,7 @@ export default {
       edgeID2Model: "",
       edgeNameModel: "",
       targetIDType: undefined,
+      networkFile: undefined,
       targets: "",
       references: "",
       reference: "",
@@ -642,10 +676,11 @@ export default {
         {text: "Jaccard index", value: "jaccard"},
         {text: "Overlap coefficient", value: "overlap"}
       ],
-      backgroundModel: this.mode === 'cluster' ? 'term-pres' : "complete",
+      backgroundModel: this.mode === 'cluster' ? 'term-pres' : (this.mode === 'network' ? 'network' : "complete"),
       backgroundModels: [
         {text: "Fully randomized", value: "complete"},
-        {text: "Term-size preserving", value: "term-pres"}
+        {text: "Term-size preserving", value: "term-pres"},
+        {text: "Network-based", value: "network"}
       ],
       targetIDTypes: this.idMap
     }
@@ -716,22 +751,25 @@ export default {
     },
 
     readEdgeListContent: function (result, sif) {
+      this.targets = []
       let lines = result.split("\n").filter(l => l && l.length > 0).map(l => l.split(/\s*[\s,]\s*/))
       if (sif) {
         lines.forEach(entries => {
           if (entries.length > 2)
             for (let i = 2; i < entries.length; i++) {
-              this.addToEdges(entries[0], entries[i], entries[1])
+              this.addToEdges(entries[0], entries[i])
             }
-          else
-            this.addToEdges(entries[0], entries[1], "")
+          else if (entries.length === 1) {
+            this.addToEdges(entries[0])
+          } else
+            this.addToEdges(entries[0], entries[1])
         })
       } else {
         lines.forEach(entries => {
-          this.addToEdges(entries[0], entries[1], "");
+          this.addToEdges(entries[0], entries[1]);
         })
       }
-
+      this.targets = this.targets.join("\n")
       this.targetFile = undefined
     }
     ,
@@ -747,7 +785,6 @@ export default {
     ,
 
     readEdges: function (file) {
-      console.log(file)
       const reader = new FileReader();
       reader.addEventListener('load', (event) => {
         let result = event.target.result
@@ -795,8 +832,16 @@ export default {
       }
     }
     ,
-    addToEdges: function (id1, id2, edge) {
-      this.edges.push({id1: id1, id2: id2, edge: edge})
+
+    addTarget: function (entry) {
+      if (this.targets.indexOf(entry) === -1)
+        this.targets.push(entry)
+    },
+    addToEdges: function (id1, id2) {
+      if (id1)
+        this.addTarget(id1)
+      if (id2)
+        this.addTarget(id2)
     }
     ,
     setNotification: function (message, timeout) {
@@ -852,7 +897,19 @@ export default {
     }
     ,
 
-    checkEvent: function () {
+    getBackgroundModelItems: function () {
+      let items = this.backgroundModels;
+
+      if (this.mode === 'cluster')
+        items = items.filter(e => e.value === 'term-pres')
+
+      if (this.mode === 'network')
+        items = items.filter(e => e.value === 'network')
+
+      return items
+    },
+
+    checkEvent: async function () {
       this.errorTargetID = !this.targetIDType;
       this.errorTargetIDs = this.mode === 'cluster' ? this.clusters.length === 0 : this.targets.length === 0
       if (this.useReference) {
@@ -874,17 +931,34 @@ export default {
           replace: this.replace,
           background: this.backgroundModel,
         }
+        if (this.mode === 'network') {
+          params.network = {name: this.networkFile.name ,data: await this.getNetwork()};
+        }
         if (this.useReference) {
           params.enriched = this.enriched
           params.referenceID = this.referenceIDType
           params.reference = this.idsToList(this.references)
           route = "set-set"
         } else {
-          route = this.mode === 'cluster' ? 'cluster' : "set"
+          route = this.mode
         }
         params.mode = route
         this.$emit("validationEvent", params)
       }
+    },
+    getNetwork: async function () {
+      if (this.networkFile) {
+        return new Promise(resolve => {
+          const reader = new FileReader();
+          reader.addEventListener('load', (event) => {
+            resolve(event.target.result.split('base64,')[1])
+          });
+          reader.readAsDataURL(this.networkFile)
+        }).then(result=>{
+          return result
+        })
+      } else
+        return undefined;
     }
   }
 
@@ -892,6 +966,7 @@ export default {
 </script>
 
 <style scoped lang="sass">
+
 .v-subheader
   margin: 8px
 
