@@ -278,24 +278,24 @@
       </div>
       <v-container>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
-          <v-col cols="12" sm="5">
-            <v-img :src="getPlot('p-value')" contain style="position: relative; width: 80%" v-if="mode!=='cluster'">
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <v-img :src="getPlot('p-value')" contain style="position: relative; max-width: 70%" v-if="mode!=='cluster'">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getPlot('p-value'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
             <v-img :src="getPlot(clusterMeasure+'_p-value')" contain v-if="mode==='cluster'"
-                   style="position: relative; " width="80%">
+                   style="position: relative; max-width: 70% ">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
-          <v-col cols="12" sm="5">
+          <v-col cols="12" lg="6" class="flex_content_center">
             <v-img :src="getPlot(getDistPlotName())" contain
-                   style="position: relative" width="80%">
+                   style="position: relative" max-width="90%">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getDistPlotName())">
                 <v-icon small>fas fa-download</v-icon>
@@ -311,24 +311,24 @@
       </div>
       <v-container>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
-          <v-col cols="12" sm="6">
-            <v-img :src="getPlot('mappability')" contain style="margin:16px; position: relative" width="80%">
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <v-img :src="getPlot('mappability')" contain style="margin:16px; position: relative" max-width="70%">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getPlot('mappability'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-img :src="getPlot(getAnnotationPlotName())" contain style="margin:16px; position: relative" width="80%">
+          <v-col cols="12" lg="6"  class="flex_content_center">
+            <v-img :src="getPlot(getAnnotationPlotName())" contain style="margin:16px; position: relative" max-width="90%">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getAnnotationPlotName())">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-img :src="getPlot(getSankeyPlotName())" contain style="margin:16px; position: relative" width="80%">
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <v-img :src="getPlot(getSankeyPlotName())" contain style="margin:16px; position: relative; max-width:80%">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getSankeyPlotName())">
                 <v-icon small>fas fa-download</v-icon>
@@ -473,5 +473,35 @@ export default {
 .margin_mobile
   padding-left: 8px
   padding-right: 8px
+
+.flex_self_center
+  display: flex
+  justify-self: center
+  margin-left: auto !important
+  margin-right: auto !important
+
+.flex_self_start
+  justify-self: flex-start
+  margin-right: auto !important
+  margin-left: 0 !important
+
+.flex_self_start_alt
+  justify-self: flex-start
+  margin-right: auto !important
+  margin-left: auto !important
+
+.flex_self_end
+  justify-self: flex-end
+  margin-right: 0 !important
+  margin-left: auto !important
+
+.flex_self_end_alt
+  justify-self: flex-end
+  margin-right: auto !important
+  margin-left: auto !important
+
+.flex_content_center
+  justify-content: center
+  display: flex
 
 </style>
