@@ -37,11 +37,11 @@
         <TypeCard title="Network" text="TODO" :mobile="isMobile()">
           <template v-slot:default>
             <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
-              <ModeCard :image="getCardImage('cluster','gene')" type="gene" mode="network"
+              <ModeCard :image="getCardImage('network','gene')" type="gene" mode="network"
                         text="TODO" title="Gene"
                         @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
               <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
-              <ModeCard :image="getCardImage('cluster','disease')" type="disease" mode="network"
+              <ModeCard :image="getCardImage('network','disease')" type="disease" mode="network"
                         text="TODO" title="Disease"
                         @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
             </div>
