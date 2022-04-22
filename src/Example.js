@@ -63,6 +63,71 @@ export const gene_set = {
     reference_type:"gene"
 }
 
+export const gene_network = {
+    target_id_type:"symbol",
+    target : "A2M\n" +
+        "ABCA7\n" +
+        "ACE\n" +
+        "ADAM10\n" +
+        "APOE\n" +
+        "APP\n" +
+        "BAX\n" +
+        "BCL2\n" +
+        "BDNF\n" +
+        "CD2AP\n" +
+        "CLU\n" +
+        "GSK3B\n" +
+        "HFE\n" +
+        "IGF1R\n" +
+        "IGF2\n" +
+        "IL1B\n" +
+        "INS\n" +
+        "INSR\n" +
+        "LEP\n" +
+        "MPO\n" +
+        "NOS3\n" +
+        "NPY\n" +
+        "PICALM\n" +
+        "PLAU\n" +
+        "PSEN1\n" +
+        "PSEN2\n" +
+        "SORL1\n" +
+        "TREM2\n" +
+        "AD5\n" +
+        "AD6\n" +
+        "AD7\n" +
+        "AD8\n" +
+        "AD10\n" +
+        "AD11\n" +
+        "AD12\n" +
+        "AD13\n" +
+        "AD14\n" +
+        "AD15\n" +
+        "AD16\n" +
+        "AD17",
+    reference:"APOA2\n" +
+        "APOA5\n" +
+        "APOB\n" +
+        "APOC2\n" +
+        "APOE\n" +
+        "CETP\n" +
+        "EPHX2\n" +
+        "GHR\n" +
+        "GPIHBP1\n" +
+        "LDLR\n" +
+        "LDLRAP1\n" +
+        "LIPC\n" +
+        "LMF1\n" +
+        "LPL\n" +
+        "NOS3\n" +
+        "PCSK9\n" +
+        "PPP1R17\n" +
+        "USF1\n" +
+        "HYPLIP2",
+    reference_id_type:"symbol",
+    reference_type:"gene"
+}
+
 export const gene_cluster ={
     target_id_type:"symbol",
     target: "RGS20\tluminal\n" +
@@ -88,6 +153,22 @@ export const gene_cluster ={
 }
 
 export const disease_set={
+    target_id_type: "mesh",
+    target: "D020521\tStroke\n" +
+        "D000544\tAlzheimer\n" +
+        "D003704\tDementia\n" +
+        "D050197\tAtherosclerosis\n" +
+        "D001249\tAsthma\n" +
+        "D003924\tDiabetes mellitus type 2\n" +
+        "D010300\tParkinson disease\n" +
+        "D006333\tHeart failure\n" +
+        "D008881\tMigraine disorders\n" +
+        "D009203\tMyocardial infarction\n" +
+        "D006973\tHypertension\n" +
+        "D009765\tObesity"
+}
+
+export const disease_network={
     target_id_type: "mesh",
     target: "D020521\tStroke\n" +
         "D000544\tAlzheimer\n" +

@@ -59,8 +59,6 @@ const ApiService = {
             background_network: network,
             type: type
         };
-        console.log(this.baseUrl+"/network")
-        console.log(data)
         return this.post("/network", data).then(response => {
             return response.data
         })
@@ -112,7 +110,6 @@ const ApiService = {
             background_model: background,
             type: type
         }
-        console.log(data)
         return this.post("/cluster", data).then(response => {
             return response.data
         })
@@ -131,7 +128,6 @@ const ApiService = {
     },
     getResultFiles(taskID) {
         return this.get("/result_file_list?task=" + taskID).then(response => {
-            console.log(response.data)
             return response.data
         })
     }

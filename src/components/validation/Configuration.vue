@@ -853,9 +853,9 @@ export default {
     }
     ,
     loadExample: function (mode, type, example) {
-      if (mode === 'set' || mode === 'network') {
+      if (mode === 'set') {
         if (type === 'gene') {
-          if (example === 'set') {
+          if (example === 'set' || example === 'network') {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
             this.targetIDType = EXAMPLES.gene_set.target_id_type
             this.useReference = false
@@ -863,8 +863,11 @@ export default {
             this.backgroundModel = 'complete'
             this.references = ""
           }
-          if (example === 'network') {
-            console.log("TODO network example")
+          if (mode === 'network') {
+            this.readFileContent(EXAMPLES.gene_network.target, 'target')
+            this.targetIDType = EXAMPLES.gene_network.target_id_type
+            this.enriched = false
+            this.backgroundModel = 'network'
           }
           if (example === 'ref') {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
@@ -878,11 +881,14 @@ export default {
           }
         } else {
           if (example === 'network') {
-            console.log("TODO network example")
+            this.readFileContent(EXAMPLES.disease_network.target, 'target')
+            this.targetIDType = EXAMPLES.disease_network.target_id_type
+            this.backgroundModel = 'network'
           } else {
             this.readFileContent(EXAMPLES.disease_set.target, 'target')
             this.targetIDType = EXAMPLES.disease_set.target_id_type
             this.backgroundModel = 'term-pres'
+
           }
         }
       } else {
@@ -932,7 +938,7 @@ export default {
           background: this.backgroundModel,
         }
         if (this.mode === 'network') {
-          params.network = {name: this.networkFile.name ,data: await this.getNetwork()};
+          params.network = this.networkFile ? {name: this.networkFile.name ,data: await this.getNetwork()}: undefined;
         }
         if (this.useReference) {
           params.enriched = this.enriched
