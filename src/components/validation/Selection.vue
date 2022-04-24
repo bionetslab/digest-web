@@ -34,15 +34,16 @@
         </TypeCard>
       </v-col>
       <v-col cols="10" md="6">
-        <TypeCard title="Network" text="TODO" :mobile="isMobile()">
+        <TypeCard title="Subnetwork" text="Validate subnetworks induced by a gene or disease set w.r.t. functional or genetic
+        coherence." :mobile="isMobile()">
           <template v-slot:default>
             <div style="width: 100%; display: flex; align-self: flex-end; margin-top: auto; margin-bottom: auto;">
               <ModeCard :image="getCardImage('network','gene')" type="gene" mode="network"
-                        text="TODO" title="Gene"
+                        text="Validate subnetworks induced by a gene set w.r.t. functional coherence." title="Gene"
                         @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
               <v-divider v-if="isMobile()" vertical style="z-index: 99"></v-divider>
               <ModeCard :image="getCardImage('network','disease')" type="disease" mode="network"
-                        text="TODO" title="Disease"
+                        text="Validate subnetworks induced by a disease set w.r.t. genetic coherence." title="Disease"
                         @startValidationEvent="validationEvent" :mobile="mobile"></ModeCard>
             </div>
           </template>

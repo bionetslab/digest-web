@@ -84,6 +84,14 @@
             the significance of quality measure values on the clustering passed by the user with the help of empirical
             P-values.
           </ul>
+          <b>Subnetwork</b><br>
+          <ul>
+            An input set of diseases or genes can also be validated as a subnetwork, where the spanned network is
+            identified in a user entered network or a default network. The functional relevance score is calculated in
+            the same way as in the normal set mode described above.<br>
+            To calculate the empirical p-value, random target sets are extracted from the network that exhibit the
+            same number of connected components as the original input set.
+          </ul>
         </div>
       </div>
 
@@ -200,12 +208,28 @@
             <li><b>Relevance score(s) table:</b> For completeness, the user receives a table with the functional or
               genetic relevance score(s) determined for solely their input.
             </li>
-            <li><b>P-value plot:</b> In addition, the calculated P-values are displayed in a plot with a plotted cut-off
+            <li><b>Significance figures:</b>
+             <ul>
+              <li><b>P-value plot:</b> In addition, the calculated P-values are displayed in a plot with a plotted cut-off
               line at 0.05, which can be used directly by the user for a presentation of the results.
+              </li>
+               <li><b>Relevance scores plot:</b> For each annotation type, a distribution of the calculated relevance
+                 scores of the randomized data based on the respective type is displayed. Additionally the score of the
+                 original input is displayed with a red line next to a box showing the calculated p-value.
+              </li>
+             </ul>
             </li>
-            <li><b>Mappability plot:</b> Since the annotations are taken from biological databases, which are known to
-              have a study bias whereby some IDs have a high number of annotations and others have no annotations, the
-              last plot shows which frequency of input IDs had non-empty annotations.
+            <li><b>Mappability figures:</b>
+              <ul>
+                <li><b>Mappability plot:</b> Since the annotations are taken from biological databases, which are known to
+              have a study bias whereby some IDs have a high number of annotations and others have no annotations, this
+              plot shows which frequency of input IDs had non-empty annotations.</li>
+                <li><b>Term annotation plot:</b> For each annotation type, a distribution of the number of associated
+                  terms, genes or variants per id is displayed.</li>
+                <li><b>Top 10 terms plot:</b> A sankey plot showing the input, in set mode each individual id and in
+                  clustering mode each cluster, to the 10 most frequent annotation terms of the respective
+                  annotation type.</li>
+              </ul>
             </li>
           </ul>
           <br>

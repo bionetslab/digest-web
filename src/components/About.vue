@@ -5,8 +5,8 @@
     </div>
     <div :style="{padding: mobile ? '32px 16px' : '32px 64px'}">
       <b style="font-size: 1.5rem;">DIGEST</b>
-      <p style="text-align: justify; margin-top: 16px; margin-bottom: 32px"> DIGEST is a (“validation of <b>di</b>sease and <b>ge</b>ne <b>s</b>ets or
-        clus<b>t</b>erings”), is a Python-based validation tool available as a webinterface, as a <a href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
+      <p style="text-align: justify; margin-top: 16px; margin-bottom: 32px"> DIGEST is a (“in silico validation of <b>di</b>sease and <b>ge</b>ne <b>s</b>ets,
+        clus<b>t</b>erings or subnetworks”), is a Python-based validation tool available as a webinterface, as a <a href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
         <a href="https://digest-validation.net/documentation" target="_blank">REST API</a>. DIGEST greatly facilitates <i>in silico</i> validation of gene and disease sets or clusterings via fully
         automated validation pipelines comprising disease and gene ID mapping, enrichment analysis, comparisons of shared
         genes and variants, and background distribution estimation. Moreover, functionality is provided to automatically
