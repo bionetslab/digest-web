@@ -194,90 +194,11 @@
                 </tr>
               </template>
             </v-data-table>
-            <!--            <v-data-table v-if="mode==='network'" item-key="id" :items="edges" :class="{ 'ta_mobile':mobile }"-->
-            <!--                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end" dense-->
-            <!--                          :headers="networkHeaders">-->
-            <!--              <template v-slot:item.action="{item}">-->
-            <!--                <v-tooltip right>-->
-            <!--                  <template v-slot:activator="{on, attrs}">-->
-            <!--                    <v-btn icon v-on="on" v-bind="attrs" @click="removeEdgeEntry(item)" small>-->
-            <!--                      <v-icon>far fa-trash-can</v-icon>-->
-            <!--                    </v-btn>-->
-            <!--                  </template>-->
-            <!--                  <div style="width: 200px; text-align: justify">-->
-            <!--                    Remove entry from edge list!-->
-            <!--                  </div>-->
-            <!--                </v-tooltip>-->
-            <!--              </template>-->
-            <!--              <template v-slot:body.append="{headers}">-->
-            <!--                <tr>-->
-            <!--                  <td :style="{'text-align':headers[0].align}">-->
-            <!--                    <v-text-field dense label="ID1" style="margin-bottom: -16px; margin-top:16px;padding-bottom: 6px"-->
-            <!--                                  v-model="edgeID1Model">-->
-            <!--                      <template v-slot:append-outer>-->
-            <!--                        <v-tooltip right>-->
-            <!--                          <template v-slot:activator="{on, attrs}">-->
-            <!--                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
-            <!--                          </template>-->
-            <!--                          <div style="width: 250px; text-align: justify">-->
-            <!--                            Insert ID of node1.-->
-            <!--                          </div>-->
-            <!--                        </v-tooltip>-->
-            <!--                      </template>-->
-            <!--                    </v-text-field>-->
-            <!--                  </td>-->
-            <!--                  <td :style="{'text-align':headers[1].align}">-->
-            <!--                    <v-text-field dense label="ID2"-->
-            <!--                                  style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"-->
-            <!--                                  v-model="edgeID2Model">-->
-            <!--                      <template v-slot:append-outer>-->
-            <!--                        <v-tooltip right>-->
-            <!--                          <template v-slot:activator="{on, attrs}">-->
-            <!--                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
-            <!--                          </template>-->
-            <!--                          <div style="width: 250px; text-align: justify">-->
-            <!--                            Insert ID of node2.-->
-            <!--                          </div>-->
-            <!--                        </v-tooltip>-->
-            <!--                      </template>-->
-            <!--                    </v-text-field>-->
-            <!--                  </td>-->
-            <!--                  <td :style="{'text-align':headers[1].align}">-->
-            <!--                    <v-text-field dense label="Edge type"-->
-            <!--                                  style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"-->
-            <!--                                  v-model="edgeNameModel">-->
-            <!--                      <template v-slot:append-outer>-->
-            <!--                        <v-tooltip right>-->
-            <!--                          <template v-slot:activator="{on, attrs}">-->
-            <!--                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>-->
-            <!--                          </template>-->
-            <!--                          <div style="width: 250px; text-align: justify">-->
-            <!--                            (optional) Add an edge type.-->
-            <!--                          </div>-->
-            <!--                        </v-tooltip>-->
-            <!--                      </template>-->
-            <!--                    </v-text-field>-->
-            <!--                  </td>-->
-            <!--                  <td :style="{'text-align':headers[2].align, 'width':headers[2].width}">-->
-            <!--                    <v-tooltip right>-->
-            <!--                      <template v-slot:activator="{attrs, on}">-->
-            <!--                        <v-btn v-on="on" v-bind="attrs" icon @click="addEdgeEntry()" small>-->
-            <!--                          <v-icon>far fa-square-plus</v-icon>-->
-            <!--                        </v-btn>-->
-            <!--                      </template>-->
-            <!--                      <div style="width: 200px; text-align: justify">-->
-            <!--                        Add new entry to entry list!-->
-            <!--                      </div>-->
-            <!--                    </v-tooltip>-->
-            <!--                  </td>-->
-            <!--                </tr>-->
-            <!--              </template>-->
-            <!--            </v-data-table>-->
           </v-col>
         </v-row>
       </v-container>
       <v-divider></v-divider>
-      <template v-if="mode==='set'">
+      <template v-if="mode==='set' || mode ==='network'">
         <div style="display: flex; justify-content: center;">
           <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">References (optional)</v-subheader>
         </div>
@@ -504,7 +425,7 @@
                             <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 400px;">
-                            <div style="display: flex">
+                            <div style="display: flex" v-if="getBackgroundModelItems().map(e=>e.value).indexOf('complete')>-1">
                               <div style="width: 40%">
                                 Fully randomized:
                               </div>
@@ -518,7 +439,7 @@
                                 size.
                               </div>
                             </div>
-                            <div style="display: flex; margin-top: 8px;">
+                            <div style="display: flex; margin-top: 8px;" v-if="getBackgroundModelItems().map(e=>e.value).indexOf('term-pres')>-1">
                               <div style="width: 40%">
                                 Term-size preserving:
                               </div>
@@ -531,6 +452,14 @@
                                 the
                                 distribution
                                 of the annotation set sizes of the {{ type }} contained in target set.
+                              </div>
+                            </div>
+                            <div style="display: flex; margin-top: 8px;" v-if="getBackgroundModelItems().map(e=>e.value).indexOf('network')>-1">
+                              <div style="width: 40%">
+                                Network-based:
+                              </div>
+                              <div style="width: 60%; text-align: justify">
+                               TODO
                               </div>
                             </div>
                           </div>
@@ -905,13 +834,12 @@ export default {
 
     getBackgroundModelItems: function () {
       let items = this.backgroundModels;
-
+      if(this.mode !== 'network')
+        items = items.filter(e=>e.value!=='network')
       if (this.mode === 'cluster')
         items = items.filter(e => e.value === 'term-pres')
-
       if (this.mode === 'network')
         items = items.filter(e => e.value === 'network')
-
       return items
     },
 
