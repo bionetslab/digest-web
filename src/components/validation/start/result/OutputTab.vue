@@ -337,6 +337,81 @@
           </v-col>
         </v-row>
       </v-container>
+      <template v-if="type==='gene'">
+        <v-divider></v-divider>
+        <div style="display: flex; justify-content: center">
+          <v-subheader>
+            External resources
+          </v-subheader>
+        </div>
+        <v-container>
+          <v-row justify="center" v-if="type==='gene'">
+            <v-col :cols="3" style=" margin:16px">
+              <b>Functional enrichment (g:Profiler)</b>
+              <v-container v-if="mode==='cluster'">
+                <v-row justify="center">
+                  <v-col cols="12">
+                    <v-tooltip right>
+                      <template v-slot:activator="{on, attrs}">
+                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                          <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">All</a>
+                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                        </v-chip>
+                      </template>
+                      <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                        target
+                        genes in g:Profiler.
+                      </div>
+                    </v-tooltip>
+                    <v-tooltip right v-for="cluster in getClusterNames(input.target)"
+                               :key="cluster+'_gprofiler'">
+                      <template v-slot:activator="{on, attrs}">
+                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                          <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
+                             target="_blank">{{ cluster }}</a>
+                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                        </v-chip>
+                      </template>
+                      <div style="width: 200px; text-align: justify">Show the functional enrichment for all
+                        {{ cluster }} cluster
+                        genes in g:Profiler.
+                      </div>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-container v-else>
+                <v-row justify="center">
+                  <v-col cols="12" class="flex_content_center">
+                    <v-tooltip right>
+                      <template v-slot:activator="{on, attrs}">
+                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                          <a :href="getGProfilerUrl(input.target)" target="_blank">Targets</a>
+                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                        </v-chip>
+                      </template>
+                      <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                        genes in g:Profiler.
+                      </div>
+                    </v-tooltip>
+                    <v-tooltip right v-if="input.reference">
+                      <template v-slot:activator="{on, attrs}">
+                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                          <a :href="getGProfilerUrl(input.reference)" target="_blank">References</a>
+                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                        </v-chip>
+                      </template>
+                      <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
+                        genes in g:Profiler.
+                      </div>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
     </template>
   </div>
 </template>
@@ -349,6 +424,7 @@ export default {
     type: String,
     csvs: Array,
     plots: Array,
+    input: Object,
     result: Object,
     referenceType: String,
     mobile: {
@@ -446,6 +522,23 @@ export default {
         return value.length > (decimals + 2) ? value.substring(0, Math.max(decimals + 2, idx)) : value
       }
       return value
+    },
+
+    getGProfilerUrl: function (list) {
+      const queryString = list.join('%0A');
+      const url = 'http://biit.cs.ut.ee/gprofiler/gost?' +
+          'organism=hsapiens&' +
+          `query=${queryString}&` +
+          'ordered=false&' +
+          'all_results=false&' +
+          'no_iea=false&' +
+          'combined=false&' +
+          'measure_underrepresentation=false&' +
+          'domain_scope=annotated&' +
+          'significance_threshold_method=g_SCS&' +
+          'user_threshold=0.05&' +
+          'sources=GO:MF,GO:CC,GO:BP,KEGG,TF,REAC,MIRNA,HPA,CORUM,HP,WP'
+      return url
     },
 
   }

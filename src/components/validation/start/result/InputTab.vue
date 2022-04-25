@@ -153,7 +153,7 @@
               </v-container>
               <v-container v-else>
                 <v-row justify="center">
-                  <v-col cols="12">
+                  <v-col cols="12" class="flex_content_center">
                     <v-tooltip right>
                       <template v-slot:activator="{on, attrs}">
                         <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">

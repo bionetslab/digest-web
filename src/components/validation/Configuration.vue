@@ -62,7 +62,9 @@
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
-        <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">{{ mode==='network' ?"Nodes of induced subnetwork" :"Targets" }}</v-subheader>
+        <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">
+          {{ mode === 'network' ? "Nodes of induced subnetwork" : "Targets" }}
+        </v-subheader>
       </div>
       <v-alert v-if="errorTargetID" type="error" dense>Missing target ID type selection</v-alert>
       <v-alert v-if="errorTargetIDs" type="error" dense>Missing targetIDs</v-alert>
@@ -72,7 +74,8 @@
             <v-container style="padding-top: 16px">
               <v-row justify="center" justify-lg="start">
                 <v-col cols="12" md="6" lg="12" class="flex_content_center">
-                  <v-select :label="mode==='network' ?'Node ID type':'Target ID type'" :items="targetIDTypes[type]" v-model="targetIDType"
+                  <v-select :label="mode==='network' ?'Node ID type':'Target ID type'" :items="targetIDTypes[type]"
+                            v-model="targetIDType"
                             style="max-width: 210px; min-width: 210px" outlined dense filled hide-details>
                     <template v-slot:append-outer>
                       <v-tooltip right>
@@ -80,7 +83,8 @@
                           <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                         </template>
                         <div style="width: 250px; text-align: justify">
-                          ID type of inserted {{mode==='network' ? 'node' : 'target'}} IDs. Click on the drop-down to see the supported types.
+                          ID type of inserted {{ mode === 'network' ? 'node' : 'target' }} IDs. Click on the drop-down
+                          to see the supported types.
                         </div>
                       </v-tooltip>
                     </template>
@@ -113,7 +117,8 @@
             </v-container>
           </v-col>
           <v-col cols="12" lg="8" :class="{'flex_content_center':mobile}">
-            <v-textarea v-if="mode==='set' || mode==='network'" :label="mode==='network' ? 'Node IDs' : 'Target IDs'" v-model="targets"
+            <v-textarea v-if="mode==='set' || mode==='network'" :label="mode==='network' ? 'Node IDs' : 'Target IDs'"
+                        v-model="targets"
                         :class="{ 'ta_mobile':mobile }"
                         no-resize
                         filled
@@ -231,7 +236,7 @@
                 <v-row justify="center" justify-lg="start">
                   <v-col cols="12" md="6" lg="12" class="flex_content_center">
                     <v-select v-if="type==='gene'" outlined :disabled="!useReference" filled label="Reference type"
-                              :items="refTypes" v-model="refType" hide-details
+                              :items="refTypes" v-model="refType" hide-details @change="(val)=>{ if(val ==='disease') this.enriched=false}"
                               style="max-width: 180px;" :class="{'flex_self_center':mobile}" dense>
                       <template v-slot:append-outer>
                         <v-tooltip right>
@@ -326,15 +331,20 @@
         <div style="display: flex; justify-content: center">
           <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>
         </div>
+        <v-alert v-if="errorNetworkFormat" type="error" dense>Network format is not of accepted type (.sif, .gt,
+          .graphml)!
+        </v-alert>
+        <v-alert v-if="errorNetworkIDType" type="error" dense>Missing node id type definition!</v-alert>
+        <v-alert v-if="errorNetworkNodeName" type="error" dense>Missing node attribute name!</v-alert>
         <v-container style="margin-bottom: 32px">
           <v-row justify="center">
             <v-col cols="12" :lg="6" :md="8" :sm="10" class="flex_content_center">
               <v-file-input ref="networkInput" label="Network"
-                            hide-details
                             dense
                             single-line
                             show-size
                             style="width: 210px; max-width: 80% ;  cursor: pointer"
+                            accept=".sif,.graphml,.gt" :rules="networkRule"
                             v-model="networkFile" prepend-icon="fas fa-arrow-up-from-bracket" filled outlined
                             prepend-inner-icon="">
                 <template v-slot:append-outer>
@@ -342,12 +352,47 @@
                     <template v-slot:activator="{on, attrs}">
                       <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                     </template>
-                    <div>
-                      Upload a network with {{ type }} nodes in sif or graphml format.
+                    <div style="max-width: 300px">
+                      Upload a network with {{ type }} nodes in sif, gt or graphml format. If the given network is of
+                      type graphml or gt, the name of the vertex property where the IDs are stored is needed.
                     </div>
                   </v-tooltip>
                 </template>
               </v-file-input>
+            </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-col cols="12" sm="5" class="flex_content_center">
+              <v-select outlined :disabled="!networkFile" filled label="Network node type"
+                        :items="idMap[type]" v-model="nodeType" hide-details
+                        style="max-width: 220px" :class="{'flex_self_center':mobile}" dense>
+                <template v-slot:append-outer>
+                  <v-tooltip right>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify">
+                      Select the ID space the {{ type }} nodes in your selected background network are in.
+                    </div>
+                  </v-tooltip>
+                </template>
+              </v-select>
+            </v-col>
+            <v-col cols="12" sm="5" class="flex_content_center">
+              <v-text-field style="max-width: 220px" outlined filled dense v-model="nodeName"
+                            :disabled="!networkFile || !(networkFile.name.endsWith('.gt') || networkFile.name.endsWith('.graphml'))"
+                            label="Property name">
+                <template v-slot:append-outer>
+                  <v-tooltip right>
+                    <template v-slot:activator="{on, attrs}">
+                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify">
+                      Define the node or prop name of the {{ type }} nodes where the ID is located.
+                    </div>
+                  </v-tooltip>
+                </template>
+              </v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -365,7 +410,7 @@
                   <v-col class="flex_content_center" cols="12" lg="4" md="6" v-if="mode==='set' || mode==='network'">
                     <v-checkbox
                         style="margin-top: 4px; max-width: 140px;"
-                        :disabled="!useReference"
+                        :disabled="!useReference || refType === 'disease'"
                         v-model="enriched"
                         hide-details
                         label="Enriched">
@@ -575,6 +620,9 @@ export default {
       errorTargetIDs: false,
       errorReferenceID: false, width: "50px",
       errorReferenceIDs: false,
+      errorNetworkFormat: false,
+      errorNetworkIDType: false,
+      errorNetworkNodeName: false,
       clusterIDModel: "",
       clusterModel: "",
       edgeID1Model: "",
@@ -592,6 +640,8 @@ export default {
       replace: 100,
       distanceModel: "jaccard",
       refType: "disease",
+      nodeType: "",
+      nodeName: "",
       clusterHeaders: [
         {text: 'Target ID', align: 'start', sortable: true, value: 'id'},
         {text: 'Cluster', align: 'start', sortable: true, value: 'cluster'},
@@ -599,11 +649,8 @@ export default {
       ],
       clusters: [],
       edges: [],
-      networkHeaders: [
-        {text: 'ID1', align: 'start', sortable: true, value: 'id1'},
-        {text: 'ID2', align: 'start', sortable: true, value: 'id2'},
-        {text: 'Edge', align: 'start', sortable: true, value: 'edge'},
-        {text: 'Action', align: 'end', sortable: false, width: "50px", value: 'action'}
+      networkRule: [
+        value => !value || (value.name.endsWith('.gt') || value.name.endsWith('.graphml') || value.name.endsWith('.sif')) || 'Network file must have the suffix .sif, .gt or .graphml.'
       ],
       refTypes: [
         {text: "Gene", value: "gene"},
@@ -613,7 +660,7 @@ export default {
         {text: "Jaccard index", value: "jaccard"},
         {text: "Overlap coefficient", value: "overlap"}
       ],
-      backgroundModel: this.mode === 'cluster' ? 'term-pres' : (this.mode === 'network' ? 'network' : "complete"),
+      backgroundModel: this.mode === 'cluster' ? 'complete' : (this.mode === 'network' ? 'network' : "complete"),
       backgroundModels: [
         {text: "Fully randomized", value: "complete"},
         {text: "Term-size preserving", value: "term-pres"},
@@ -861,12 +908,13 @@ export default {
     }
     ,
 
+
     getBackgroundModelItems: function () {
       let items = this.backgroundModels;
       if (this.mode !== 'network')
         items = items.filter(e => e.value !== 'network')
       if (this.mode === 'cluster')
-        items = items.filter(e => e.value === 'term-pres')
+        items = items.filter(e => e.value === 'complete')
       if (this.mode === 'network')
         items = items.filter(e => e.value === 'network')
       return items
@@ -882,6 +930,12 @@ export default {
         this.errorReferenceIDs = false
         this.errorReferenceID = false
       }
+      if (this.mode === 'network' && this.networkFile) {
+        this.errorNetworkFormat = !(this.networkFile.name.endsWith('.sif') || this.networkFile.name.endsWith('.graphml') || this.networkFile.name.endsWith('.gt'))
+        this.errorNetworkIDType = !this.nodeType
+        if (!this.networkFile.name.endsWith('.sif'))
+          this.errorNetworkNodeName = !this.nodeName || this.nodeName.length===0
+      }
       let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs
       if (!error) {
         let route;
@@ -895,8 +949,8 @@ export default {
           background: this.backgroundModel,
         }
         if (this.mode === 'network') {
-          params.network = this.networkFile ? {name: this.networkFile.name, data: await this.getNetwork()} : undefined;
-          this.route = this.useReference ? 'subnetwork' : 'subnetwork-set'
+          params.network = this.networkFile ? {name: this.networkFile.name, data: await this.getNetwork(), id_type:this.nodeType, prop_name:this.nodeName} : undefined;
+          route = 'network'
         } else if (this.useReference) {
           params.enriched = this.enriched
           params.referenceID = this.referenceIDType

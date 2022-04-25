@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container style="padding-bottom: 32px">
     <v-row justify="center">
       <v-col cols="10" md="6">
         <TypeCard title="Set" text="Validate gene or disease sets w.r.t. functional or genetic coherence." :mobile="isMobile()">
@@ -54,10 +54,6 @@
 
 
 
-<!--  <div :style="{width: '100%', display: isMobile() ? '': 'flex', 'justify-content': 'center', padding: isMobile() ? '8px' :''}">-->
-<!--   -->
-<!--    -->
-<!--  </div>-->
 </template>
 
 <script>

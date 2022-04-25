@@ -43,6 +43,7 @@ const ApiService = {
             background_model: background,
             type: type
         };
+        console.log(data)
         return this.post("/set", data).then(response => {
             return response.data
         })
@@ -56,9 +57,10 @@ const ApiService = {
             replace: replace,
             distance: distance,
             background_model: background,
-            background_network: network,
+            network_data: network,
             type: type
         };
+        console.log(data)
         return this.post("/subnetwork", data).then(response => {
             return response.data
         })
@@ -74,7 +76,7 @@ const ApiService = {
             replace: replace,
             distance: distance,
             background_model: background,
-            background_network: network,
+            network_data: network,
             type: type
         };
         return this.post("/subnetwork_set", data).then(response => {
@@ -128,7 +130,8 @@ const ApiService = {
             background_model: background,
             type: type
         }
-        return this.post("/cluster", data).then(response => {
+        console.log(data)
+        return this.post("/clustering", data).then(response => {
             return response.data
         })
     },

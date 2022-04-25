@@ -65,46 +65,42 @@ export const gene_set = {
 
 export const gene_network = {
     target_id_type:"symbol",
-    target : "A2M\n" +
-        "ABCA7\n" +
-        "ACE\n" +
-        "ADAM10\n" +
-        "APOE\n" +
-        "APP\n" +
-        "BAX\n" +
-        "BCL2\n" +
-        "BDNF\n" +
-        "CD2AP\n" +
-        "CLU\n" +
-        "GSK3B\n" +
-        "HFE\n" +
-        "IGF1R\n" +
-        "IGF2\n" +
-        "IL1B\n" +
-        "INS\n" +
-        "INSR\n" +
-        "LEP\n" +
-        "MPO\n" +
-        "NOS3\n" +
-        "NPY\n" +
-        "PICALM\n" +
-        "PLAU\n" +
-        "PSEN1\n" +
-        "PSEN2\n" +
-        "SORL1\n" +
-        "TREM2\n" +
-        "AD5\n" +
-        "AD6\n" +
-        "AD7\n" +
-        "AD8\n" +
-        "AD10\n" +
-        "AD11\n" +
-        "AD12\n" +
-        "AD13\n" +
-        "AD14\n" +
-        "AD15\n" +
-        "AD16\n" +
-        "AD17",
+    target : "RB1\n"+
+    "CXCL9\n"+
+    "IFITM1\n"+
+    "CD81\n"+
+    "IFIT1\n"+
+    "IFIT3\n"+
+    "IFIT2\n"+
+    "HERC5\n"+
+    "ADAP2\n"+
+    "IFI16\n"+
+    "CCND1\n"+
+    "CXCR3\n"+
+    "CCL5\n"+
+    "UBC\n"+
+    "BRD8\n"+
+    "IKBKG\n"+
+    "CCR5\n"+
+    "TRIM22\n"+
+    "HERC6\n"+
+    "DAXX\n"+
+    "DDX58\n"+
+    "MX1\n"+
+    "STAT3\n"+
+    "NME2\n"+
+    "FANCA\n"+
+    "EIF2AK2\n"+
+    "SELP\n"+
+    "CXCL10\n"+
+    "CXCL11\n"+
+    "VCAN\n"+
+    "CREB1\n"+
+    "SERPING1\n"+
+    "XAF1\n"+
+    "TP53\n"+
+    "FBN1\n"+
+    "BIRC3",
     reference:"APOA2\n" +
         "APOA5\n" +
         "APOB\n" +

@@ -33,7 +33,7 @@
           </v-tab-item>
 
           <v-tab-item style="width: 100%">
-            <OutputTab @downloadEvent="downloadFile" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :type="type" :mode="mode" :reference-type="getIDType(input.reference_id)"></OutputTab>
+            <OutputTab @downloadEvent="downloadFile" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :input="input"  :type="type" :mode="mode" :reference-type="getIDType(input.reference_id)"></OutputTab>
           </v-tab-item>
         </v-tabs-items>
       </div>
@@ -195,20 +195,20 @@ export default {
           })
           break;
         }
-        case "subnetwork": {
-          this.$http.validate_subnetwork(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background, this.params.network, this.params.type).then(response => {
-            this.saveTaskId(response)
-          }).catch(() => {
-            this.error = true
-          })
-          break;
-        }
-        case "subnetwork-set": {
-          this.$http.validate_subnetwork_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference,this.params.runs, this.params.replace, this.params.distance, this.params.background, this.params.network, this.params.type).then(response => {
-            this.saveTaskId(response)
-          }).catch(() => {
-            this.error = true
-          })
+        case "network": {
+          if(!this.params.referenceID) {
+            this.$http.validate_subnetwork(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background, this.params.network, this.params.type).then(response => {
+              this.saveTaskId(response)
+            }).catch(() => {
+              this.error = true
+            })
+          }else{
+            this.$http.validate_subnetwork_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference,this.params.runs, this.params.replace, this.params.distance, this.params.background, this.params.network, this.params.type).then(response => {
+              this.saveTaskId(response)
+            }).catch(() => {
+              this.error = true
+            })
+          }
           break;
         }
         case "id-set": {
