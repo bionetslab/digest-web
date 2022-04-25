@@ -29,7 +29,7 @@
         <v-divider></v-divider>
         <v-tabs-items v-model="resultTab">
           <v-tab-item>
-            <InputTab @downloadEvent="downloadFile" :id-map="idMap" :type="type" :mode="mode" :mobile="mobile" :input="input" :zips="zips"></InputTab>
+            <InputTab @downloadEvent="downloadFile" :task-i-d="taskID" :id-map="idMap" :type="type" :mode="mode" :mobile="mobile" :input="input" :zips="zips"></InputTab>
           </v-tab-item>
 
           <v-tab-item style="width: 100%">

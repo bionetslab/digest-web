@@ -195,6 +195,7 @@ export default {
     input: Object,
     mode: String,
     type: String,
+    taskID:String,
     idMap: Object,
     mobile: {
       type: Boolean,
