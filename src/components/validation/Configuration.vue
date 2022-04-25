@@ -329,8 +329,10 @@
       </template>
       <template v-if="mode === 'network'">
         <div style="display: flex; justify-content: center">
-          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>
+<!--          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>-->
+          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network</v-subheader>
         </div>
+        <v-alert v-if="errorNetwork" type="error" dense>Please upload a valid network!</v-alert>
         <v-alert v-if="errorNetworkFormat" type="error" dense>Network format is not of accepted type (.sif, .gt,
           .graphml)!
         </v-alert>
@@ -616,6 +618,7 @@ export default {
       },
       targetFile: undefined,
       referenceFile: undefined,
+      errorNetwork:false,
       errorTargetID: false,
       errorTargetIDs: false,
       errorReferenceID: false, width: "50px",
@@ -803,20 +806,6 @@ export default {
     }
     ,
 
-    removeEdgeEntry: function (item) {
-      this.edges.splice(this.edges.indexOf(item), 1)
-    }
-    ,
-    addEdgeEntry: function () {
-      if (this.edgeID1Model && this.edgeID2Model && this.edgeID1Model.length > 0 && this.edgeID2Model.length > 0) {
-        this.addToEdges(this.edgeID1Model, this.edgeID2Model, this.edgeNameModel)
-        this.edgeID1Model = ""
-        this.edgeID2Model = ""
-        this.edgeNameModel = ""
-      }
-    }
-    ,
-
     addTarget: function (entry) {
       if (this.targets.indexOf(entry) === -1)
         this.targets.push(entry)
@@ -930,13 +919,15 @@ export default {
         this.errorReferenceIDs = false
         this.errorReferenceID = false
       }
+      if(this.mode && !this.networkFile)
+        this.errorNetwork=true
       if (this.mode === 'network' && this.networkFile) {
         this.errorNetworkFormat = !(this.networkFile.name.endsWith('.sif') || this.networkFile.name.endsWith('.graphml') || this.networkFile.name.endsWith('.gt'))
         this.errorNetworkIDType = !this.nodeType
         if (!this.networkFile.name.endsWith('.sif'))
           this.errorNetworkNodeName = !this.nodeName || this.nodeName.length===0
       }
-      let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs
+      let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs || this.errorNetworkIDType || this.errorNetworkFormat || this.errorNetworkNodeName || this.errorNetwork
       if (!error) {
         let route;
         let params = {
