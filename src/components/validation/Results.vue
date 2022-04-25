@@ -99,6 +99,7 @@ export default {
     },
 
     downloadFile: function (name) {
+      console.log(name)
       window.open(name)
     },
     getClusterNames: function (clustering) {

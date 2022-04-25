@@ -265,9 +265,15 @@
             <li>set-set
               <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
               <code><b>POST </b>api.digest-validation.net/set_set</code></li>
-            <li>cluster
+            <li>subnetwork
               <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
-              <code><b>POST </b>api.digest-validation.net/cluster</code></li>
+              <code><b>POST </b>api.digest-validation.net/subnetwork</code></li>
+            <li>subnetwork-set
+              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <code><b>POST </b>api.digest-validation.net/subnetwork_set</code></li>
+            <li>clustering
+              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <code><b>POST </b>api.digest-validation.net/clustering</code></li>
           </ul>
           <br>
           The attribute names for the <b>POST</b> request object are identical to parameter names within the DIGEST
@@ -276,7 +282,10 @@
           <v-tabs v-model="apiParamModel">
             <v-tab>set</v-tab>
             <v-tab>set-set</v-tab>
-            <v-tab>cluster</v-tab>
+            <v-tab>subnetwork</v-tab>
+            <v-tab>subnetwork-set</v-tab>
+            <v-tab>clustering</v-tab>
+
           </v-tabs>
           <v-tabs-items v-model="apiParamModel">
             <v-tab-item style="display: flex; justify-content: flex-start">
@@ -459,6 +468,270 @@
                     <td><code>{distance:'complete'}</code></td>
                     <td>Sets the background model, determining how sets for p-value calculation are sampled. Has to be
                       one of <code>['complete','term-pres']</code></td>
+                  </tr>
+                  <tr>
+                    <td>type (optional)</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{type:'gene'}</code></td>
+                    <td>Can be used to save the type of the target set with the job. It is not used for computation but
+                      is returned when requesting the job status. Can be anything but should be one of <code>['disease','gene']</code>
+                    </td>
+                  </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-tab-item>
+            <v-tab-item style="display: flex; justify-content: flex-start">
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                  <tr>
+                    <th>
+                      Parameter
+                    </th>
+                    <th>
+                      Type
+                    </th>
+                    <th>
+                      Default
+                    </th>
+                    <th>
+                      Example
+                    </th>
+                    <th style="width:50%">
+                      Description
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>target_id</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{target_id:'symbol'}</code></td>
+                    <td>Describes the ID space of the target input. For genes has to be one of <code>['entrez','ensembl','symbol','uniprot']</code>
+                      or for disorders one of
+                      <code>['mondo','omim','snomedct','umls','orpha','mesh','doid','ICD-10']</code></td>
+                  </tr>
+                  <tr>
+                    <td>target</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{target:['PTEN','TP53','BRCA2']}</code></td>
+                    <td>Provides a list of target genes or disorders in the selected ID space. the entries have to be in
+                      <b><i>string</i></b> format!
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>runs</td>
+                    <td>integer</td>
+                    <td>1000</td>
+                    <td><code>{runs:1000}</code></td>
+                    <td>Defines how many times sets are sampled for the p-value calculation.</td>
+                  </tr>
+                  <tr>
+                    <td>replace</td>
+                    <td>integer</td>
+                    <td>100</td>
+                    <td><code>{replace:80}</code></td>
+                    <td>Defines the percentage of elements of the original set to be altered by sampling.</td>
+                  </tr>
+                  <tr>
+                    <td>distance</td>
+                    <td>string</td>
+                    <td>jaccard</td>
+                    <td><code>{distance:'jaccard'}</code></td>
+                    <td>Sets the distance measure to be used to determine similarity between target and sampeled sets.
+                      Has to be one of <code>['jaccard','overlap']</code></td>
+                  </tr>
+                  <tr>
+                    <td>background_model</td>
+                    <td>string</td>
+                    <td>complete</td>
+                    <td><code>{background_model:'complete'}</code></td>
+                    <td>Sets the background model, determining how sets for p-value calculation are sampled. Has to be
+                      one of <code>['complete','term-pres']</code></td>
+                  </tr>
+                  <tr>
+                    <td>network_data</td>
+                    <td>object</td>
+                    <td>-</td>
+                    <td><code>{data:'', id_type: '', name:'', prop_name:''}</code></td>
+                    <td>Sets all data for a custom network used in the network-based background model. Networks in <a href="https://gephi.org/users/supported-graph-formats/graphml-format/" target="_blank">.graphml</a>, <a href="https://graph-tool.skewed.de/static/doc/gt_format.html" target="_blank">.gt</a>, or <a target="_blank" href="http://www.cbmc.it/fastcent/doc/SifFormat.htm">.sif</a> format are accepted.</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>data</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{data:'PD94bWwgdmVyc...'}</code></td>
+                    <td>Base64 encoded content of the network file. Make sure to remove the prefix (in the form of 'data:...;base64,')</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>id_type</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{id_type:'symbol'}</code></td>
+                    <td>Describes the ID space of the network nodes. The allowed options are equal to those of the <code>target_id</code> parameters.</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>name</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{name:'interactome.graphml'}</code></td>
+                    <td>Give the name of the original network file. The suffix is used to determine the network format.</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>prop_name</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{prop_name:'id_prop'}</code></td>
+                    <td><b><i>Mandatory</i></b> for <b><i>graphml</i></b> and <b><i>gt</i></b> format networks. Sets the node property containing the node ID.</td>
+                  </tr>
+                  <tr>
+                    <td>type (optional)</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{type:'gene'}</code></td>
+                    <td>Can be used to save the type of the target set with the job. It is not used for computation but
+                      is returned when requesting the job status. Can be anything but should be one of <code>['disease','gene']</code>
+                    </td>
+                  </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-tab-item>
+            <v-tab-item>
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                  <tr>
+                    <th>
+                      Parameter
+                    </th>
+                    <th>
+                      Type
+                    </th>
+                    <th>
+                      Default
+                    </th>
+                    <th>
+                      Example
+                    </th>
+                    <th>
+                      Description
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>target_id</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{target_id:'symbol'}</code></td>
+                    <td>Describes the ID space of the target input. For genes has to be one of <code>['entrez','ensembl','symbol','uniprot']</code>
+                      or for disorders one of
+                      <code>['mondo','omim','snomedct','umls','orpha','mesh','doid','ICD-10']</code></td>
+                  </tr>
+                  <tr>
+                    <td>target</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{target:['PTEN','TP53','BRCA2']}</code></td>
+                    <td>Provides a list of target genes or disorders in the selected ID space. the entries have to be in
+                      <b><i>string</i></b> format!
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>reference_id</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{reference_id:'symbol'}</code></td>
+                    <td>Describes the ID space of the reference input. For genes has to be one of <code>['entrez','ensembl','symbol','uniprot']</code>
+                      or for disorders one of
+                      <code>['mondo','omim','snomedct','umls','orpha','mesh','doid','ICD-10']</code></td>
+                  </tr>
+                  <tr>
+                    <td>reference</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{reference:['PTEN','TP53','BRCA2']}</code></td>
+                    <td>Provides a list of reference genes or disorders in the selected ID space. the entries have to be
+                      in <b><i>string</i></b> format!
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>runs</td>
+                    <td>integer</td>
+                    <td>1000</td>
+                    <td><code>{runs:1000}</code></td>
+                    <td>Defines how many times sets are sampled for the p-value calculation.</td>
+                  </tr>
+                  <tr>
+                    <td>replace</td>
+                    <td>integer</td>
+                    <td>100</td>
+                    <td><code>{replace:80}</code></td>
+                    <td>Defines the percentage of elements of the original set to be altered by sampling.</td>
+                  </tr>
+                  <tr>
+                    <td>enriched</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td><code>{enriched:false}</code></td>
+                    <td>Limits functional annotations of the reference set to only enriched ones. <b>Requires more than
+                      one reference entry!</b></td>
+                  </tr>
+                  <tr>
+                    <td>distance</td>
+                    <td>string</td>
+                    <td>jaccard</td>
+                    <td><code>{distance:'jaccard'}</code></td>
+                    <td>Sets the distance measure to be used to determine similarity between target and sampeled sets.
+                      Has to be one of <code>['jaccard','overlap']</code></td>
+                  </tr>
+                  <tr>
+                    <td>background_model</td>
+                    <td>string</td>
+                    <td>complete</td>
+                    <td><code>{distance:'complete'}</code></td>
+                    <td>Sets the background model, determining how sets for p-value calculation are sampled. Has to be
+                      one of <code>['complete','term-pres']</code></td>
+                  </tr>
+                  <tr>
+                    <td>network_data</td>
+                    <td>object</td>
+                    <td>-</td>
+                    <td><code>{data:'', id_type: '', name:'', prop_name:''}</code></td>
+                    <td>Sets all data for a custom network used in the network-based background model. Networks in <a href="https://gephi.org/users/supported-graph-formats/graphml-format/" target="_blank">.graphml</a>, <a href="https://graph-tool.skewed.de/static/doc/gt_format.html" target="_blank">.gt</a>, or <a target="_blank" href="http://www.cbmc.it/fastcent/doc/SifFormat.htm">.sif</a> format are accepted.</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>data</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{data:'PD94bWwgdmVyc...'}</code></td>
+                    <td>Base64 encoded content of the network file. Make sure to remove the prefix (in the form of 'data:...;base64,')</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>id_type</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{id_type:'symbol'}</code></td>
+                    <td>Describes the ID space of the network nodes. The allowed options are equal to those of the <code>target_id</code> parameters.</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>name</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{name:'interactome.graphml'}</code></td>
+                    <td>Give the name of the original network file. The suffix is used to determine the network format.</td>
+                  </tr>
+                  <tr>
+                    <td><code style="color: gray; padding-right: 0; padding-left: 0">network_data.</code>prop_name</td>
+                    <td>string</td>
+                    <td>-</td>
+                    <td><code>{prop_name:'id_prop'}</code></td>
+                    <td><b><i>Mandatory</i></b> for <b><i>graphml</i></b> and <b><i>gt</i></b> format networks. Sets the node property containing the node ID.</td>
                   </tr>
                   <tr>
                     <td>type (optional)</td>
@@ -675,10 +948,10 @@
           <ul style="margin-bottom: 32px">
             <li>status
               <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
-              <code><b>GET </b>api.digest-validation.net/result?task=$task</code></li>
+              <code><b>GET </b>api.digest-validation.net/result?task=${task}</code></li>
           </ul>
           The response object will include the following attributes:
-          <v-simple-table>
+          <v-simple-table style="margin-bottom: 32px">
             <template v-slot:default>
               <thead>
               <tr>
@@ -719,6 +992,25 @@
               </tbody>
             </template>
           </v-simple-table>
+          A <b><i>list of files</i></b> that are generated based on the validation results can be obtained through the following route:
+          <ul>
+            <li>result_file_list
+              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <code><b>GET </b>api.digest-validation.net/result_file_list?task=${task}</code>
+            </li>
+          </ul>
+          Any result file including an input parameter json file, figures and the result files can be downloaded:
+          <ul>
+            <li>result_file
+              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <code><b>GET </b>api.digest-validation.net/result_file?name=${file_name}</code>
+            </li>
+          </ul>
+          A .zip archive containing all files can for example be downloaded as follows:
+          <li>Results.zip
+            <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+            <code><b>GET </b>api.digest-validation.net/result_file?name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX.zip</code>
+          </li>
         </div>
       </div>
 

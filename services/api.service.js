@@ -43,7 +43,6 @@ const ApiService = {
             background_model: background,
             type: type
         };
-        console.log(data)
         return this.post("/set", data).then(response => {
             return response.data
         })
@@ -130,7 +129,6 @@ const ApiService = {
             background_model: background,
             type: type
         }
-        console.log(data)
         return this.post("/clustering", data).then(response => {
             return response.data
         })
