@@ -427,6 +427,7 @@ export default {
     input: Object,
     result: Object,
     referenceType: String,
+    zips: Array,
     mobile: {
       type: Boolean,
       default: false,

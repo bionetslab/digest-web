@@ -33,7 +33,7 @@
           </v-tab-item>
 
           <v-tab-item style="width: 100%">
-            <OutputTab @downloadEvent="downloadFile" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :input="input"  :type="type" :mode="mode" :reference-type="getIDType(input.reference_id)"></OutputTab>
+            <OutputTab @downloadEvent="downloadFile" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :input="input"  :type="type" :mode="mode" :zips="zips" :reference-type="getIDType(input.reference_id)"></OutputTab>
           </v-tab-item>
         </v-tabs-items>
       </div>
