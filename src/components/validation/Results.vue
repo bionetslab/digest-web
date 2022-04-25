@@ -195,8 +195,16 @@ export default {
           })
           break;
         }
-        case "network": {
-          this.$http.validate_network(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background, this.params.network, this.params.type).then(response => {
+        case "subnetwork": {
+          this.$http.validate_subnetwork(this.params.targetID, this.params.target, this.params.runs, this.params.replace, this.params.distance, this.params.background, this.params.network, this.params.type).then(response => {
+            this.saveTaskId(response)
+          }).catch(() => {
+            this.error = true
+          })
+          break;
+        }
+        case "subnetwork-set": {
+          this.$http.validate_subnetwork_set(this.params.targetID, this.params.target, this.params.referenceID, this.params.reference,this.params.runs, this.params.replace, this.params.distance, this.params.background, this.params.network, this.params.type).then(response => {
             this.saveTaskId(response)
           }).catch(() => {
             this.error = true

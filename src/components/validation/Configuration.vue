@@ -23,8 +23,9 @@
           Set only Example
         </v-btn>
       </div>
-      <div v-if="mode==='set' && type==='gene'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample('set', 'gene', 'ref')">
+      <div v-if="(mode==='set' || mode ==='network') && type==='gene'"
+           :class="{flex_self_center:!mobile, example_div_width:mobile}">
+        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample(mode, 'gene', 'ref')">
           <v-icon left>far fa-lightbulb</v-icon>
           Reference Example
         </v-btn>
@@ -425,7 +426,8 @@
                             <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 400px;">
-                            <div style="display: flex" v-if="getBackgroundModelItems().map(e=>e.value).indexOf('complete')>-1">
+                            <div style="display: flex"
+                                 v-if="getBackgroundModelItems().map(e=>e.value).indexOf('complete')>-1">
                               <div style="width: 40%">
                                 Fully randomized:
                               </div>
@@ -439,7 +441,8 @@
                                 size.
                               </div>
                             </div>
-                            <div style="display: flex; margin-top: 8px;" v-if="getBackgroundModelItems().map(e=>e.value).indexOf('term-pres')>-1">
+                            <div style="display: flex; margin-top: 8px;"
+                                 v-if="getBackgroundModelItems().map(e=>e.value).indexOf('term-pres')>-1">
                               <div style="width: 40%">
                                 Term-size preserving:
                               </div>
@@ -454,12 +457,17 @@
                                 of the annotation set sizes of the {{ type }} contained in target set.
                               </div>
                             </div>
-                            <div style="display: flex; margin-top: 8px;" v-if="getBackgroundModelItems().map(e=>e.value).indexOf('network')>-1">
+                            <div style="display: flex; margin-top: 8px;"
+                                 v-if="getBackgroundModelItems().map(e=>e.value).indexOf('network')>-1">
                               <div style="width: 40%">
                                 Network-based:
                               </div>
                               <div style="width: 60%; text-align: justify">
-                               TODO
+                                New random subnetworks are determined, while preserving information from the original
+                                input. Here, the connected components are identified from the input {{ type }}s within
+                                the
+                                user given or default network and then random nodes with the same number and size of
+                                connected components are selected.
                               </div>
                             </div>
                           </div>
@@ -784,19 +792,13 @@ export default {
     loadExample: function (mode, type, example) {
       if (mode === 'set') {
         if (type === 'gene') {
-          if (example === 'set' || example === 'network') {
+          if (example === 'set') {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
             this.targetIDType = EXAMPLES.gene_set.target_id_type
             this.useReference = false
             this.enriched = false
             this.backgroundModel = 'complete'
             this.references = ""
-          }
-          if (mode === 'network') {
-            this.readFileContent(EXAMPLES.gene_network.target, 'target')
-            this.targetIDType = EXAMPLES.gene_network.target_id_type
-            this.enriched = false
-            this.backgroundModel = 'network'
           }
           if (example === 'ref') {
             this.readFileContent(EXAMPLES.gene_set.target, 'target')
@@ -820,7 +822,34 @@ export default {
 
           }
         }
-      } else {
+      } else if (mode === 'network') {
+
+        if (type === 'gene') {
+          if (example === 'set' || example === 'network') {
+            this.readFileContent(EXAMPLES.gene_network.target, 'target')
+            this.targetIDType = EXAMPLES.gene_network.target_id_type
+            this.enriched = false
+            this.backgroundModel = 'network'
+            this.useReference = false
+            this.references = ""
+          }
+          if (example === 'ref') {
+            this.readFileContent(EXAMPLES.gene_network.target, 'target')
+            this.targetIDType = EXAMPLES.gene_network.target_id_type
+            this.useReference = true
+            this.enriched = true
+            this.backgroundModel = 'network'
+            this.refType = EXAMPLES.gene_network.reference_type
+            this.readFileContent(EXAMPLES.gene_network.reference, 'reference')
+            this.referenceIDType = EXAMPLES.gene_network.reference_id_type
+          }
+
+        } else {
+          this.readFileContent(EXAMPLES.disease_network.target, 'target')
+          this.targetIDType = EXAMPLES.disease_network.target_id_type
+          this.backgroundModel = 'network'
+        }
+      } else if (mode === 'cluster') {
         if (type === 'gene') {
           this.readFileContent(EXAMPLES.gene_cluster.target, 'target')
           this.targetIDType = EXAMPLES.gene_cluster.target_id_type
@@ -834,8 +863,8 @@ export default {
 
     getBackgroundModelItems: function () {
       let items = this.backgroundModels;
-      if(this.mode !== 'network')
-        items = items.filter(e=>e.value!=='network')
+      if (this.mode !== 'network')
+        items = items.filter(e => e.value !== 'network')
       if (this.mode === 'cluster')
         items = items.filter(e => e.value === 'term-pres')
       if (this.mode === 'network')
@@ -866,9 +895,9 @@ export default {
           background: this.backgroundModel,
         }
         if (this.mode === 'network') {
-          params.network = this.networkFile ? {name: this.networkFile.name ,data: await this.getNetwork()}: undefined;
-        }
-        if (this.useReference) {
+          params.network = this.networkFile ? {name: this.networkFile.name, data: await this.getNetwork()} : undefined;
+          this.route = this.useReference ? 'subnetwork' : 'subnetwork-set'
+        } else if (this.useReference) {
           params.enriched = this.enriched
           params.referenceID = this.referenceIDType
           params.reference = this.idsToList(this.references)
@@ -888,7 +917,7 @@ export default {
             resolve(event.target.result.split('base64,')[1])
           });
           reader.readAsDataURL(this.networkFile)
-        }).then(result=>{
+        }).then(result => {
           return result
         })
       } else

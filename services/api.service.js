@@ -48,7 +48,7 @@ const ApiService = {
         })
     },
 
-    validate_network(id_type, set, runs, replace, distance, background, network, type) {
+    validate_subnetwork(id_type, set, runs, replace, distance, background, network, type) {
         let data = {
             target: set,
             target_id: id_type,
@@ -59,7 +59,25 @@ const ApiService = {
             background_network: network,
             type: type
         };
-        return this.post("/network", data).then(response => {
+        return this.post("/subnetwork", data).then(response => {
+            return response.data
+        })
+    },
+
+    validate_subnetwork_set(id_type, set, ref_id, ref, runs, replace, distance, background, network, type) {
+        let data = {
+            target: set,
+            target_id: id_type,
+            reference: ref,
+            reference_id: ref_id,
+            runs: runs,
+            replace: replace,
+            distance: distance,
+            background_model: background,
+            background_network: network,
+            type: type
+        };
+        return this.post("/subnetwork_set", data).then(response => {
             return response.data
         })
     },
