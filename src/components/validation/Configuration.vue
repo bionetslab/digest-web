@@ -87,7 +87,7 @@
                   </v-select>
                 </v-col>
                 <v-col cols="12" md="6" lg="12" class="flex_content_center">
-                  <v-file-input ref="tarInput" label="Upload targets"
+                  <v-file-input ref="tarInput" :label="'Upload '+(mode==='network' ? 'nodes' : 'targets')"
                                 hide-details
                                 dense
                                 single-line
