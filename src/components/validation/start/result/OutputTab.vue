@@ -297,7 +297,7 @@
             <v-img :src="getPlot(getDistPlotName())" contain
                    style="position: relative" max-width="90%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getDistPlotName())">
+                     @click="downloadFile(getPlot(getDistPlotName()))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
@@ -322,7 +322,7 @@
           <v-col cols="12" lg="6"  class="flex_content_center">
             <v-img :src="getPlot(getAnnotationPlotName())" contain style="margin:16px; position: relative" max-width="90%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getAnnotationPlotName())">
+                     @click="downloadFile(getPlot(getAnnotationPlotName()))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
@@ -330,7 +330,7 @@
           <v-col cols="12" lg="6" class="flex_content_center">
             <v-img :src="getPlot(getSankeyPlotName())" contain style="margin:16px; position: relative; max-width:80%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getSankeyPlotName())">
+                     @click="downloadFile(getPlot(getSankeyPlotName()))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
@@ -522,6 +522,14 @@ export default {
         return value.length > (decimals + 2) ? value.substring(0, Math.max(decimals + 2, idx)) : value
       }
       return value
+    },
+    getClusterNames: function (clustering) {
+      const uniq = []
+      clustering.map(e => e.cluster).forEach(e => {
+        if (uniq.indexOf(e) === -1)
+          uniq.push(e)
+      })
+      return uniq
     },
 
     getGProfilerUrl: function (list) {
