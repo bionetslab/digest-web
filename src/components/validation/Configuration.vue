@@ -919,7 +919,7 @@ export default {
         this.errorReferenceIDs = false
         this.errorReferenceID = false
       }
-      if(this.mode && !this.networkFile)
+      if(this.mode ==='network' && !this.networkFile)
         this.errorNetwork=true
       if (this.mode === 'network' && this.networkFile) {
         this.errorNetworkFormat = !(this.networkFile.name.endsWith('.sif') || this.networkFile.name.endsWith('.graphml') || this.networkFile.name.endsWith('.gt'))
