@@ -62,7 +62,7 @@
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
-        <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Targets</v-subheader>
+        <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">{{ mode==='network' ?"Nodes of induced subnetwork" :"Targets" }}</v-subheader>
       </div>
       <v-alert v-if="errorTargetID" type="error" dense>Missing target ID type selection</v-alert>
       <v-alert v-if="errorTargetIDs" type="error" dense>Missing targetIDs</v-alert>
@@ -72,7 +72,7 @@
             <v-container style="padding-top: 16px">
               <v-row justify="center" justify-lg="start">
                 <v-col cols="12" md="6" lg="12" class="flex_content_center">
-                  <v-select label="Target ID type" :items="targetIDTypes[type]" v-model="targetIDType"
+                  <v-select :label="mode==='network' ?'Node ID type':'Target ID type'" :items="targetIDTypes[type]" v-model="targetIDType"
                             style="max-width: 210px; min-width: 210px" outlined dense filled hide-details>
                     <template v-slot:append-outer>
                       <v-tooltip right>
@@ -80,7 +80,7 @@
                           <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                         </template>
                         <div style="width: 250px; text-align: justify">
-                          ID type of inserted target IDs. Click on the drop-down to see the supported types.
+                          ID type of inserted {{mode==='network' ? 'node' : 'target'}} IDs. Click on the drop-down to see the supported types.
                         </div>
                       </v-tooltip>
                     </template>
@@ -103,7 +103,7 @@
                           Upload of file with target IDs that are separated by a newline in the file.
                         </div>
                         <div style="width: 250px; text-align: justify" v-if="mode === 'network'">
-                          Upload a single column node list, edge list or .sif network file with target IDs.
+                          Upload a single column node list, edge list or .sif network file with node IDs.
                         </div>
                       </v-tooltip>
                     </template>
@@ -113,7 +113,7 @@
             </v-container>
           </v-col>
           <v-col cols="12" lg="8" :class="{'flex_content_center':mobile}">
-            <v-textarea v-if="mode==='set' || mode==='network'" label="Target IDs" v-model="targets"
+            <v-textarea v-if="mode==='set' || mode==='network'" :label="mode==='network' ? 'Node IDs' : 'Target IDs'" v-model="targets"
                         :class="{ 'ta_mobile':mobile }"
                         no-resize
                         filled
