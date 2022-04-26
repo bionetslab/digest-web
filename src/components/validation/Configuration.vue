@@ -20,10 +20,10 @@
            :class="{flex_self_center:!mobile, example_div_width:mobile}">
         <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample(mode, 'gene', mode)">
           <v-icon left>far fa-lightbulb</v-icon>
-          Set only Example
+          {{ mode === 'network' ? 'Subnetwork Example' : 'Set only Example' }}
         </v-btn>
       </div>
-      <div v-if="(mode==='set' || mode ==='network') && type==='gene'"
+      <div v-if="(mode==='set') && type==='gene'"
            :class="{flex_self_center:!mobile, example_div_width:mobile}">
         <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample(mode, 'gene', 'ref')">
           <v-icon left>far fa-lightbulb</v-icon>
@@ -35,6 +35,13 @@
                @click="loadExample('cluster', 'gene')">
           <v-icon left>far fa-lightbulb</v-icon>
           Example
+        </v-btn>
+      </div>
+      <div v-if="mode==='network' && type==='gene'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
+        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined
+               @click="getExampleNetwork()">
+          <v-icon left>fas fa-download</v-icon>
+          Get example network
         </v-btn>
       </div>
       <div v-if="mode==='cluster' && type==='disease'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
@@ -236,7 +243,8 @@
                 <v-row justify="center" justify-lg="start">
                   <v-col cols="12" md="6" lg="12" class="flex_content_center">
                     <v-select v-if="type==='gene'" outlined :disabled="!useReference" filled label="Reference type"
-                              :items="refTypes" v-model="refType" hide-details @change="(val)=>{ if(val ==='disease') this.enriched=false}"
+                              :items="refTypes" v-model="refType" hide-details
+                              @change="(val)=>{ if(val ==='disease') this.enriched=false}"
                               style="max-width: 180px;" :class="{'flex_self_center':mobile}" dense>
                       <template v-slot:append-outer>
                         <v-tooltip right>
@@ -329,7 +337,7 @@
       </template>
       <template v-if="mode === 'network'">
         <div style="display: flex; justify-content: center">
-<!--          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>-->
+          <!--          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>-->
           <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network</v-subheader>
         </div>
         <v-alert v-if="errorNetwork" type="error" dense>Please upload a valid network!</v-alert>
@@ -618,7 +626,7 @@ export default {
       },
       targetFile: undefined,
       referenceFile: undefined,
-      errorNetwork:false,
+      errorNetwork: false,
       errorTargetID: false,
       errorTargetIDs: false,
       errorReferenceID: false, width: "50px",
@@ -825,6 +833,17 @@ export default {
       this.notification.show = true
     }
     ,
+    getExampleNetwork: async function () {
+      this.nodeName = 'name'
+      this.nodeType = 'symbol'
+      var link = document.createElement("a");
+      link.setAttribute('target', '_blank');
+      link.href = this.$config.HOST_URL+'/network_file';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    },
+
     loadExample: function (mode, type, example) {
       if (mode === 'set') {
         if (type === 'gene') {
@@ -919,13 +938,13 @@ export default {
         this.errorReferenceIDs = false
         this.errorReferenceID = false
       }
-      if(this.mode ==='network' && !this.networkFile)
-        this.errorNetwork=true
+      if (this.mode === 'network' && !this.networkFile)
+        this.errorNetwork = true
       if (this.mode === 'network' && this.networkFile) {
         this.errorNetworkFormat = !(this.networkFile.name.endsWith('.sif') || this.networkFile.name.endsWith('.graphml') || this.networkFile.name.endsWith('.gt'))
         this.errorNetworkIDType = !this.nodeType
         if (!this.networkFile.name.endsWith('.sif'))
-          this.errorNetworkNodeName = !this.nodeName || this.nodeName.length===0
+          this.errorNetworkNodeName = !this.nodeName || this.nodeName.length === 0
       }
       let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs || this.errorNetworkIDType || this.errorNetworkFormat || this.errorNetworkNodeName || this.errorNetwork
       if (!error) {
@@ -940,7 +959,12 @@ export default {
           background: this.backgroundModel,
         }
         if (this.mode === 'network') {
-          params.network = this.networkFile ? {name: this.networkFile.name, data: await this.getNetwork(), id_type:this.nodeType, prop_name:this.nodeName} : undefined;
+          params.network = this.networkFile ? {
+            name: this.networkFile.name,
+            data: await this.getNetwork(),
+            id_type: this.nodeType,
+            prop_name: this.nodeName
+          } : undefined;
           route = 'network'
         } else if (this.useReference) {
           params.enriched = this.enriched
