@@ -59,7 +59,6 @@ const ApiService = {
             network_data: network,
             type: type
         };
-        console.log(data)
         return this.post("/subnetwork", data).then(response => {
             return response.data
         })
