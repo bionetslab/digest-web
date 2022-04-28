@@ -338,9 +338,9 @@
       <template v-if="mode === 'network'">
         <div style="display: flex; justify-content: center">
           <!--          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>-->
-          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network</v-subheader>
+          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>
         </div>
-        <v-alert v-if="errorNetwork" type="error" dense>Please upload a valid network!</v-alert>
+<!--        <v-alert v-if="errorNetwork" type="error" dense>Please upload a valid network!</v-alert>-->
         <v-alert v-if="errorNetworkFormat" type="error" dense>Network format is not of accepted type (.sif, .gt,
           .graphml)!
         </v-alert>
@@ -626,7 +626,6 @@ export default {
       },
       targetFile: undefined,
       referenceFile: undefined,
-      errorNetwork: false,
       errorTargetID: false,
       errorTargetIDs: false,
       errorReferenceID: false, width: "50px",
@@ -938,15 +937,15 @@ export default {
         this.errorReferenceIDs = false
         this.errorReferenceID = false
       }
-      if (this.mode === 'network' && !this.networkFile)
-        this.errorNetwork = true
+      // if (this.mode === 'network' && !this.networkFile)
+      //   this.errorNetwork = true
       if (this.mode === 'network' && this.networkFile) {
         this.errorNetworkFormat = !(this.networkFile.name.endsWith('.sif') || this.networkFile.name.endsWith('.graphml') || this.networkFile.name.endsWith('.gt'))
         this.errorNetworkIDType = !this.nodeType
         if (!this.networkFile.name.endsWith('.sif'))
           this.errorNetworkNodeName = !this.nodeName || this.nodeName.length === 0
       }
-      let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs || this.errorNetworkIDType || this.errorNetworkFormat || this.errorNetworkNodeName || this.errorNetwork
+      let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs || this.errorNetworkIDType || this.errorNetworkFormat || this.errorNetworkNodeName
       if (!error) {
         let route;
         let params = {
