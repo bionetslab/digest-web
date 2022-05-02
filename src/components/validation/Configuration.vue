@@ -55,9 +55,9 @@
       <div v-if="(mode==='set' || mode ==='network') && type==='disease'"
            :class="{flex_self_center:!mobile, example_div_width:mobile}">
         <v-btn color="primary" outlined :class="{flex_self_center:mobile}"
-               @click="loadExample('set', 'disease')">
+               @click="loadExample(mode, 'disease')">
           <v-icon left>far fa-lightbulb</v-icon>
-          Example
+          {{ mode === 'network' ? 'Subnetwork Example' : 'Set only Example' }}
         </v-btn>
       </div>
       <v-btn v-if="!isMobile()" color="primary" @click="checkEvent"
