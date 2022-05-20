@@ -530,6 +530,24 @@
                       </template>
                     </v-select>
                   </v-col>
+                  <v-col class="flex_content_center" cols="12" lg="4" md="6">
+                    <v-checkbox
+                        style="margin-top: 4px; max-width: 310px;"
+                        v-model="sigCont"
+                        hide-details
+                        label="Calculate significance contribution">
+                      <template v-slot:append>
+                        <v-tooltip right>
+                          <template v-slot:activator="{on, attrs}">
+                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                          </template>
+                          <div style="width: 250px; text-align: justify">
+                            TODO
+                          </div>
+                        </v-tooltip>
+                      </template>
+                    </v-checkbox>
+                  </v-col>
                 </v-row>
               </v-container>
             </div>
@@ -646,6 +664,7 @@ export default {
       referenceIDType: undefined,
       useReference: false,
       enriched: false,
+      sigCont: false,
       runs: 1000,
       replace: 100,
       distanceModel: "jaccard",
@@ -956,6 +975,7 @@ export default {
           runs: this.runs,
           replace: this.replace,
           background: this.backgroundModel,
+          sigCont: this.sigCont
         }
         if (this.mode === 'network') {
           params.network = this.networkFile ? {
