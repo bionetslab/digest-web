@@ -33,7 +33,7 @@ const ApiService = {
         return this.get("test?nr=" + nr)
     },
 
-    validate_set(id_type, set, runs, replace, distance, background, type, sigCont) {
+    validate_set(id_type, set, runs, replace, distance, background, type, sigCont, mail) {
         let data = {
             target: set,
             target_id: id_type,
@@ -44,12 +44,15 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         };
+        if (mail)
+            data.mail = mail
+        console.log(data)
         return this.post("/set", data).then(response => {
             return response.data
         })
     },
 
-    validate_subnetwork(id_type, set, runs, replace, distance, background, network, type,sigCont) {
+    validate_subnetwork(id_type, set, runs, replace, distance, background, network, type, sigCont, mail) {
         let data = {
             target: set,
             target_id: id_type,
@@ -61,13 +64,14 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         };
-        console.log(data)
+        if (mail)
+            data.mail = mail
         return this.post("/subnetwork", data).then(response => {
             return response.data
         })
     },
 
-    validate_subnetwork_set(id_type, set, ref_id, ref, runs, replace, distance, background, network, type,sigCont) {
+    validate_subnetwork_set(id_type, set, ref_id, ref, runs, replace, distance, background, network, type, sigCont, mail) {
         let data = {
             target: set,
             target_id: id_type,
@@ -81,12 +85,14 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         };
+        if (mail)
+            data.mail = mail
         return this.post("/subnetwork_set", data).then(response => {
             return response.data
         })
     },
 
-    validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type,sigCont) {
+    validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type, sigCont, mail) {
         let data = {
             target: target,
             target_id: target_id,
@@ -100,12 +106,14 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         }
+        if (mail)
+            data.mail = mail
         return this.post("/set_set", data).then(response => {
             return response.data
         })
     },
 
-    validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type,sigCont) {
+    validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type, sigCont, mail) {
         let data = {
             target: target,
             target_id: target_id,
@@ -119,12 +127,14 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         }
+        if (mail)
+            data.mail = mail
         return this.post("/id_set", data).then(response => {
             return response.data
         })
     },
 
-    validate_cluster(target_id, target, runs, replace, distance, background, type,sigCont) {
+    validate_cluster(target_id, target, runs, replace, distance, background, type, sigCont) {
         let data = {
             target: target,
             target_id: target_id,

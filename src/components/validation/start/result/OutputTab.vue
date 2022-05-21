@@ -62,8 +62,11 @@
                     </b>
                   <td v-for="head in Object.keys(result.p_values.values)" :key="'p_value-'+head"
                       style="margin:4px">
-                  <span v-show="distributionMeasure!==metric">{{formatValue(result.p_values.values[head][metric]) }}</span>
-                  <b v-show="distributionMeasure === metric" style="color: cornflowerblue">{{formatValue(result.p_values.values[head][metric]) }}</b>
+                    <span v-show="distributionMeasure!==metric">{{
+                        formatValue(result.p_values.values[head][metric])
+                      }}</span>
+                    <b v-show="distributionMeasure === metric"
+                       style="color: cornflowerblue">{{ formatValue(result.p_values.values[head][metric]) }}</b>
                   </td>
                 </tr>
                 </tbody>
@@ -164,21 +167,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric" @click="distributionMeasure=metric" style="cursor: pointer">
+                <tr v-for="metric in Object.keys(Object.values(result.input_values.values)[0])" :key="metric"
+                    @click="distributionMeasure=metric" style="cursor: pointer">
                   <td style="margin:4px"><b style="color: rgba(0,0,0,0.6)">
-                    <div style="white-space: nowrap" :style="{color: distributionMeasure===metric ? 'cornflowerblue':''}">
+                    <div style="white-space: nowrap"
+                         :style="{color: distributionMeasure===metric ? 'cornflowerblue':''}">
                       {{ metric }}
                       <v-tooltip right>
                         <template v-slot:activator="{attrs, on}">
-                          <v-icon small v-bind="attrs" v-on="on" :color="distributionMeasure===metric ? 'primary':''">far fa-question-circle</v-icon>
+                          <v-icon small v-bind="attrs" v-on="on" :color="distributionMeasure===metric ? 'primary':''">
+                            far fa-question-circle
+                          </v-icon>
                         </template>
                         <div style="width:200px; text-align: justify">{{ tooltips[metric] }}</div>
                       </v-tooltip>
                     </div>
                   </b>
                   <td v-for="head in Object.keys(result.input_values.values)" :key="'input_value-'+head"
-                      style="margin:4px"><span v-show="distributionMeasure!==metric">{{formatValue(result.input_values.values[head][metric]) }}</span>
-                  <b v-show="distributionMeasure === metric" style="color: cornflowerblue">{{formatValue(result.input_values.values[head][metric]) }}</b>
+                      style="margin:4px"><span v-show="distributionMeasure!==metric">{{
+                      formatValue(result.input_values.values[head][metric])
+                    }}</span>
+                    <b v-show="distributionMeasure === metric"
+                       style="color: cornflowerblue">{{ formatValue(result.input_values.values[head][metric]) }}</b>
                   </td>
                 </tr>
                 </tbody>
@@ -307,6 +317,125 @@
       </v-container>
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
+        <v-subheader>Significance contribution</v-subheader>
+      </div>
+      <v-container v-if="scDone">
+        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <v-data-table :headers="getSCTableHeader(clusterMeasure)" :items="getSCTableItems(clusterMeasure)" dense>
+              <template v-slot:header.GO.BP="{ header }">
+                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                <b v-show="header.text !== distributionMeasure"
+                   @click="distributionMeasure= header.text">{{ header.text }}</b>
+              </template>
+              <template v-slot:header.GO.MF="{ header }">
+                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                <b v-show="header.text !== distributionMeasure"
+                   @click="distributionMeasure= header.text">{{ header.text }}</b>
+              </template>
+              <template v-slot:header.GO.CC="{ header }">
+                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                <b v-show="header.text !== distributionMeasure"
+                   @click="distributionMeasure= header.text">{{ header.text }}</b>
+              </template>
+              <template v-slot:header.KEGG="{ header }">
+                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                <b v-show="header.text !== distributionMeasure"
+                   @click="distributionMeasure= header.text">{{ header.text }}</b>
+              </template>
+              <template v-slot:item.GO.BP="{ item }">
+                <b v-show="'GO.BP'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.BP'] }}</b>
+                <span v-show="'GO.BP'!== distributionMeasure">{{ item['GO.BP'] }}</span>
+              </template>
+              <template v-slot:item.GO.MF="{ item }">
+                <b v-show="'GO.MF'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.MF'] }}</b>
+                <span v-show="'GO.MF'!== distributionMeasure">{{ item['GO.MF'] }}</span>
+              </template>
+              <template v-slot:item.GO.CC="{ item }">
+                <b v-show="'GO.CC'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.CC'] }}</b>
+                <span v-show="'GO.CC'!== distributionMeasure">{{ item['GO.CC'] }}</span>
+              </template>
+              <template v-slot:item.KEGG="{ item }">
+                <b v-show="'KEGG'===distributionMeasure" style="color: cornflowerblue">{{ item['KEGG'] }}</b>
+                <span v-show="'KEGG'!== distributionMeasure">{{ item['KEGG'] }}</span>
+              </template>
+            </v-data-table>
+          </v-col>
+          <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
+            <v-img :src="getPlot('absolute._contribution_heatmap')" contain style="position: relative; max-width: 70%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot('absolute._contribution_heatmap'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col cols="12" lg="6" class="flex_content_center" v-else>
+            <v-img :src="getPlot(clusterMeasure+'_absolute._contribution_heatmap')" contain
+                   style="position: relative; max-width: 70%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot(clusterMeasure+'_absolute._contribution_heatmap'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+        </v-row>
+        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+          <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
+            <v-img :src="getPlot(distributionMeasure+'_positive._contribution_heatmap')" contain
+                   style="position: relative; max-width: 70%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot(distributionMeasure+'_positive._contribution_heatmap'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col cols="12" lg="6" class="flex_content_center" v-else>
+            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive._contribution_heatmap')" contain
+                   style="position: relative; max-width: 70%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive._contribution_heatmap'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
+            <v-img :src="getPlot(distributionMeasure+'_negative._contribution_heatmap')" contain
+                   style="position: relative; max-width: 70%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot(distributionMeasure+'_negative._contribution_heatmap'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col cols="12" lg="6" class="flex_content_center" v-else>
+            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative._contribution_heatmap')" contain
+                   style="position: relative; max-width: 70%">
+              <v-btn icon small style="position: absolute; right: 0"
+                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative._contribution_heatmap'))">
+                <v-icon small>fas fa-download</v-icon>
+              </v-btn>
+            </v-img>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-else>
+        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+          <v-col cols="12">
+            <div v-if="scStatus" style="width: 100%" class="flex_content_center"><i>Significance contribution calculation: {{scStatus.done}} of {{scStatus.total}} done!
+              <v-tooltip right>
+                <template v-slot:activator="{on, attrs}">
+                  <v-icon v-on="on" v-bind="attrs" style="top:-2px" left size="1.2rem">far fa-question-circle</v-icon>
+                </template>
+                <div  style="width: 300px; text-align: justify">These tasks are executed with lower priority to not block other incoming significance calculation tasks.</div>
+              </v-tooltip>
+            </i></div>
+            <v-progress-linear v-if="scStatus" :value="scStatus.done/scStatus.total*100"></v-progress-linear>
+            <v-progress-linear v-else indeterminate></v-progress-linear>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-divider></v-divider>
+      <div style="display: flex; justify-content: center">
         <v-subheader>Mappability figures</v-subheader>
       </div>
       <v-container>
@@ -319,8 +448,9 @@
               </v-btn>
             </v-img>
           </v-col>
-          <v-col cols="12" lg="6"  class="flex_content_center">
-            <v-img :src="getPlot(getAnnotationPlotName())" contain style="margin:16px; position: relative" max-width="90%">
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <v-img :src="getPlot(getAnnotationPlotName())" contain style="margin:16px; position: relative"
+                   max-width="90%">
               <v-btn icon small style="position: absolute; right: 0"
                      @click="downloadFile(getPlot(getAnnotationPlotName()))">
                 <v-icon small>fas fa-download</v-icon>
@@ -427,6 +557,7 @@ export default {
     input: Object,
     result: Object,
     referenceType: String,
+    taskID: String,
     zips: Array,
     mobile: {
       type: Boolean,
@@ -450,6 +581,9 @@ export default {
         'related_variants': 'TODO',
         'related_genes': 'TODO',
       },
+      scDone: false,
+      scResult: undefined,
+      scStatus: undefined,
       clusterMeasure: 'DI-based',
       clusterMeasureIdx: 0,
       distributionMeasure: '',
@@ -465,9 +599,31 @@ export default {
 
   created() {
     this.distributionMeasure = this.termMap[this.type][0]
+    if (this.input.sigCont)
+      this.queryScStatus()
   },
 
   methods: {
+
+    queryScStatus: async function () {
+      let status = await this.$http.get("sc_status?task=" + this.taskID).then((response) => {
+        if (response.data)
+          return response.data
+      })
+      this.scStatus = status.status
+      if (status.done) {
+        this.$emit("reloadFiles")
+        this.scResult = await this.$http.get("sc_results?task=" + this.taskID).then((response) => {
+          if (response.data)
+            return response.data
+        })
+        this.scDone = true
+      } else
+
+      setTimeout(() => this.queryScStatus(), 5000)
+    },
+
+
     downloadFile: function (file) {
       this.$emit('downloadEvent', file)
     }
@@ -489,6 +645,35 @@ export default {
       return "https://www.schulz-grafik.de/wp-content/uploads/2018/03/placeholder.png"
     },
 
+    getSCTableHeader: function (measure) {
+      let results = this.getSCTableData(measure)
+      let headers = [{text: 'Gene', align: 'start', sortable: true, value: 'gene'}]
+      Object.keys(results[Object.keys(results)[0]]).forEach(h => {
+        headers.push({text: h, align: 'start', sortable: true, value: h})
+      })
+      return headers
+    },
+
+    getSCTableData: function (measure) {
+      if (this.mode === 'cluster')
+        return this.scResult[measure]
+      else
+        return this.scResult[Object.keys(this.scResult)[0]]
+    },
+
+    getSCTableItems: function (measure) {
+      let data = this.getSCTableData(measure)
+      let items = []
+      Object.keys(data).forEach(gene => {
+        let item = {gene: gene}
+        Object.keys(data[gene]).forEach(h => {
+          item[h] = this.formatValue(data[gene][h])
+        })
+        items.push(item)
+      })
+      return items
+    },
+
     getScoreName: function () {
       if (this.mode === 'set-set') {
         if (this.type === 'gene' || this.referenceType === 'gene') {
@@ -504,6 +689,7 @@ export default {
       return this.distributionMeasure + "_sankey"
     },
 
+
     getAnnotationPlotName: function () {
       return this.distributionMeasure + "_annotation_distribution"
     },
@@ -517,7 +703,7 @@ export default {
       if (typeof value === "number") {
         value = value + ""
       }
-      if(typeof value === "string") {
+      if (typeof value === "string") {
         let idx = value.indexOf(".")
         let decimals = this.mobile ? 4 : 6;
         return value.length > (decimals + 2) ? value.substring(0, Math.max(decimals + 2, idx)) : value

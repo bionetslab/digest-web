@@ -340,7 +340,7 @@
           <!--          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>-->
           <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>
         </div>
-<!--        <v-alert v-if="errorNetwork" type="error" dense>Please upload a valid network!</v-alert>-->
+        <!--        <v-alert v-if="errorNetwork" type="error" dense>Please upload a valid network!</v-alert>-->
         <v-alert v-if="errorNetworkFormat" type="error" dense>Network format is not of accepted type (.sif, .gt,
           .graphml)!
         </v-alert>
@@ -530,10 +530,13 @@
                       </template>
                     </v-select>
                   </v-col>
-                  <v-col class="flex_content_center" cols="12" lg="4" md="6">
+                  </v-row>
+                <v-row justify="center" justify-md="start">
+                  <v-col class="flex_content_center" cols="12" lg="6">
                     <v-checkbox
-                        style="margin-top: 4px; max-width: 310px;"
+                        style="margin-top: 4px; max-width: 310px; padding-top:15px"
                         v-model="sigCont"
+                        @change="sigContMail=''"
                         hide-details
                         label="Calculate significance contribution">
                       <template v-slot:append>
@@ -547,6 +550,27 @@
                         </v-tooltip>
                       </template>
                     </v-checkbox>
+                  </v-col>
+                  <v-col class="flex_content_center" cols="12" lg="6">
+                    <v-text-field
+                        :disabled="!sigCont"
+                        style="margin-top: 4px; max-width: 310px;"
+                        v-model="sigContMail"
+                        hide-details
+                        label="Notification e-mail">
+                      <template v-slot:append>
+                        <v-tooltip right>
+                          <template v-slot:activator="{on, attrs}">
+                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                          </template>
+                          <div style="width: 300px; text-align: justify">
+                            Significance contribution calculation will happen with low priority to not fully block other
+                            significance calculations. Fell free to enter an E-mail address and we will send a
+                            notification once the process is done and delete your mail address from our system.
+                          </div>
+                        </v-tooltip>
+                      </template>
+                    </v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -665,6 +689,7 @@ export default {
       useReference: false,
       enriched: false,
       sigCont: false,
+      sigContMail:"",
       runs: 1000,
       replace: 100,
       distanceModel: "jaccard",
@@ -856,7 +881,7 @@ export default {
       this.nodeType = 'symbol'
       var link = document.createElement("a");
       link.setAttribute('target', '_blank');
-      link.href = this.$config.HOST_URL+'/network_file';
+      link.href = this.$config.HOST_URL + '/network_file';
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -977,6 +1002,8 @@ export default {
           background: this.backgroundModel,
           sigCont: this.sigCont
         }
+        if(this.sigContMail.includes("@"))
+          params['mail']=this.sigContMail
         if (this.mode === 'network') {
           params.network = this.networkFile ? {
             name: this.networkFile.name,
