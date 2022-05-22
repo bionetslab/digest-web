@@ -362,18 +362,18 @@
             </v-data-table>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
-            <v-img :src="getPlot('absolute._contribution_heatmap')" contain style="position: relative; max-width: 70%">
+            <v-img :src="getPlot('absolute_contribution_heatmap')" contain style="position: relative; max-width: 70%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot('absolute._contribution_heatmap'))">
+                     @click="downloadFile(getPlot('absolute_contribution_heatmap'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center" v-else>
-            <v-img :src="getPlot(clusterMeasure+'_absolute._contribution_heatmap')" contain
+            <v-img :src="getPlot(clusterMeasure+'_absolute_contribution_heatmap')" contain
                    style="position: relative; max-width: 70%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(clusterMeasure+'_absolute._contribution_heatmap'))">
+                     @click="downloadFile(getPlot(clusterMeasure+'_absolute_contribution_heatmap'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
@@ -381,37 +381,37 @@
         </v-row>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
           <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
-            <v-img :src="getPlot(distributionMeasure+'_positive._contribution_heatmap')" contain
+            <v-img :src="getPlot(distributionMeasure+'_positive_contribution_heatmap')" contain
                    style="position: relative; max-width: 70%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(distributionMeasure+'_positive._contribution_heatmap'))">
+                     @click="downloadFile(getPlot(distributionMeasure+'_positive_contribution_heatmap'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center" v-else>
-            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive._contribution_heatmap')" contain
+            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap')" contain
                    style="position: relative; max-width: 70%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive._contribution_heatmap'))">
+                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
-            <v-img :src="getPlot(distributionMeasure+'_negative._contribution_heatmap')" contain
+            <v-img :src="getPlot(distributionMeasure+'_negative_contribution_heatmap')" contain
                    style="position: relative; max-width: 70%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(distributionMeasure+'_negative._contribution_heatmap'))">
+                     @click="downloadFile(getPlot(distributionMeasure+'_negative_contribution_heatmap'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center" v-else>
-            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative._contribution_heatmap')" contain
+            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap')" contain
                    style="position: relative; max-width: 70%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative._contribution_heatmap'))">
+                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
