@@ -133,7 +133,7 @@ const ApiService = {
         })
     },
 
-    validate_cluster(target_id, target, runs, replace, distance, background, type, sigCont) {
+    validate_cluster(target_id, target, runs, replace, distance, background, type, sigCont,mail) {
         let data = {
             target: target,
             target_id: target_id,
@@ -144,6 +144,8 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         }
+        if (mail)
+            data.mail = mail
         return this.post("/clustering", data).then(response => {
             return response.data
         })
