@@ -389,7 +389,7 @@
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
-                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top 15 negative
+                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top absolute
                     contributing genes in g:Profiler.
                   </div>
                 </v-tooltip>
@@ -425,7 +425,7 @@
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
-                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top 15 negative
+                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top negative
                     contributing genes in g:Profiler.
                   </div>
                 </v-tooltip>
@@ -459,7 +459,7 @@
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
-                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top 15 negative
+                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top negative
                     contributing genes in g:Profiler.
                   </div>
                 </v-tooltip>
