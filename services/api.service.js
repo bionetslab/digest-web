@@ -46,7 +46,6 @@ const ApiService = {
         };
         if (mail)
             data.mail = mail
-        console.log(data)
         return this.post("/set", data).then(response => {
             return response.data
         })
@@ -135,7 +134,7 @@ const ApiService = {
         })
     },
 
-    validate_cluster(target_id, target, runs, replace, distance, background, type, sigCont) {
+    validate_cluster(target_id, target, runs, replace, distance, background, type, sigCont,mail) {
         let data = {
             target: target,
             target_id: target_id,
@@ -146,6 +145,8 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         }
+        if (mail)
+            data.mail = mail
         return this.post("/clustering", data).then(response => {
             return response.data
         })
@@ -164,6 +165,7 @@ const ApiService = {
     },
     getResultFiles(taskID) {
         return this.get("/result_file_list?task=" + taskID).then(response => {
+            console.log(response)
             return response.data
         })
     }
