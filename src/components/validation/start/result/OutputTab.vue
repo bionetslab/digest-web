@@ -361,57 +361,118 @@
               </template>
             </v-data-table>
           </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
-            <v-img :src="getPlot('absolute._contribution_heatmap')" contain style="position: relative; max-width: 70%">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot('absolute._contribution_heatmap'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
-          </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center" v-else>
-            <v-img :src="getPlot(clusterMeasure+'_absolute._contribution_heatmap')" contain
-                   style="position: relative; max-width: 70%">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(clusterMeasure+'_absolute._contribution_heatmap'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <div style="width: 100%">
+              <div class="flex_content_center">
+                <v-img :src="getPlot('absolute_contribution_heatmap')" contain
+                       style="position: relative; max-width: 70%"
+                       v-if="mode !== 'cluster'">
+                  <v-btn icon small style="position: absolute; right: 0"
+                         @click="downloadFile(getPlot('absolute_contribution_heatmap'))">
+                    <v-icon small>fas fa-download</v-icon>
+                  </v-btn>
+                </v-img>
+                <v-img :src="getPlot(clusterMeasure+'_absolute_contribution_heatmap')" contain
+                       style="position: relative; max-width: 70%" v-else>
+                  <v-btn icon small style="position: absolute; right: 0"
+                         @click="downloadFile(getPlot(clusterMeasure+'_absolute_contribution_heatmap'))">
+                    <v-icon small>fas fa-download</v-icon>
+                  </v-btn>
+                </v-img>
+              </div>
+              <div class="flex_content_center">
+                <v-tooltip right v-if="type === 'gene' && topSCGenes">
+                  <template v-slot:activator="{on, attrs}">
+                    <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                      <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure]['absolute'] : Object.values(topSCGenes)[0]['absolute'])"
+                         target="_blank">Top 15 negative contribution</a>
+                      <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                    </v-chip>
+                  </template>
+                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top 15 negative
+                    contributing genes in g:Profiler.
+                  </div>
+                </v-tooltip>
+              </div>
+            </div>
           </v-col>
         </v-row>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
-          <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
-            <v-img :src="getPlot(distributionMeasure+'_positive._contribution_heatmap')" contain
-                   style="position: relative; max-width: 70%">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(distributionMeasure+'_positive._contribution_heatmap'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <div style="width: 100%">
+              <div class="flex_content_center">
+                <v-img :src="getPlot(distributionMeasure+'_positive_contribution_heatmap')" contain
+                       style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
+                  <v-btn icon small style="position: absolute; right: 0"
+                         @click="downloadFile(getPlot(distributionMeasure+'_positive_contribution_heatmap'))">
+                    <v-icon small>fas fa-download</v-icon>
+                  </v-btn>
+                </v-img>
+                <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap')" contain
+                       style="position: relative; max-width: 70%" v-else>
+                  <v-btn icon small style="position: absolute; right: 0"
+                         @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap'))">
+                    <v-icon small>fas fa-download</v-icon>
+                  </v-btn>
+                </v-img>
+              </div>
+              <div class="flex_content_center">
+                <v-tooltip right v-if="type === 'gene'  && topSCGenes">
+                  <template v-slot:activator="{on, attrs}">
+                    <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                      <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['positive'] : Object.values(topSCGenes)[0][distributionMeasure]['positive'])"
+                         target="_blank">Top 15 negative contribution</a>
+                      <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                    </v-chip>
+                  </template>
+                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top 15 negative
+                    contributing genes in g:Profiler.
+                  </div>
+                </v-tooltip>
+              </div>
+            </div>
           </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center" v-else>
-            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive._contribution_heatmap')" contain
-                   style="position: relative; max-width: 70%">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive._contribution_heatmap'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <div style="width: 100%">
+              <div class="flex_content_center">
+                <v-img :src="getPlot(distributionMeasure+'_negative_contribution_heatmap')" contain
+                       style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
+                  <v-btn icon small style="position: absolute; right: 0"
+                         @click="downloadFile(getPlot(distributionMeasure+'_negative_contribution_heatmap'))">
+                    <v-icon small>fas fa-download</v-icon>
+                  </v-btn>
+                </v-img>
+                <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap')" contain
+                       style="position: relative; max-width: 70%" v-else>
+                  <v-btn icon small style="position: absolute; right: 0"
+                         @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap'))">
+                    <v-icon small>fas fa-download</v-icon>
+                  </v-btn>
+                </v-img>
+              </div>
+              <div class="flex_content_center">
+                <v-tooltip right v-if="type === 'gene'  && topSCGenes">
+                  <template v-slot:activator="{on, attrs}">
+                    <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                      <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['negative'] : Object.values(topSCGenes)[0][distributionMeasure]['negative'])"
+                         target="_blank">Top 15 negative contribution</a>
+                      <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                    </v-chip>
+                  </template>
+                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top 15 negative
+                    contributing genes in g:Profiler.
+                  </div>
+                </v-tooltip>
+              </div>
+            </div>
           </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center" v-if="mode !== 'cluster'">
-            <v-img :src="getPlot(distributionMeasure+'_negative._contribution_heatmap')" contain
+        </v-row>
+        <v-row v-if="mode === 'subnetwork'" justify="center" style="padding-top: 16px; padding-bottom: 16px">
+          <v-col cols="12" lg="6" class="flex_content_center">
+            <v-img :src="getPlot(distributionMeasure+'_contribution_graph')" contain
                    style="position: relative; max-width: 70%">
               <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(distributionMeasure+'_negative._contribution_heatmap'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
-          </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center" v-else>
-            <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative._contribution_heatmap')" contain
-                   style="position: relative; max-width: 70%">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative._contribution_heatmap'))">
+                     @click="downloadFile(getPlot(distributionMeasure+'_contribution_graph'))">
                 <v-icon small>fas fa-download</v-icon>
               </v-btn>
             </v-img>
@@ -421,12 +482,15 @@
       <v-container v-else>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
           <v-col cols="12">
-            <div v-if="scStatus" style="width: 100%" class="flex_content_center"><i>Significance contribution calculation: {{scStatus.done}} of {{scStatus.total}} done!
+            <div v-if="scStatus" style="width: 100%" class="flex_content_center"><i>Significance contribution
+              calculation: {{ scStatus.done }} of {{ scStatus.total }} done!
               <v-tooltip right>
                 <template v-slot:activator="{on, attrs}">
                   <v-icon v-on="on" v-bind="attrs" style="top:-2px" left size="1.2rem">far fa-question-circle</v-icon>
                 </template>
-                <div  style="width: 300px; text-align: justify">These tasks are executed with lower priority to not block other incoming significance calculation tasks.</div>
+                <div style="width: 300px; text-align: justify">These tasks are executed with lower priority to not block
+                  other incoming significance calculation tasks.
+                </div>
               </v-tooltip>
             </i></div>
             <v-progress-linear v-if="scStatus" :value="scStatus.done/scStatus.total*100"></v-progress-linear>
@@ -480,7 +544,7 @@
               <b>Functional enrichment (g:Profiler)</b>
               <v-container v-if="mode==='cluster'">
                 <v-row justify="center">
-                  <v-col cols="12">
+                  <v-col cols="12" v-if="input && input.target">
                     <v-tooltip right>
                       <template v-slot:activator="{on, attrs}">
                         <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
@@ -587,6 +651,7 @@ export default {
       clusterMeasure: 'DI-based',
       clusterMeasureIdx: 0,
       distributionMeasure: '',
+      topSCGenes: undefined,
       measureMap: {
         'clustering': ['DI-based', 'SS-based', 'DBI-based'],
       },
@@ -604,7 +669,6 @@ export default {
   },
 
   methods: {
-
     queryScStatus: async function () {
       let status = await this.$http.get("sc_status?task=" + this.taskID).then((response) => {
         if (response.data)
@@ -617,10 +681,15 @@ export default {
           if (response.data)
             return response.data
         })
+        if (this.type === 'gene') {
+          this.topSCGenes = await this.$http.get("sc_top_results?task=" + this.taskID).then((response) => {
+            return response.data
+          })
+        }
         this.scDone = true
       } else
 
-      setTimeout(() => this.queryScStatus(), 5000)
+        setTimeout(() => this.queryScStatus(), 5000)
     },
 
 
@@ -698,7 +767,6 @@ export default {
         return this.clusterMeasure + "_" + this.distributionMeasure + "_distribution"
       return this.distributionMeasure + "_distribution"
     },
-
     formatValue: function (value) {
       if (typeof value === "number") {
         value = value + ""

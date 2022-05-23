@@ -66,6 +66,7 @@ const ApiService = {
         };
         if (mail)
             data.mail = mail
+        console.log(data)
         return this.post("/subnetwork", data).then(response => {
             return response.data
         })
