@@ -385,7 +385,7 @@
                   <template v-slot:activator="{on, attrs}">
                     <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
                       <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure]['absolute'] : Object.values(topSCGenes)[0]['absolute'])"
-                         target="_blank">Top 15 negative contribution</a>
+                         target="_blank">Top negative contribution</a>
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
@@ -421,7 +421,7 @@
                   <template v-slot:activator="{on, attrs}">
                     <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
                       <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['positive'] : Object.values(topSCGenes)[0][distributionMeasure]['positive'])"
-                         target="_blank">Top 15 negative contribution</a>
+                         target="_blank">Top negative contribution</a>
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
@@ -455,7 +455,7 @@
                   <template v-slot:activator="{on, attrs}">
                     <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
                       <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['negative'] : Object.values(topSCGenes)[0][distributionMeasure]['negative'])"
-                         target="_blank">Top 15 negative contribution</a>
+                         target="_blank">Top negative contribution</a>
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
