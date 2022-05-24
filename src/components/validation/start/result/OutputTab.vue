@@ -385,7 +385,7 @@
                   <template v-slot:activator="{on, attrs}">
                     <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
                       <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure]['absolute'] : Object.values(topSCGenes)[0]['absolute'])"
-                         target="_blank">Top absolute contribution</a>
+                         target="_blank">functional enrichment (g:Profiler)</a>
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
@@ -421,11 +421,11 @@
                   <template v-slot:activator="{on, attrs}">
                     <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
                       <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['positive'] : Object.values(topSCGenes)[0][distributionMeasure]['positive'])"
-                         target="_blank">Top positive contribution</a>
+                         target="_blank">functional enrichment (g:Profiler)</a>
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
-                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top negative
+                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top positive
                     contributing genes in g:Profiler.
                   </div>
                 </v-tooltip>
@@ -455,7 +455,7 @@
                   <template v-slot:activator="{on, attrs}">
                     <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
                       <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['negative'] : Object.values(topSCGenes)[0][distributionMeasure]['negative'])"
-                         target="_blank">Top negative contribution</a>
+                         target="_blank">functional enrichment (g:Profiler)</a>
                       <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
                     </v-chip>
                   </template>
