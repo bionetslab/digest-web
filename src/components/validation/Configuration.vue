@@ -545,7 +545,10 @@
                             <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
-                            TODO
+                            Calculate the contribution to the significance (empirical p-value) for each input id
+                            separately and visualize it. This calculation will happen with low priority to not fully
+                            block other significance calculations. We suggest you enter your E-Mail to get notified
+                            when the significance contribution calculation is finished.
                           </div>
                         </v-tooltip>
                       </template>
