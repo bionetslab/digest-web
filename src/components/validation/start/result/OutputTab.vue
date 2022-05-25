@@ -343,6 +343,16 @@
                 <b v-show="header.text !== distributionMeasure"
                    @click="distributionMeasure= header.text">{{ header.text }}</b>
               </template>
+              <template v-slot:header.related_genes="{ header }">
+                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                <b v-show="header.text !== distributionMeasure"
+                   @click="distributionMeasure= header.text">{{ header.text }}</b>
+              </template>
+              <template v-slot:header.related_variants="{ header }">
+                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                <b v-show="header.text !== distributionMeasure"
+                   @click="distributionMeasure= header.text">{{ header.text }}</b>
+              </template>
               <template v-slot:item.GO.BP="{ item }">
                 <b v-show="'GO.BP'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.BP'] }}</b>
                 <span v-show="'GO.BP'!== distributionMeasure">{{ item['GO.BP'] }}</span>
@@ -354,6 +364,14 @@
               <template v-slot:item.GO.CC="{ item }">
                 <b v-show="'GO.CC'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.CC'] }}</b>
                 <span v-show="'GO.CC'!== distributionMeasure">{{ item['GO.CC'] }}</span>
+              </template>
+              <template v-slot:item.related_genes="{ item }">
+                <b v-show="'related_genes'===distributionMeasure" style="color: cornflowerblue">{{ item['related_genes'] }}</b>
+                <span v-show="'related_genes'!== distributionMeasure">{{ item['related_genes'] }}</span>
+              </template>
+              <template v-slot:item.related_variants="{ item }">
+                <b v-show="'related_variants'===distributionMeasure" style="color: cornflowerblue">{{ item['related_variants'] }}</b>
+                <span v-show="'related_variants'!== distributionMeasure">{{ item['related_variants'] }}</span>
               </template>
               <template v-slot:item.KEGG="{ item }">
                 <b v-show="'KEGG'===distributionMeasure" style="color: cornflowerblue">{{ item['KEGG'] }}</b>
