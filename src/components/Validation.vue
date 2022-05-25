@@ -93,7 +93,7 @@ export default {
       return check;
     },
     getIllustration: function () {
-      return this.$config.STATIC_PATH + "assets/digest_summary_illustration.png"
+      return this.$config.STATIC_PATH + "assets/digest_summary_illustration.avif"
     },
 
     getLogoPath: function () {
