@@ -97,7 +97,7 @@ export default {
     },
 
     getLogoPath: function () {
-      return this.$config.STATIC_PATH + "assets/digest_logo.png"
+      return this.$config.STATIC_PATH + "assets/digest_logo.avif"
     },
 
     startValidation: function (data) {

@@ -87,7 +87,7 @@ export default {
       return this.mobile
     },
     getCardImage: function (mode, type) {
-      return this.$config.STATIC_PATH + "assets/" + mode + "_" + type + ".png"
+      return this.$config.STATIC_PATH + "assets/" + mode + "_" + type + ".avif"
     },
     validationEvent: function (data) {
       this.$emit("startValidationEvent", data)
