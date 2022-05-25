@@ -1,4 +1,7 @@
 const TerserPlugin = require("terser-webpack-plugin");
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+const AsyncCssPlugin = require("async-css-plugin");
+
 module.exports = {
 
     outputDir: "dist",
@@ -7,6 +10,9 @@ module.exports = {
     transpileDependencies: [
         'vuetify'
     ],
+    chainWebpack: config => {
+        config.plugin("async-css-plugin").use(AsyncCssPlugin, [{ /* options */ }]);
+    },
     configureWebpack: {
         module: {
             exprContextCritical: false
