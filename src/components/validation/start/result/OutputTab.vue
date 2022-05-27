@@ -316,207 +316,212 @@
 
       </v-container>
       <v-divider></v-divider>
-      <div style="display: flex; justify-content: center">
-        <v-subheader>Significance contribution</v-subheader>
-      </div>
-      <v-container v-if="scDone">
-        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
-          <v-col cols="12" lg="6" class="flex_content_center">
-            <v-data-table :headers="getSCTableHeader(clusterMeasure)" :items="getSCTableItems(clusterMeasure)" dense>
-              <template v-slot:header.GO.BP="{ header }">
-                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
-                <b v-show="header.text !== distributionMeasure"
-                   @click="distributionMeasure= header.text">{{ header.text }}</b>
-              </template>
-              <template v-slot:header.GO.MF="{ header }">
-                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
-                <b v-show="header.text !== distributionMeasure"
-                   @click="distributionMeasure= header.text">{{ header.text }}</b>
-              </template>
-              <template v-slot:header.GO.CC="{ header }">
-                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
-                <b v-show="header.text !== distributionMeasure"
-                   @click="distributionMeasure= header.text">{{ header.text }}</b>
-              </template>
-              <template v-slot:header.KEGG="{ header }">
-                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
-                <b v-show="header.text !== distributionMeasure"
-                   @click="distributionMeasure= header.text">{{ header.text }}</b>
-              </template>
-              <template v-slot:header.related_genes="{ header }">
-                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
-                <b v-show="header.text !== distributionMeasure"
-                   @click="distributionMeasure= header.text">{{ header.text }}</b>
-              </template>
-              <template v-slot:header.related_variants="{ header }">
-                <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
-                <b v-show="header.text !== distributionMeasure"
-                   @click="distributionMeasure= header.text">{{ header.text }}</b>
-              </template>
-              <template v-slot:item.GO.BP="{ item }">
-                <b v-show="'GO.BP'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.BP'] }}</b>
-                <span v-show="'GO.BP'!== distributionMeasure">{{ item['GO.BP'] }}</span>
-              </template>
-              <template v-slot:item.GO.MF="{ item }">
-                <b v-show="'GO.MF'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.MF'] }}</b>
-                <span v-show="'GO.MF'!== distributionMeasure">{{ item['GO.MF'] }}</span>
-              </template>
-              <template v-slot:item.GO.CC="{ item }">
-                <b v-show="'GO.CC'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.CC'] }}</b>
-                <span v-show="'GO.CC'!== distributionMeasure">{{ item['GO.CC'] }}</span>
-              </template>
-              <template v-slot:item.related_genes="{ item }">
-                <b v-show="'related_genes'===distributionMeasure" style="color: cornflowerblue">{{ item['related_genes'] }}</b>
-                <span v-show="'related_genes'!== distributionMeasure">{{ item['related_genes'] }}</span>
-              </template>
-              <template v-slot:item.related_variants="{ item }">
-                <b v-show="'related_variants'===distributionMeasure" style="color: cornflowerblue">{{ item['related_variants'] }}</b>
-                <span v-show="'related_variants'!== distributionMeasure">{{ item['related_variants'] }}</span>
-              </template>
-              <template v-slot:item.KEGG="{ item }">
-                <b v-show="'KEGG'===distributionMeasure" style="color: cornflowerblue">{{ item['KEGG'] }}</b>
-                <span v-show="'KEGG'!== distributionMeasure">{{ item['KEGG'] }}</span>
-              </template>
-            </v-data-table>
-          </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center">
-            <div style="width: 100%">
-              <div class="flex_content_center">
-                <v-img :src="getPlot('absolute_contribution_heatmap')" contain
-                       style="position: relative; max-width: 70%"
-                       v-if="mode !== 'cluster'">
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot('absolute_contribution_heatmap'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-                <v-img :src="getPlot(clusterMeasure+'_absolute_contribution_heatmap')" contain
-                       style="position: relative; max-width: 70%" v-else>
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot(clusterMeasure+'_absolute_contribution_heatmap'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-              </div>
-              <div class="flex_content_center">
-                <v-tooltip right v-if="type === 'gene' && topSCGenes">
-                  <template v-slot:activator="{on, attrs}">
-                    <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
-                      <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure]['absolute'] : Object.values(topSCGenes)[0]['absolute'])"
-                         target="_blank">functional enrichment (g:Profiler)</a>
-                      <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                    </v-chip>
-                  </template>
-                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top absolute
-                    contributing genes in g:Profiler.
-                  </div>
-                </v-tooltip>
-              </div>
-            </div>
-          </v-col>
-        </v-row>
-        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
-          <v-col cols="12" lg="6" class="flex_content_center">
-            <div style="width: 100%">
-              <div class="flex_content_center">
-                <v-img :src="getPlot(distributionMeasure+'_positive_contribution_heatmap')" contain
-                       style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot(distributionMeasure+'_positive_contribution_heatmap'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-                <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap')" contain
-                       style="position: relative; max-width: 70%" v-else>
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-              </div>
-              <div class="flex_content_center">
-                <v-tooltip right v-if="type === 'gene'  && topSCGenes">
-                  <template v-slot:activator="{on, attrs}">
-                    <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
-                      <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['positive'] : Object.values(topSCGenes)[0][distributionMeasure]['positive'])"
-                         target="_blank">functional enrichment (g:Profiler)</a>
-                      <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                    </v-chip>
-                  </template>
-                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top positive
-                    contributing genes in g:Profiler.
-                  </div>
-                </v-tooltip>
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center">
-            <div style="width: 100%">
-              <div class="flex_content_center">
-                <v-img :src="getPlot(distributionMeasure+'_negative_contribution_heatmap')" contain
-                       style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot(distributionMeasure+'_negative_contribution_heatmap'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-                <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap')" contain
-                       style="position: relative; max-width: 70%" v-else>
-                  <v-btn icon small style="position: absolute; right: 0"
-                         @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap'))">
-                    <v-icon small>fas fa-download</v-icon>
-                  </v-btn>
-                </v-img>
-              </div>
-              <div class="flex_content_center">
-                <v-tooltip right v-if="type === 'gene'  && topSCGenes">
-                  <template v-slot:activator="{on, attrs}">
-                    <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
-                      <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['negative'] : Object.values(topSCGenes)[0][distributionMeasure]['negative'])"
-                         target="_blank">functional enrichment (g:Profiler)</a>
-                      <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
-                    </v-chip>
-                  </template>
-                  <div style="width: 200px; text-align: justify">Show the functional enrichment for the top negative
-                    contributing genes in g:Profiler.
-                  </div>
-                </v-tooltip>
-              </div>
-            </div>
-          </v-col>
-        </v-row>
-        <v-row v-if="mode === 'subnetwork'" justify="center" style="padding-top: 16px; padding-bottom: 16px">
-          <v-col cols="12" lg="6" class="flex_content_center">
-            <v-img :src="getPlot(distributionMeasure+'_contribution_graph')" contain
-                   style="position: relative; max-width: 70%">
-              <v-btn icon small style="position: absolute; right: 0"
-                     @click="downloadFile(getPlot(distributionMeasure+'_contribution_graph'))">
-                <v-icon small>fas fa-download</v-icon>
-              </v-btn>
-            </v-img>
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-container v-else>
-        <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
-          <v-col cols="12">
-            <div v-if="scStatus" style="width: 100%" class="flex_content_center"><i>Significance contribution
-              calculation: {{ scStatus.done }} of {{ scStatus.total }} done!
-              <v-tooltip right>
-                <template v-slot:activator="{on, attrs}">
-                  <v-icon v-on="on" v-bind="attrs" style="top:-2px" left size="1.2rem">far fa-question-circle</v-icon>
+      <template v-if="input.sigCont">
+        <div style="display: flex; justify-content: center">
+          <v-subheader>Significance contribution</v-subheader>
+        </div>
+        <v-container v-if="scDone">
+          <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+            <v-col cols="12" lg="6" class="flex_content_center">
+              <v-data-table :headers="getSCTableHeader(clusterMeasure)" :items="getSCTableItems(clusterMeasure)" dense>
+                <template v-slot:header.GO.BP="{ header }">
+                  <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                  <b v-show="header.text !== distributionMeasure"
+                     @click="distributionMeasure= header.text">{{ header.text }}</b>
                 </template>
-                <div style="width: 300px; text-align: justify">These tasks are executed with lower priority to not block
-                  other incoming significance calculation tasks.
+                <template v-slot:header.GO.MF="{ header }">
+                  <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                  <b v-show="header.text !== distributionMeasure"
+                     @click="distributionMeasure= header.text">{{ header.text }}</b>
+                </template>
+                <template v-slot:header.GO.CC="{ header }">
+                  <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                  <b v-show="header.text !== distributionMeasure"
+                     @click="distributionMeasure= header.text">{{ header.text }}</b>
+                </template>
+                <template v-slot:header.KEGG="{ header }">
+                  <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                  <b v-show="header.text !== distributionMeasure"
+                     @click="distributionMeasure= header.text">{{ header.text }}</b>
+                </template>
+                <template v-slot:header.related_genes="{ header }">
+                  <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                  <b v-show="header.text !== distributionMeasure"
+                     @click="distributionMeasure= header.text">{{ header.text }}</b>
+                </template>
+                <template v-slot:header.related_variants="{ header }">
+                  <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
+                  <b v-show="header.text !== distributionMeasure"
+                     @click="distributionMeasure= header.text">{{ header.text }}</b>
+                </template>
+                <template v-slot:item.GO.BP="{ item }">
+                  <b v-show="'GO.BP'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.BP'] }}</b>
+                  <span v-show="'GO.BP'!== distributionMeasure">{{ item['GO.BP'] }}</span>
+                </template>
+                <template v-slot:item.GO.MF="{ item }">
+                  <b v-show="'GO.MF'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.MF'] }}</b>
+                  <span v-show="'GO.MF'!== distributionMeasure">{{ item['GO.MF'] }}</span>
+                </template>
+                <template v-slot:item.GO.CC="{ item }">
+                  <b v-show="'GO.CC'===distributionMeasure" style="color: cornflowerblue">{{ item['GO.CC'] }}</b>
+                  <span v-show="'GO.CC'!== distributionMeasure">{{ item['GO.CC'] }}</span>
+                </template>
+                <template v-slot:item.related_genes="{ item }">
+                  <b v-show="'related_genes'===distributionMeasure"
+                     style="color: cornflowerblue">{{ item['related_genes'] }}</b>
+                  <span v-show="'related_genes'!== distributionMeasure">{{ item['related_genes'] }}</span>
+                </template>
+                <template v-slot:item.related_variants="{ item }">
+                  <b v-show="'related_variants'===distributionMeasure"
+                     style="color: cornflowerblue">{{ item['related_variants'] }}</b>
+                  <span v-show="'related_variants'!== distributionMeasure">{{ item['related_variants'] }}</span>
+                </template>
+                <template v-slot:item.KEGG="{ item }">
+                  <b v-show="'KEGG'===distributionMeasure" style="color: cornflowerblue">{{ item['KEGG'] }}</b>
+                  <span v-show="'KEGG'!== distributionMeasure">{{ item['KEGG'] }}</span>
+                </template>
+              </v-data-table>
+            </v-col>
+            <v-col cols="12" lg="6" class="flex_content_center">
+              <div style="width: 100%">
+                <div class="flex_content_center">
+                  <v-img :src="getPlot('absolute_contribution_heatmap')" contain
+                         style="position: relative; max-width: 70%"
+                         v-if="mode !== 'cluster'">
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot('absolute_contribution_heatmap'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </v-img>
+                  <v-img :src="getPlot(clusterMeasure+'_absolute_contribution_heatmap')" contain
+                         style="position: relative; max-width: 70%" v-else>
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot(clusterMeasure+'_absolute_contribution_heatmap'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </v-img>
                 </div>
-              </v-tooltip>
-            </i></div>
-            <v-progress-linear v-if="scStatus" :value="scStatus.done/scStatus.total*100"></v-progress-linear>
-            <v-progress-linear v-else indeterminate></v-progress-linear>
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-divider></v-divider>
+                <div class="flex_content_center">
+                  <v-tooltip right v-if="type === 'gene' && topSCGenes">
+                    <template v-slot:activator="{on, attrs}">
+                      <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                        <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure]['absolute'] : Object.values(topSCGenes)[0]['absolute'])"
+                           target="_blank">functional enrichment (g:Profiler)</a>
+                        <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                      </v-chip>
+                    </template>
+                    <div style="width: 200px; text-align: justify">Show the functional enrichment for the top absolute
+                      contributing genes in g:Profiler.
+                    </div>
+                  </v-tooltip>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+            <v-col cols="12" lg="6" class="flex_content_center">
+              <div style="width: 100%">
+                <div class="flex_content_center">
+                  <v-img :src="getPlot(distributionMeasure+'_positive_contribution_heatmap')" contain
+                         style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot(distributionMeasure+'_positive_contribution_heatmap'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </v-img>
+                  <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap')" contain
+                         style="position: relative; max-width: 70%" v-else>
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </v-img>
+                </div>
+                <div class="flex_content_center">
+                  <v-tooltip right v-if="type === 'gene'  && topSCGenes">
+                    <template v-slot:activator="{on, attrs}">
+                      <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                        <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['positive'] : Object.values(topSCGenes)[0][distributionMeasure]['positive'])"
+                           target="_blank">functional enrichment (g:Profiler)</a>
+                        <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                      </v-chip>
+                    </template>
+                    <div style="width: 200px; text-align: justify">Show the functional enrichment for the top positive
+                      contributing genes in g:Profiler.
+                    </div>
+                  </v-tooltip>
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="12" lg="6" class="flex_content_center">
+              <div style="width: 100%">
+                <div class="flex_content_center">
+                  <v-img :src="getPlot(distributionMeasure+'_negative_contribution_heatmap')" contain
+                         style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot(distributionMeasure+'_negative_contribution_heatmap'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </v-img>
+                  <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap')" contain
+                         style="position: relative; max-width: 70%" v-else>
+                    <v-btn icon small style="position: absolute; right: 0"
+                           @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap'))">
+                      <v-icon small>fas fa-download</v-icon>
+                    </v-btn>
+                  </v-img>
+                </div>
+                <div class="flex_content_center">
+                  <v-tooltip right v-if="type === 'gene'  && topSCGenes">
+                    <template v-slot:activator="{on, attrs}">
+                      <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                        <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['negative'] : Object.values(topSCGenes)[0][distributionMeasure]['negative'])"
+                           target="_blank">functional enrichment (g:Profiler)</a>
+                        <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                      </v-chip>
+                    </template>
+                    <div style="width: 200px; text-align: justify">Show the functional enrichment for the top negative
+                      contributing genes in g:Profiler.
+                    </div>
+                  </v-tooltip>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row v-if="mode === 'subnetwork'" justify="center" style="padding-top: 16px; padding-bottom: 16px">
+            <v-col cols="12" lg="6" class="flex_content_center">
+              <v-img :src="getPlot(distributionMeasure+'_contribution_graph')" contain
+                     style="position: relative; max-width: 70%">
+                <v-btn icon small style="position: absolute; right: 0"
+                       @click="downloadFile(getPlot(distributionMeasure+'_contribution_graph'))">
+                  <v-icon small>fas fa-download</v-icon>
+                </v-btn>
+              </v-img>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-container v-else>
+          <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
+            <v-col cols="12">
+              <div v-if="scStatus" style="width: 100%" class="flex_content_center"><i>Significance contribution
+                calculation: {{ scStatus.done }} of {{ scStatus.total }} done!
+                <v-tooltip right>
+                  <template v-slot:activator="{on, attrs}">
+                    <v-icon v-on="on" v-bind="attrs" style="top:-2px" left size="1.2rem">far fa-question-circle</v-icon>
+                  </template>
+                  <div style="width: 300px; text-align: justify">These tasks are executed with lower priority to not
+                    block
+                    other incoming significance calculation tasks.
+                  </div>
+                </v-tooltip>
+              </i></div>
+              <v-progress-linear v-if="scStatus" :value="scStatus.done/scStatus.total*100"></v-progress-linear>
+              <v-progress-linear v-else indeterminate></v-progress-linear>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-divider></v-divider>
+      </template>
       <div style="display: flex; justify-content: center">
         <v-subheader>Mappability figures</v-subheader>
       </div>
@@ -701,6 +706,7 @@ export default {
         })
         if (this.type === 'gene') {
           this.topSCGenes = await this.$http.get("sc_top_results?task=" + this.taskID).then((response) => {
+            console.log(response.data)
             return response.data
           })
         }
