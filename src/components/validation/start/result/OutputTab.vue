@@ -706,7 +706,6 @@ export default {
         })
         if (this.type === 'gene') {
           this.topSCGenes = await this.$http.get("sc_top_results?task=" + this.taskID).then((response) => {
-            console.log(response.data)
             return response.data
           })
         }

@@ -34,8 +34,6 @@ export default {
   },
   watch:{
     '$route' (to, from){
-      console.log(to)
-      console.log(from)
       if(to.path ==='/' && from.path !==to.path)
         this.$router.go()
     }

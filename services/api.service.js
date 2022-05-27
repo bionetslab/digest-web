@@ -65,7 +65,6 @@ const ApiService = {
         };
         if (mail)
             data.mail = mail
-        console.log(data)
         return this.post("/subnetwork", data).then(response => {
             return response.data
         })
@@ -165,7 +164,6 @@ const ApiService = {
     },
     getResultFiles(taskID) {
         return this.get("/result_file_list?task=" + taskID).then(response => {
-            console.log(response)
             return response.data
         })
     }
