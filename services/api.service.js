@@ -21,18 +21,6 @@ const ApiService = {
         return axios.put(resource, data)
     },
 
-    delete(resource) {
-        return axios.delete(resource)
-    },
-
-    getExamples() {
-        return this.get("/test")
-    },
-
-    getExample(nr) {
-        return this.get("test?nr=" + nr)
-    },
-
     validate_set(id_type, set, runs, replace, distance, background, type, sigCont, mail) {
         let data = {
             target: set,
@@ -43,7 +31,7 @@ const ApiService = {
             background_model: background,
             type: type,
             sigCont: sigCont
-        };
+        }
         if (mail)
             data.mail = mail
         return this.post("/set", data).then(response => {
@@ -144,6 +132,7 @@ const ApiService = {
             type: type,
             sigCont: sigCont
         }
+        console.log(data)
         if (mail)
             data.mail = mail
         return this.post("/clustering", data).then(response => {
