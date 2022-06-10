@@ -412,6 +412,9 @@
         <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Additional parameters (optional)</v-subheader>
       </div>
       <v-container :class="{border_mobile:mobile, border:!mobile}">
+        <v-alert v-if="errorSigCont" type="error" dense>Define a list of entries for significance contribution (max 100
+          entries).
+        </v-alert>
         <v-row justify="center">
           <v-col cols="4" md="12">
             <div style="padding-top: 16px">
@@ -530,9 +533,9 @@
                       </template>
                     </v-select>
                   </v-col>
-                  </v-row>
+                </v-row>
                 <v-row justify="center" justify-md="start">
-                  <v-col class="flex_content_center" cols="12" lg="6">
+                  <v-col class="flex_content_center" cols="12" lg="4">
                     <v-checkbox
                         style="margin-top: 4px; max-width: 310px; padding-top:15px"
                         v-model="sigCont"
@@ -554,7 +557,38 @@
                       </template>
                     </v-checkbox>
                   </v-col>
-                  <v-col class="flex_content_center" cols="12" lg="6">
+                  <v-col class="flex_content_center" cols="12" lg="4">
+                    <v-file-input ref="sigContList" :disabled="!sigCont"
+                                  :label="(sigContTargets && sigContTargets.length>0 ? ('Selected '+sigContTargets.length) :('Upload ' +(mode==='network' ? 'nodes' : 'targets')))"
+                                  hide-details
+                                  dense
+                                  single-line
+                                  style="width: 250px; max-width: 210px; cursor: pointer"
+                                  v-model="sigContFile" @change="readSigContFile" prepend-icon="" filled outlined
+                                  prepend-inner-icon="fas fa-arrow-up-from-bracket">
+                      <template v-slot:append-outer>
+                        <v-tooltip right>
+                          <template v-slot:activator="{on, attrs}">
+                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                          </template>
+                          <div style="width: 250px; text-align: justify" v-if="mode !== 'network'">
+                            Upload a file with target IDs that are separated by a newline in the file. For the selected
+                            targets significance contribution will be calculated. If none is selected, all targets are
+                            used. This option becomes mandatory for significance contribution calculations for more
+                            than 100 targets.
+                          </div>
+                          <div style="width: 250px; text-align: justify" v-if="mode === 'network'">
+                            Upload a single column node list, edge list or .sif network file with node IDs. For the
+                            selected nodes significance contribution will be calculated. If none is selected, all
+                            targets are used. This option becomes mandatory for significance contribution calculations
+                            for more
+                            than 100 targets.
+                          </div>
+                        </v-tooltip>
+                      </template>
+                    </v-file-input>
+                  </v-col>
+                  <v-col class="flex_content_center" cols="12" lg="4">
                     <v-text-field
                         :disabled="!sigCont"
                         style="margin-top: 4px; max-width: 310px;"
@@ -674,6 +708,7 @@ export default {
       errorTargetID: false,
       errorTargetIDs: false,
       errorReferenceID: false, width: "50px",
+      errorSigCont: false,
       errorReferenceIDs: false,
       errorNetworkFormat: false,
       errorNetworkIDType: false,
@@ -692,7 +727,9 @@ export default {
       useReference: false,
       enriched: false,
       sigCont: false,
-      sigContMail:"",
+      sigContMail: "",
+      sigContTargets: [],
+      sigContFile: undefined,
       runs: 1000,
       replace: 100,
       distanceModel: "jaccard",
@@ -740,11 +777,22 @@ export default {
     readTargetFile: function (file) {
       if (file) {
         if (this.mode === 'network') {
-          this.readEdges(file)
+          this.readEdges(file, false)
         } else {
           this.readFile(file, 'target')
         }
         this.$refs.tarInput.blur()
+      }
+    },
+
+    readSigContFile: function (file) {
+      if (file) {
+        if (this.mode === 'network') {
+          this.readEdges(file, true)
+        } else {
+          this.readFile(file, 'sigCont')
+        }
+        this.$refs.sigContList.blur()
       }
     },
 
@@ -758,8 +806,8 @@ export default {
     isMobile: function () {
       return this.mobile
     },
-    limitColumns: function (content, delim, columns) {
-      return content.split("\n").map(line => {
+    limitColumns: function (content, delim, columns, sigCont) {
+      let out = content.split("\n").map(line => {
         if (line.length === 0)
           return ""
         let entries = line.split(delim);
@@ -768,22 +816,40 @@ export default {
           l += entries[e] + delim;
         l = l.substring(0, l.length - delim.length)
         return l
-      }).filter(l => l.length > 0).join("\n")
+      }).filter(l => l.length > 0)
+      if (sigCont)
+        return out
+      return out.join("\n")
     },
 
     readFileContent: function (result, goal) {
-      if (goal === 'target') {
-        if (this.mode === 'cluster') {
+      if (goal === 'target' || goal === 'sigCont') {
+        let sigCont = goal === 'sigCont'
+        if (this.mode === 'cluster' && !sigCont) {
+          // if (sigCont)
+          //   this.sigContTargets = []
           result = this.limitColumns(result, "\t", 2)
           result.split("\n").forEach(l => {
             let entries = l.split("\t");
             this.addToClusters(entries[0], entries[1]);
           })
         } else {
-          result = this.limitColumns(result, "\t", 1)
-          this.targets = result
+          result = this.limitColumns(result, "\t", 1, sigCont)
+          if (sigCont) {
+            this.sigContTargets = result
+          } else {
+            this.targets = result
+          }
         }
-        this.targetFile = undefined
+        if (sigCont) {
+          this.sigContFile = undefined
+          if (this.sigContTargets && this.sigContTargets.length > 100) {
+            this.setNotification("Please select maximum 100 entries for significance contribution calculation.")
+            this.sigContTargets = []
+          }
+        } else {
+          this.targetFile = undefined
+        }
       }
       if (goal === 'reference') {
         this.references = result
@@ -791,27 +857,35 @@ export default {
       }
     },
 
-    readEdgeListContent: function (result, sif) {
-      this.targets = []
+    readEdgeListContent: function (result, sif, sigCont) {
+      if (!sigCont) {
+        this.targets = []
+      } else {
+        this.sigContTargets = []
+      }
       let lines = result.split("\n").filter(l => l && l.length > 0).map(l => l.split(/\s*[\s,]\s*/))
       if (sif) {
         lines.forEach(entries => {
           if (entries.length > 2)
             for (let i = 2; i < entries.length; i++) {
-              this.addToEdges(entries[0], entries[i])
+              this.addToEdges(entries[0], entries[i], sigCont)
             }
           else if (entries.length === 1) {
-            this.addToEdges(entries[0])
+            this.addToEdges(entries[0], sigCont)
           } else
-            this.addToEdges(entries[0], entries[1])
+            this.addToEdges(entries[0], entries[1], sigCont)
         })
       } else {
         lines.forEach(entries => {
-          this.addToEdges(entries[0], entries[1]);
+          this.addToEdges(entries[0], entries[1], sigCont);
         })
       }
-      this.targets = this.targets.join("\n")
-      this.targetFile = undefined
+      if (!sigCont) {
+        this.targets = this.targets.join("\n")
+        this.targetFile = undefined
+      } else {
+        this.sigContFile = undefined
+      }
     }
     ,
 
@@ -825,11 +899,11 @@ export default {
     }
     ,
 
-    readEdges: function (file) {
+    readEdges: function (file, sigCont) {
       const reader = new FileReader();
       reader.addEventListener('load', (event) => {
         let result = event.target.result
-        this.readEdgeListContent(atob(result.split('base64,')[1]), file.name.endsWith(".sif"))
+        this.readEdgeListContent(atob(result.split('base64,')[1]), file.name.endsWith(".sif"), sigCont)
       });
       reader.readAsDataURL(file);
     }
@@ -854,21 +928,26 @@ export default {
       } else {
         if (this.clusters.map(i => i.id).indexOf(id) > -1) {
           this.setNotification("Duplicate IDs are not allowed!")
-        } else
-          this.clusters.push(clusterItem)
+        }
+        this.clusters.push(clusterItem)
       }
     }
     ,
 
-    addTarget: function (entry) {
-      if (this.targets.indexOf(entry) === -1)
-        this.targets.push(entry)
+    addTarget: function (entry, sigCont) {
+      if (sigCont) {
+        if (this.sigContTargets.indexOf(entry) === -1)
+          this.sigContTargets.push(entry)
+      } else {
+        if (this.targets.indexOf(entry) === -1)
+          this.targets.push(entry)
+      }
     },
-    addToEdges: function (id1, id2) {
+    addToEdges: function (id1, id2, sigCont) {
       if (id1)
-        this.addTarget(id1)
+        this.addTarget(id1, sigCont)
       if (id2)
-        this.addTarget(id2)
+        this.addTarget(id2, sigCont)
     }
     ,
     setNotification: function (message, timeout) {
@@ -992,7 +1071,8 @@ export default {
         if (!this.networkFile.name.endsWith('.sif'))
           this.errorNetworkNodeName = !this.nodeName || this.nodeName.length === 0
       }
-      let error = this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs || this.errorNetworkIDType || this.errorNetworkFormat || this.errorNetworkNodeName
+      this.errorSigCont = this.sigCont && (!this.sigContTargets || this.sigContTargets.length === 0) && (this.mode === 'cluster' ? this.clusters.length > 100 : this.idsToList(this.targets).length > 100)
+      let error = this.errorSigCont || this.errorTargetID || this.errorTargetIDs || this.errorReferenceID || this.errorReferenceIDs || this.errorNetworkIDType || this.errorNetworkFormat || this.errorNetworkNodeName
       if (!error) {
         let route;
         let params = {
@@ -1005,8 +1085,13 @@ export default {
           background: this.backgroundModel,
           sigCont: this.sigCont
         }
-        if(this.sigContMail.includes("@"))
-          params['mail']=this.sigContMail
+        if (this.sigCont) {
+          if (this.sigContMail.includes("@"))
+            params['mail'] = this.sigContMail
+          if (this.sigContTargets && this.sigContTargets.length > 0) {
+            params['sigContTargets'] = this.sigContTargets
+          }
+        }
         if (this.mode === 'network') {
           params.network = this.networkFile ? {
             name: this.networkFile.name,

@@ -1,10 +1,6 @@
 import axios from 'axios'
 
 const ApiService = {
-    setNedrex(url) {
-        axios.nedrex = url
-    },
-
     init(baseURL) {
         axios.defaults.baseURL = baseURL;
     },
@@ -21,7 +17,7 @@ const ApiService = {
         return axios.put(resource, data)
     },
 
-    validate_set(id_type, set, runs, replace, distance, background, type, sigCont, mail) {
+    validate_set(id_type, set, runs, replace, distance, background, type, sigCont, mail, sigContTargets) {
         let data = {
             target: set,
             target_id: id_type,
@@ -30,16 +26,18 @@ const ApiService = {
             distance: distance,
             background_model: background,
             type: type,
-            sigCont: sigCont
+            sigCont: sigCont,
+            sigContTarget: sigContTargets
         }
         if (mail)
             data.mail = mail
+        console.log(data)
         return this.post("/set", data).then(response => {
             return response.data
         })
     },
 
-    validate_subnetwork(id_type, set, runs, replace, distance, background, network, type, sigCont, mail) {
+    validate_subnetwork(id_type, set, runs, replace, distance, background, network, type, sigCont, mail, sigContTargets) {
         let data = {
             target: set,
             target_id: id_type,
@@ -49,7 +47,8 @@ const ApiService = {
             background_model: background,
             network_data: network,
             type: type,
-            sigCont: sigCont
+            sigCont: sigCont,
+            sigContTarget: sigContTargets
         };
         if (mail)
             data.mail = mail
@@ -58,7 +57,7 @@ const ApiService = {
         })
     },
 
-    validate_subnetwork_set(id_type, set, ref_id, ref, runs, replace, distance, background, network, type, sigCont, mail) {
+    validate_subnetwork_set(id_type, set, ref_id, ref, runs, replace, distance, background, network, type, sigCont, mail, sigContTargets) {
         let data = {
             target: set,
             target_id: id_type,
@@ -70,7 +69,8 @@ const ApiService = {
             background_model: background,
             network_data: network,
             type: type,
-            sigCont: sigCont
+            sigCont: sigCont,
+            sigContTarget: sigContTargets
         };
         if (mail)
             data.mail = mail
@@ -79,7 +79,7 @@ const ApiService = {
         })
     },
 
-    validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type, sigCont, mail) {
+    validate_set_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type, sigCont, mail, sigContTargets) {
         let data = {
             target: target,
             target_id: target_id,
@@ -91,7 +91,8 @@ const ApiService = {
             distance: distance,
             background_model: background,
             type: type,
-            sigCont: sigCont
+            sigCont: sigCont,
+            sigContTarget: sigContTargets
         }
         if (mail)
             data.mail = mail
@@ -100,7 +101,7 @@ const ApiService = {
         })
     },
 
-    validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type, sigCont, mail) {
+    validate_id_set(target_id, target, ref_id, ref, runs, replace, enriched, distance, background, type, sigCont, mail, sigContTargets) {
         let data = {
             target: target,
             target_id: target_id,
@@ -112,7 +113,8 @@ const ApiService = {
             distance: distance,
             background_model: background,
             type: type,
-            sigCont: sigCont
+            sigCont: sigCont,
+            sigContTarget: sigContTargets
         }
         if (mail)
             data.mail = mail
@@ -121,7 +123,7 @@ const ApiService = {
         })
     },
 
-    validate_cluster(target_id, target, runs, replace, distance, background, type, sigCont,mail) {
+    validate_cluster(target_id, target, runs, replace, distance, background, type, sigCont,mail, sigContTargets) {
         let data = {
             target: target,
             target_id: target_id,
@@ -130,9 +132,9 @@ const ApiService = {
             distance: distance,
             background_model: background,
             type: type,
-            sigCont: sigCont
+            sigCont: sigCont,
+            sigContTarget: sigContTargets
         }
-        console.log(data)
         if (mail)
             data.mail = mail
         return this.post("/clustering", data).then(response => {

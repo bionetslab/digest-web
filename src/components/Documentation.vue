@@ -364,7 +364,7 @@
                     <th>
                       Example
                     </th>
-                    <th style="width:50%">
+                    <th style="width:45%">
                       Description
                     </th>
                   </tr>
@@ -437,6 +437,16 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>sigContTarget (optional)</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{sigContTarget: ['PTEN', 'BRCA2']}</code></td>
+                    <td>Defines the gene or disease IDs for which the significance contribution is calculated. Option becomes <b><i>mandatory</i></b>
+                      when target list contains more than 100 entries. <code>sigContTarget</code> cannot exceed 100
+                      entries.
+                    </td>
+                  </tr>
+                  <tr>
                     <td>mail (optional)</td>
                     <td>string</td>
                     <td>-</td>
@@ -466,7 +476,7 @@
                     <th>
                       Example
                     </th>
-                    <th>
+                    <th style="width:45%">
                       Description
                     </th>
                   </tr>
@@ -562,6 +572,16 @@
                     <td><code>{sigCont:'false'}</code></td>
                     <td>If 'true', the significance contribution is calculated, after the main in-silico validation is
                       done.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>sigContTarget (optional)</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{sigContTarget: ['PTEN', 'BRCA2']}</code></td>
+                    <td>Defines the gene or disease IDs for which the significance contribution is calculated. Option becomes <b><i>mandatory</i></b>
+                      when target list contains more than 100 entries. <code>sigContTarget</code> cannot exceed 100
+                      entries.
                     </td>
                   </tr>
                   <tr>
@@ -594,7 +614,7 @@
                     <th>
                       Example
                     </th>
-                    <th style="width:50%">
+                    <th style="width:45%">
                       Description
                     </th>
                   </tr>
@@ -716,6 +736,16 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>sigContTarget (optional)</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{sigContTarget: ['PTEN', 'BRCA2']}</code></td>
+                    <td>Defines the gene or disease IDs for which the significance contribution is calculated. Option becomes <b><i>mandatory</i></b>
+                      when target list contains more than 100 entries. <code>sigContTarget</code> cannot exceed 100
+                      entries.
+                    </td>
+                  </tr>
+                  <tr>
                     <td>mail (optional)</td>
                     <td>string</td>
                     <td>-</td>
@@ -745,7 +775,7 @@
                     <th>
                       Example
                     </th>
-                    <th>
+                    <th style="width:45%">
                       Description
                     </th>
                   </tr>
@@ -893,6 +923,16 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>sigContTarget (optional)</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{sigContTarget: ['PTEN', 'BRCA2']}</code></td>
+                    <td>Defines the gene or disease IDs for which the significance contribution is calculated. Option becomes <b><i>mandatory</i></b>
+                      when target list contains more than 100 entries. <code>sigContTarget</code> cannot exceed 100
+                      entries.
+                    </td>
+                  </tr>
+                  <tr>
                     <td>mail (optional)</td>
                     <td>string</td>
                     <td>-</td>
@@ -919,10 +959,10 @@
                     <th>
                       Default
                     </th>
-                    <th>
+                    <th style="width:15%">
                       Example
                     </th>
-                    <th>
+                    <th style="width:45%">
                       Description
                     </th>
                   </tr>
@@ -997,6 +1037,16 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>sigContTarget (optional)</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td><code>{sigContTarget: ['PTEN', 'BRCA2']}</code></td>
+                    <td>Defines the gene or disease IDs for which the significance contribution is calculated. Option becomes <b><i>mandatory</i></b>
+                      when target list contains more than 100 entries. <code>sigContTarget</code> cannot exceed 100
+                      entries.
+                    </td>
+                  </tr>
+                  <tr>
                     <td>mail (optional)</td>
                     <td>string</td>
                     <td>-</td>
@@ -1014,7 +1064,8 @@
         <div style="margin-top: 16px">
           <p>The <b>response</b> object contains an taskID (e.g.
             <code>{task:'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'</code>) with which the status and the results with the
-            referenced task can be requested.</p>
+            referenced task can be requested. If the return value contains <code>{task: null}</code> additional
+            information for the denial of the request might be found in the response object.</p>
         </div>
       </div>
 
