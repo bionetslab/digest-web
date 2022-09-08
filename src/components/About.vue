@@ -60,9 +60,9 @@
       </div>
       <b style="font-size: 1.5rem">Cite</b>
       <div style="margin-top: 16px; margin-bottom: 64px">If you find DIGEST useful please cite:
-        <div style="margin: 16px 64px">Adamowicz, K., Maier, A., Baumbach, J., &#38; Blumenthal, D. B. (2022). Online in silico
+        <div style="margin: 16px 64px">Klaudia Adamowicz, Andreas Maier, Jan Baumbach, David B Blumenthal, Online <i>in silico</i>
           validation of disease and gene sets, clusterings or subnetworks with DIGEST. <i>Briefings in
-            Bioinformatics</i>.
+            Bioinformatics</i>, Volume 23, Issue 4, July 2022, bbac247.
           <a href="https://doi.org/10.1093/BIB/BBAC247">https://doi.org/10.1093/BIB/BBAC247</a>
         </div>
       </div>
