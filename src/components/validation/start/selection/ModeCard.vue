@@ -2,18 +2,15 @@
   <v-card :style="{width: '50%', padding: isMobile() ? '4px' :'', height: '100%', position:'relative'}" :elevation="hover ? 10:0"
           :flat="!hover"
           @mouseenter="hover=true" @mouseleave="hover=false">
-    <div>
+    <div style="width: 100%">
       <v-card-title v-if="mobile" style="font-size: 1.25rem; margin-bottom: 8px">
         {{title}}
       </v-card-title>
       <v-card-subtitle v-if="mobile" style="color: #00000099; font-size: 0.8rem">{{text}}</v-card-subtitle>
-      <v-img
-          class="white--text align-end"
-          :style="{margin: isMobile()? '4px 15% 8px' : '8px 15% 48px', position: 'relative'}"
-          width="70%"
-          :src="image"
-      >
-      </v-img>
+      <picture class="white--text align-end" style="width: 100%">
+        <source type="image/avif" :srcset="image">
+        <img alt="For safari users" :src="fallback_image" :style="{margin: isMobile()? '4px 15% 8px' : '8px 15% 48px', position: 'relative', width: '70%'}">
+      </picture>
     </div>
     <div v-if="!mobile" v-show="!hover" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex">
       <div style="align-self: flex-end; justify-self: center; margin: auto auto 0;">
@@ -52,6 +49,7 @@ export default {
     title:String,
     text:String,
     image:String,
+    fallback_image: String,
     type: String,
     mode: String,
     mobile:{

@@ -34,6 +34,7 @@ const ApiService = {
         return this.post("/set", data).then(response => {
             return response.data
         })
+
     },
 
     validate_subnetwork(id_type, set, runs, replace, distance, background, network, type, sigCont, mail, sigContTargets) {
