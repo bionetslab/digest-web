@@ -33,7 +33,7 @@
           </v-tab-item>
 
           <v-tab-item style="width: 100%">
-            <OutputTab @reloadFiles="loadPlots()" @downloadEvent="downloadFile"  :taskID="taskID" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :input="input"  :type="type" :mode="mode" :zips="zips" :reference-type="getIDType(input.reference_id)"></OutputTab>
+            <OutputTab @reloadFiles="loadPlots()" @downloadEvent="downloadFile" :taskID="taskID" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :input="input" :type="type" :mode="mode" :zips="zips" :reference-type="getIDType(input.reference_id)"></OutputTab>
           </v-tab-item>
         </v-tabs-items>
       </div>
@@ -77,7 +77,7 @@ export default {
 
   created() {
     this.taskID = this.$route.query.id
-
+    console.log(this.params)
     if (this.taskID) {
       this.queryStatus()
     } else {

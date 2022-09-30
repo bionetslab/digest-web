@@ -277,8 +277,8 @@
                       :items="measureMap['clustering']" v-model="clusterMeasure"></v-select>
           </v-col>
           <v-col cols="7" md="3" style="display: flex; justify-content: center">
-            <v-select label="Annotation type" style="max-width: 200px" dense outlined filled :items="termMap[type]"
-                      v-model="distributionMeasure"></v-select>
+            <v-select label="Annotation type" style="max-width: 200px" dense outlined filled :items="!this.referenceType || this.referenceType.length === 0 || this.type === this.referenceType ? termMap[type] : ['KEGG']"
+                      v-model="distributionMeasure" ></v-select>
           </v-col>
         </v-row>
       </v-container>
@@ -686,7 +686,7 @@ export default {
   },
 
   created() {
-    this.distributionMeasure = this.termMap[this.type][0]
+    this.distributionMeasure = !this.referenceType || this.referenceType.length === 0 || this.referenceType === this.type ? this.termMap[this.type][0] : 'KEGG'
     if (this.input.sigCont)
       this.queryScStatus()
   },

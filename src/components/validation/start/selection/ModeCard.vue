@@ -8,7 +8,8 @@
       </v-card-title>
       <v-card-subtitle v-if="mobile" style="color: #00000099; font-size: 0.8rem">{{text}}</v-card-subtitle>
       <picture class="white--text align-end" style="width: 100%">
-        <source type="image/avif" :srcset="image">
+        <source :srcset="image" type="image/avif" >
+        <source :srcset="fallback_image" type="image/png" >
         <img alt="For safari users" :src="fallback_image" :style="{margin: isMobile()? '4px 15% 8px' : '8px 15% 48px', position: 'relative', width: '70%'}">
       </picture>
     </div>
