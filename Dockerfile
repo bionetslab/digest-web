@@ -21,7 +21,6 @@ RUN rm -rf webapps/*
 WORKDIR apache-tomcat
 COPY --from=build-stage /app/dist webapps/ROOT/
 COPY docker/WEB-INF webapps/ROOT/WEB-INF
-
 COPY docker/conf/* conf/
 
 #EXPOSE 8080
