@@ -1,9 +1,9 @@
 version: "3.3"
 services:
   web:
-    image: andimajore/digest_frontend:latest
+    image: ghcr.io/bionetslab/digest-web:main
     container_name: digest-frontend
     build: .
     ports:
-      - "8080:8080"
+      - "8080:80"
     restart: on-failure
