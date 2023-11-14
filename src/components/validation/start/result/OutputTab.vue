@@ -322,7 +322,7 @@
           <v-subheader>Significance contribution</v-subheader>
           <v-tooltip top>
             <template v-slot:activator="{attrs, on}">
-              <v-btn icon @click="downloadFile(getCSV('sc_results.csv'))" v-on="on" v-bind="attrs"
+              <v-btn icon @click="downloadFile(getCSV('sc_results'))" v-on="on" v-bind="attrs"
                      style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 12px">
                 <v-icon>fas fa-download</v-icon>
               </v-btn>
