@@ -285,6 +285,7 @@
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
         <v-subheader>Significance figures</v-subheader>
+
       </div>
       <v-container>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
@@ -319,6 +320,15 @@
       <template v-if="input.sigCont">
         <div style="display: flex; justify-content: center">
           <v-subheader>Significance contribution</v-subheader>
+          <v-tooltip top>
+            <template v-slot:activator="{attrs, on}">
+              <v-btn icon @click="downloadFile(getCSV('sc_results.csv'))" v-on="on" v-bind="attrs"
+                     style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 12px">
+                <v-icon>fas fa-download</v-icon>
+              </v-btn>
+            </template>
+            <div>Download the significance contribution result table as csv.</div>
+          </v-tooltip>
         </div>
         <v-container v-if="scDone">
           <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
@@ -709,6 +719,11 @@ export default {
             return response.data
           })
         }
+        await this.$http.get("get_sc_file_list?task=" + this.taskID).then((response) => {
+          if (response.data){
+            console.log(response.data)
+          }
+        })
         this.scDone = true
       } else
 
