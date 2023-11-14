@@ -719,11 +719,6 @@ export default {
             return response.data
           })
         }
-        await this.$http.get("get_sc_file_list?task=" + this.taskID).then((response) => {
-          if (response.data){
-            console.log(response.data)
-          }
-        })
         this.scDone = true
       } else
 
