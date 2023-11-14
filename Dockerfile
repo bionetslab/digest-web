@@ -11,12 +11,11 @@ RUN npm run build
 
 FROM nginx:alpine as production-stage
 RUN apk add --upgrade apk-tools
-RUn apk upgrade --available
+RUN apk upgrade --available
 
 WORKDIR /usr/app
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html/
-
 COPY docker/default.conf /etc/nginx/conf.d/
 
 EXPOSE 80
