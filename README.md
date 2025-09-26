@@ -10,10 +10,6 @@ This repository contains the vue-js frontend of the DiGeST projects webapplictio
 - `npm run serve`
 - running on  [localhost:8080](http://localhost:8080) 
 
-## Prod-deployement
-- coming soon
-
-
 ## General Vue.js tips
 
 
