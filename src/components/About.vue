@@ -79,7 +79,7 @@
       <div style="height: .85rem"></div>
       <span style="justify-content: center; display: flex; font-size: .85rem">Prof. Dr. Jan Baumbach</span>
       <span
-          style="justify-content: center; display: flex; font-size: .85rem">Chair of Computational Systems Biology</span>
+          style="justify-content: center; display: flex; font-size: .85rem">Institute for Computational Systems Biology (CoSy.Bio)</span>
       <div style="height: .85rem"></div>
       <span style="justify-content: center; display: flex; font-size: .85rem">E-Mail: <a :href="'mailto:'+getMail()">management-cosybio[at)zbh.uni-hamburg.de</a></span>
       <span style="justify-content: center; display: flex; font-size: .85rem">Address: Prof. Dr. Jan Baumbach</span>
