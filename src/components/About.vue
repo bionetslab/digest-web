@@ -111,7 +111,7 @@ export default {
     },
     getMail: function () {
       let mail = "zbh.uni-hamburg.de"
-      mail = "management-cosybio" + mail
+      mail = "management-cosybi" + mail
       mail = mail.split("z").join("o@z")
       return mail
     },
