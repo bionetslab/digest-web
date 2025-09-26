@@ -77,7 +77,6 @@ export default {
 
   created() {
     this.taskID = this.$route.query.id
-    console.log(this.params)
     if (this.taskID) {
       this.queryStatus()
     } else {
@@ -112,7 +111,6 @@ export default {
 
     loadPlots: function () {
       this.$http.getResultFiles(this.taskID).then(files => {
-        console.log(files)
         this.plots = files.filter(file => file.type === 'png').map(file => this.getFilePath(file.name))
         this.csvs = files.filter(file => file.type === 'csv').map(file => this.getFilePath(file.name))
         this.zips = files.filter(file => file.type === 'zip').map(file => this.getFilePath(file.name))

@@ -58,6 +58,15 @@
           david.b.blumenthal(_at-]fau.de
         </div>
       </div>
+      <b style="font-size: 1.5rem">Web-Application</b>
+      <div style="margin-top: 16px; margin-bottom: 32px">
+        <div>
+          <v-btn icon><a style="text-decoration: none" :href="'mailto:'+getAMMail()">
+            <v-icon>fas fa-envelope</v-icon>
+          </a></v-btn>
+          andreas.maier-1(_at-]uni-hamburg.de
+        </div>
+      </div>
       <b style="font-size: 1.5rem">Cite</b>
       <div style="margin-top: 16px; margin-bottom: 64px">If you find DIGEST useful please cite:
         <div style="margin: 16px 64px">Klaudia Adamowicz, Andreas Maier, Jan Baumbach, David B Blumenthal, Online <i>in silico</i>
@@ -66,18 +75,17 @@
           <a href="https://doi.org/10.1093/BIB/BBAC247">https://doi.org/10.1093/BIB/BBAC247</a>
         </div>
       </div>
-      <b style="justify-content: center; display: flex;font-size: 1.25rem; color: #484848">Impressum</b>
+      <b style="justify-content: center; display: flex;font-size: 1.25rem; color: #484848">Imprint</b>
       <div style="height: .85rem"></div>
       <span style="justify-content: center; display: flex; font-size: .85rem">Prof. Dr. Jan Baumbach</span>
       <span
           style="justify-content: center; display: flex; font-size: .85rem">Chair of Computational Systems Biology</span>
       <div style="height: .85rem"></div>
-      <span style="justify-content: center; display: flex; font-size: .85rem">Phone: +49-40-42838-7313</span>
-      <span style="justify-content: center; display: flex; font-size: .85rem">E-Mail: <a :href="'mailto:'+getMail()">cosy[at)zbh.uni-hamburg.de</a></span>
+      <span style="justify-content: center; display: flex; font-size: .85rem">E-Mail: <a :href="'mailto:'+getMail()">management-cosybio[at)zbh.uni-hamburg.de</a></span>
       <span style="justify-content: center; display: flex; font-size: .85rem">Address: Prof. Dr. Jan Baumbach</span>
       <span style="justify-content: center; display: flex; font-size: .85rem">University of Hamburg</span>
-      <span style="justify-content: center; display: flex; font-size: .85rem">Notkestraße 9</span>
-      <span style="justify-content: center; display: flex; font-size: .85rem">22607 Hamburg</span>
+      <span style="justify-content: center; display: flex; font-size: .85rem">Albert-Einstein-Ring 8-10</span>
+      <span style="justify-content: center; display: flex; font-size: .85rem">22761 Hamburg</span>
       <span style="justify-content: center; display: flex; font-size: .85rem">Germany</span>
     </div>
 
@@ -103,14 +111,20 @@ export default {
     },
     getMail: function () {
       let mail = "zbh.uni-hamburg.de"
-      mail = "cosy" + mail
-      mail = mail.split("z").join("b@z")
+      mail = "management-cosybio" + mail
+      mail = mail.split("z").join("o@z")
       return mail
     },
     getKAMail: function () {
       let mail = "-hamburg.de"
       mail = "klaudia.adamowicz" + mail
       mail = mail.split("z").join("z@uni")
+      return mail
+    },
+    getAMMail: function () {
+      let mail = "-hamburg.de"
+      mail = "andreas.ma" + mail
+      mail = mail.split("ma").join("maier-1@uni")
       return mail
     },
     getDBMail: function () {
