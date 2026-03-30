@@ -439,211 +439,217 @@
         <v-alert v-if="errorSigCont" type="error" density="compact">Define a list of entries for significance contribution (max 100
           entries).
         </v-alert>
-        <v-row justify="center">
-          <v-col cols="12">
-            <v-container style="padding-top: 16px">
-              <v-row justify="center" justify-md="start">
-                <v-col class="flex_content_center" cols="12" lg="4" md="6" v-if="mode==='set' || mode==='network'">
-                  <v-checkbox
-                      style="margin-top: 4px; max-width: 140px;"
-                      class="nowrap-checkbox"
-                      :disabled="!useReference || refType === 'disease'"
-                      v-model="enriched"
+        <v-row justify="center" justify-md="start" align="center" style="padding-top: 16px">
+          <v-col class="flex_content_center" cols="12" lg="4" md="6" v-if="mode==='set' || mode==='network'">
+            <v-checkbox
+                style="margin-top: 4px; max-width: 140px;"
+                class="nowrap-checkbox"
+                :disabled="!useReference || refType === 'disease'"
+                v-model="enriched"
+                density="compact"
+                hide-details
+                label="Enriched">
+              <template v-slot:append>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify">
+                      Set checkmark, if only enriched annotations of the reference set should be used.
+                    </div>
+                  </v-tooltip>
+                </span>
+              </template>
+            </v-checkbox>
+          </v-col>
+          <v-col class="flex_content_center" cols="12" :md="mode==='set' || mode==='network'?6:12"
+                 :lg="mode==='set' || mode==='network'?4:6">
+            <v-select label="Similarity measure" :items="distanceMeasures" v-model="distanceModel"
+                      style="max-width: 260px; min-width: 240px;" hide-details
+                      item-title="title"
+                      item-value="value"
+                      variant="outlined" density="compact">
+              <template v-slot:append>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 400px;">
+                      <div style="display: flex">
+                        <div style="width: 40%">
+                          Jaccard index:
+                        </div>
+                        <div style="width: 60%; text-align: justify">
+                          defined as the size of the intersection divided by the size of the union of the sets
+                        </div>
+                      </div>
+                      <div style="display: flex; margin-top: 8px;">
+                        <div style="width: 40%">
+                          Overlap coefficient:
+                        </div>
+                        <div style="width: 60%; text-align: justify">
+                          defined as the size of the intersection divided by the size of the smaller of the two
+                          sets
+                        </div>
+                      </div>
+                    </div>
+                  </v-tooltip>
+                </span>
+              </template>
+            </v-select>
+          </v-col>
+          <v-col class="flex_content_center" cols="12" md="12" :lg="mode==='set' || mode==='network'?4:6">
+            <v-select label="Background model"
+                      :items="getBackgroundModelItems()"
+                      v-model="backgroundModel"
                       hide-details
-                      label="Enriched">
-                    <template v-slot:append>
-                      <v-tooltip location="right">
-                        <template v-slot:activator="{ props }">
-                          <v-icon v-bind="props">far fa-question-circle</v-icon>
-                        </template>
-                        <div style="width: 250px; text-align: justify">
-                          Set checkmark, if only enriched annotations of the reference set should be used.
+                      item-title="title"
+                      item-value="value"
+                      style="max-width: 280px; min-width: 250px;" variant="outlined" density="compact">
+              <template v-slot:append>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 400px;">
+                      <div style="display: flex"
+                           v-if="getBackgroundModelItems().map(e=>e.value).indexOf('complete')>-1">
+                        <div style="width: 40%">
+                          Fully randomized:
                         </div>
-                      </v-tooltip>
-                    </template>
-                  </v-checkbox>
-                </v-col>
-                <v-col class="flex_content_center" cols="12" :md="mode==='set' || mode==='network'?6:12"
-                       :lg="mode==='set' || mode==='network'?4:6">
-                  <v-select label="Similarity measure" :items="distanceMeasures" v-model="distanceModel"
-                            style="max-width: 260px; min-width: 240px;" hide-details
-                            item-title="title"
-                            item-value="value"
-                            variant="outlined" density="compact">
-                    <template v-slot:append>
-                      <v-tooltip location="right">
-                        <template v-slot:activator="{ props }">
-                          <v-icon v-bind="props">far fa-question-circle</v-icon>
-                        </template>
-                        <div style="width: 400px;">
-                          <div style="display: flex">
-                            <div style="width: 40%">
-                              Jaccard index:
-                            </div>
-                            <div style="width: 60%; text-align: justify">
-                              defined as the size of the intersection divided by the size of the union of the sets
-                            </div>
-                          </div>
-                          <div style="display: flex; margin-top: 8px;">
-                            <div style="width: 40%">
-                              Overlap coefficient:
-                            </div>
-                            <div style="width: 60%; text-align: justify">
-                              defined as the size of the intersection divided by the size of the smaller of the two
-                              sets
-                            </div>
-                          </div>
+                        <div style="width: 60%; text-align: justify">
+                          Model draws {{ type }} uniformly without replacement to compute fully randomized {{
+                            type
+                          }}
+                          sets
+                          of
+                          target set
+                          size.
                         </div>
-                      </v-tooltip>
-                    </template>
-                  </v-select>
-                </v-col>
-                <v-col class="flex_content_center" cols="12" md="12" :lg="mode==='set' || mode==='network'?4:6">
-                  <v-select label="Background model"
-                            :items="getBackgroundModelItems()"
-                            v-model="backgroundModel"
-                            hide-details
-                            item-title="title"
-                            item-value="value"
-                            style="max-width: 280px; min-width: 250px;" variant="outlined" density="compact">
-                    <template v-slot:append>
-                      <v-tooltip location="right">
-                        <template v-slot:activator="{ props }">
-                          <v-icon v-bind="props">far fa-question-circle</v-icon>
-                        </template>
-                        <div style="width: 400px;">
-                          <div style="display: flex"
-                               v-if="getBackgroundModelItems().map(e=>e.value).indexOf('complete')>-1">
-                            <div style="width: 40%">
-                              Fully randomized:
-                            </div>
-                            <div style="width: 60%; text-align: justify">
-                              Model draws {{ type }} uniformly without replacement to compute fully randomized {{
-                                type
-                              }}
-                              sets
-                              of
-                              target set
-                              size.
-                            </div>
-                          </div>
-                          <div style="display: flex; margin-top: 8px;"
-                               v-if="getBackgroundModelItems().map(e=>e.value).indexOf('term-pres')>-1">
-                            <div style="width: 40%">
-                              Term-size preserving:
-                            </div>
-                            <div style="width: 60%; text-align: justify">
-                              Model maintains some information from target set and constructs randomized {{ type }}
-                              sets
-                              where
-                              the
-                              distribution of the contained {{ type }}s' annotation set sizes (approximately) matches
-                              the
-                              distribution
-                              of the annotation set sizes of the {{ type }} contained in target set.
-                            </div>
-                          </div>
-                          <div style="display: flex; margin-top: 8px;"
-                               v-if="getBackgroundModelItems().map(e=>e.value).indexOf('network')>-1">
-                            <div style="width: 40%">
-                              Network-based:
-                            </div>
-                            <div style="width: 60%; text-align: justify">
-                              New random subnetworks are determined, while preserving information from the original
-                              input. Here, the connected components are identified from the input {{ type }}s within
-                              the
-                              user given or default network and then random nodes with the same number and size of
-                              connected components are selected.
-                            </div>
-                          </div>
+                      </div>
+                      <div style="display: flex; margin-top: 8px;"
+                           v-if="getBackgroundModelItems().map(e=>e.value).indexOf('term-pres')>-1">
+                        <div style="width: 40%">
+                          Term-size preserving:
                         </div>
-                      </v-tooltip>
-                    </template>
-                  </v-select>
-                </v-col>
-              </v-row>
-              <v-row justify="center" justify-md="start">
-                <v-col class="flex_content_center" cols="12" lg="4">
-                  <v-checkbox
-                      style="margin-top: 4px; max-width: 310px; padding-top:15px"
-                      class="nowrap-checkbox"
-                      v-model="sigCont"
-                      @update:modelValue="sigContMail=''"
-                      hide-details>
-                    <template v-slot:label>
-                      <span style="padding-right: 8px">Calculate significance contribution</span>
-                    </template>
-                    <template v-slot:append>
-                      <span style="padding-left: 16px">
-                        <v-tooltip location="right">
-                          <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props">far fa-question-circle</v-icon>
-                          </template>
-                          <div style="width: 250px; text-align: justify">
-                            Calculate the contribution to the significance (empirical p-value) for each input id
-                            separately and visualize it. This calculation will happen with low priority to not fully
-                            block other significance calculations. We suggest you enter your E-Mail to get notified
-                            when the significance contribution calculation is finished.
-                          </div>
-                        </v-tooltip>
-                      </span>
-                    </template>
-                  </v-checkbox>
-                </v-col>
-                <v-col class="flex_content_center" cols="12" lg="4">
-                  <v-file-input ref="sigContList" :disabled="!sigCont"
-                                :label="(sigContTargets && sigContTargets.length>0 ? ('Selected '+sigContTargets.length) :('Upload ' +(mode==='network' ? 'nodes' : 'targets')))"
-                                hide-details
-                                density="compact"
-                                :prepend-icon="null"
-                                prepend-inner-icon="fas fa-arrow-up-from-bracket"
-                                style="width: 250px; max-width: 210px; cursor: pointer"
-                                v-model="sigContFile" @change="readSigContFile" variant="outlined">
-                    <template v-slot:append>
-                      <v-tooltip location="right">
-                        <template v-slot:activator="{ props }">
-                          <v-icon v-bind="props">far fa-question-circle</v-icon>
-                        </template>
-                        <div style="width: 250px; text-align: justify" v-if="mode !== 'network'">
-                          Upload a file with target IDs that are separated by a newline in the file. For the selected
-                          targets significance contribution will be calculated. If none is selected, all targets are
-                          used. This option becomes mandatory for significance contribution calculations for more
-                          than 100 targets.
+                        <div style="width: 60%; text-align: justify">
+                          Model maintains some information from target set and constructs randomized {{ type }}
+                          sets
+                          where
+                          the
+                          distribution of the contained {{ type }}s' annotation set sizes (approximately) matches
+                          the
+                          distribution
+                          of the annotation set sizes of the {{ type }} contained in target set.
                         </div>
-                        <div style="width: 250px; text-align: justify" v-if="mode === 'network'">
-                          Upload a single column node list, edge list or .sif network file with node IDs. For the
-                          selected nodes significance contribution will be calculated. If none is selected, all
-                          targets are used. This option becomes mandatory for significance contribution calculations
-                          for more
-                          than 100 targets.
+                      </div>
+                      <div style="display: flex; margin-top: 8px;"
+                           v-if="getBackgroundModelItems().map(e=>e.value).indexOf('network')>-1">
+                        <div style="width: 40%">
+                          Network-based:
                         </div>
-                      </v-tooltip>
-                    </template>
-                  </v-file-input>
-                </v-col>
-                <v-col class="flex_content_center" cols="12" lg="4">
-                  <v-text-field
-                      :disabled="!sigCont"
-                      style="margin-top: 4px; max-width: 310px;"
-                      v-model="sigContMail"
-                      hide-details
-                      label="Notification e-mail">
-                    <template v-slot:append>
-                      <v-tooltip location="right">
-                        <template v-slot:activator="{ props }">
-                          <v-icon v-bind="props">far fa-question-circle</v-icon>
-                        </template>
-                        <div style="width: 300px; text-align: justify">
-                          Significance contribution calculation will happen with low priority to not fully block other
-                          significance calculations. Fell free to enter an E-mail address and we will send a
-                          notification once the process is done and delete your mail address from our system.
+                        <div style="width: 60%; text-align: justify">
+                          New random subnetworks are determined, while preserving information from the original
+                          input. Here, the connected components are identified from the input {{ type }}s within
+                          the
+                          user given or default network and then random nodes with the same number and size of
+                          connected components are selected.
                         </div>
-                      </v-tooltip>
+                      </div>
+                    </div>
+                  </v-tooltip>
+                </span>
+              </template>
+            </v-select>
+          </v-col>
+        </v-row>
+        <v-row justify="center" justify-md="start" align="center">
+          <v-col class="flex_content_center" cols="12" lg="4">
+            <v-checkbox
+                style="margin-top: 4px; max-width: 310px;"
+                class="nowrap-checkbox"
+                v-model="sigCont"
+                density="compact"
+                @update:modelValue="sigContMail=''"
+                hide-details>
+              <template v-slot:label>
+                <span style="padding-right: 8px">Calculate significance contribution</span>
+              </template>
+              <template v-slot:append>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
                     </template>
-                  </v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
+                    <div style="width: 250px; text-align: justify">
+                      Calculate the contribution to the significance (empirical p-value) for each input id
+                      separately and visualize it. This calculation will happen with low priority to not fully
+                      block other significance calculations. We suggest you enter your E-Mail to get notified
+                      when the significance contribution calculation is finished.
+                    </div>
+                  </v-tooltip>
+                </span>
+              </template>
+            </v-checkbox>
+          </v-col>
+          <v-col class="flex_content_center" cols="12" lg="4">
+            <v-file-input ref="sigContList" :disabled="!sigCont"
+                          :label="(sigContTargets && sigContTargets.length>0 ? ('Selected '+sigContTargets.length) :('Upload ' +(mode==='network' ? 'nodes' : 'targets')))"
+                          hide-details
+                          density="compact"
+                          :prepend-icon="null"
+                          prepend-inner-icon="fas fa-arrow-up-from-bracket"
+                          style="width: 250px; max-width: 210px; cursor: pointer"
+                          v-model="sigContFile" @change="readSigContFile" variant="outlined">
+              <template v-slot:append>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify" v-if="mode !== 'network'">
+                      Upload a file with target IDs that are separated by a newline in the file. For the selected
+                      targets significance contribution will be calculated. If none is selected, all targets are
+                      used. This option becomes mandatory for significance contribution calculations for more
+                      than 100 targets.
+                    </div>
+                    <div style="width: 250px; text-align: justify" v-if="mode === 'network'">
+                      Upload a single column node list, edge list or .sif network file with node IDs. For the
+                      selected nodes significance contribution will be calculated. If none is selected, all
+                      targets are used. This option becomes mandatory for significance contribution calculations
+                      for more
+                      than 100 targets.
+                    </div>
+                  </v-tooltip>
+                </span>
+              </template>
+            </v-file-input>
+          </v-col>
+          <v-col class="flex_content_center" cols="12" lg="4">
+            <v-text-field
+                :disabled="!sigCont"
+                style="margin-top: 4px; max-width: 310px;"
+                v-model="sigContMail"
+                hide-details
+                label="Notification e-mail">
+              <template v-slot:append>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 300px; text-align: justify">
+                      Significance contribution calculation will happen with low priority to not fully block other
+                      significance calculations. Fell free to enter an E-mail address and we will send a
+                      notification once the process is done and delete your mail address from our system.
+                    </div>
+                  </v-tooltip>
+                </span>
+              </template>
+            </v-text-field>
           </v-col>
         </v-row>
         <v-row justify="center">
@@ -654,15 +660,17 @@
                               style="max-width: 5rem; margin-top: 0" hide-details></v-text-field>
               </template>
               <template v-slot:append>
-                <v-tooltip location="right">
-                  <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props">far fa-question-circle</v-icon>
-                  </template>
-                  <div style="width: 250px; text-align: justify">
-                    Number of runs to be performed with randomly generated target IDs to be used as a comparison for the
-                    determination of the empirical p-value
-                  </div>
-                </v-tooltip>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify">
+                      Number of runs to be performed with randomly generated target IDs to be used as a comparison for the
+                      determination of the empirical p-value
+                    </div>
+                  </v-tooltip>
+                </span>
               </template>
             </v-slider>
           </v-col>
@@ -675,16 +683,18 @@
                               style="max-width: 5rem; margin-top: 0" hide-details></v-text-field>
               </template>
               <template v-slot:append>
-                <v-tooltip location="right">
-                  <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props">far fa-question-circle</v-icon>
-                  </template>
-                  <div style="width: 250px; text-align: justify">
-                    How many percent of the target set elements should be replaced each run with random values based on
-                    the
-                    background model.
-                  </div>
-                </v-tooltip>
+                <span style="margin-left: 16px">
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
+                    </template>
+                    <div style="width: 250px; text-align: justify">
+                      How many percent of the target set elements should be replaced each run with random values based on
+                      the
+                      background model.
+                    </div>
+                  </v-tooltip>
+                </span>
               </template>
             </v-slider>
           </v-col>
