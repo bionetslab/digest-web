@@ -9,6 +9,16 @@ export default defineConfig({
     vue(),
     vuetify({ autoImport: true }),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern',
+      },
+      sass: {
+        api: 'modern',
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
