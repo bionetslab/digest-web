@@ -16,10 +16,10 @@
       </div>
     </v-app-bar>
     <v-main>
-      <v-card v-if="isMobile()" style="min-height: 100vh; margin-top: 16px;">
+      <v-card v-if="isMobile()" style="min-height: 100vh; margin-top: 16px;" elevation="0">
         <router-view></router-view>
       </v-card>
-      <v-card v-else style="width: 70vw; justify-self: center; margin-left: auto; margin-right: auto; margin-top: 16px;">
+      <v-card v-else style="width: 70vw; justify-self: center; margin-left: auto; margin-right: auto; margin-top: 16px;" elevation="0">
         <router-view></router-view>
       </v-card>
     </v-main>
