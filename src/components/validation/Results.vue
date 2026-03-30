@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%;  padding: 16px">
-    <v-sheet style="margin-top: 16px;">
+    <v-sheet style="margin-top: 16px;" elevation="0">
       <div style="display: flex; justify-content: center" v-if="!error && result ===undefined">
         <v-list-subheader :class="{sh:!mobile, sh_mobile:mobile}">Status: {{
             status ? status + (status === "Queued" ? "(" + queueStats.queuePosition + "/" + queueStats.queueLength + ")" : '') : "communicating..."
@@ -15,18 +15,17 @@
               :href="getCurrentURL()">{{ getCurrentURL() }}</a></i>
         </div>
       </div>
-      <div v-else :style="{'padding-left': isMobile() ? '16px':'64px', 'padding-right': isMobile() ? '16px': '64px'}">
-        <v-tabs v-model="resultTab" align-tabs="center">
+      <div v-else>
+        <v-tabs v-model="resultTab" align-tabs="center" color="primary">
           <v-tab :value="0">
             Input
           </v-tab>
           <v-tab :value="1">
             Result
           </v-tab>
-
         </v-tabs>
         <v-divider></v-divider>
-        <v-window v-model="resultTab">
+        <v-window v-model="resultTab" style="padding-top: 16px">
           <v-window-item :value="0">
             <InputTab @downloadEvent="downloadFile" :task-i-d="taskID" :id-map="idMap" :type="type" :mode="mode" :mobile="mobile" :input="input" :zips="zips"></InputTab>
           </v-window-item>

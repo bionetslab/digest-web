@@ -147,13 +147,15 @@
               </template>
             </v-textarea>
             <v-data-table v-if="mode==='cluster'" item-value="id" :items="clusters" :class="{ 'ta_mobile':mobile }"
-                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end" density="compact"
+                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end"
+                          density="compact"
+                          :items-per-page="10"
                           :headers="clusterHeaders">
-              <template v-slot:item.action="{item}">
+              <template v-slot:item.action="{index}">
                 <v-tooltip location="right">
                   <template v-slot:activator="{ props }">
-                    <v-btn icon v-bind="props" @click="removeClusterEntry(item)" size="small">
-                      <v-icon>far fa-trash-can</v-icon>
+                    <v-btn icon v-bind="props" @click="removeClusterEntry(index)" size="small" variant="plain" :ripple="false">
+                      <v-icon size="small">far fa-trash-can</v-icon>
                     </v-btn>
                   </template>
                   <div style="width: 200px; text-align: justify">
@@ -161,32 +163,15 @@
                   </div>
                 </v-tooltip>
               </template>
-              <template v-slot:tbody>
-                <tbody>
-                <tr v-for="item in clusters" :key="item.id">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.cluster }}</td>
-                  <td style="text-align: end">
-                    <v-tooltip location="right">
-                      <template v-slot:activator="{ props }">
-                        <v-btn icon v-bind="props" @click="removeClusterEntry(item)" size="small">
-                          <v-icon>far fa-trash-can</v-icon>
-                        </v-btn>
-                      </template>
-                      <div style="width: 200px; text-align: justify">
-                        Remove entry from cluster list!
-                      </div>
-                    </v-tooltip>
-                  </td>
-                </tr>
+              <template v-slot:body.append>
                 <tr>
                   <td>
-                    <v-text-field density="compact" label="id" style="margin-bottom: -16px; margin-top:16px;padding-bottom: 6px"
-                                  v-model="clusterIDModel">
+                    <v-text-field density="compact" label="id" style="margin-top: 4px; margin-bottom: 4px"
+                                  v-model="clusterIDModel" variant="underlined" hide-details>
                       <template v-slot:append>
                         <v-tooltip location="right">
                           <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props">far fa-question-circle</v-icon>
+                            <v-icon v-bind="props" size="x-small">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Insert ID of target ID type.
@@ -197,12 +182,12 @@
                   </td>
                   <td>
                     <v-text-field density="compact" label="cluster"
-                                  style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"
-                                  v-model="clusterModel">
+                                  style="margin-top: 4px; margin-bottom: 4px"
+                                  v-model="clusterModel" variant="underlined" hide-details>
                       <template v-slot:append>
                         <v-tooltip location="right">
                           <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props">far fa-question-circle</v-icon>
+                            <v-icon v-bind="props" size="x-small">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Add assigned Cluster. Names and/or numbers are supported.
@@ -214,8 +199,8 @@
                   <td style="text-align: end">
                     <v-tooltip location="right">
                       <template v-slot:activator="{ props }">
-                        <v-btn v-bind="props" icon @click="addClusterEntry()" size="small">
-                          <v-icon>far fa-square-plus</v-icon>
+                        <v-btn v-bind="props" icon @click="addClusterEntry()" size="small" variant="plain" :ripple="false">
+                          <v-icon size="small">far fa-square-plus</v-icon>
                         </v-btn>
                       </template>
                       <div style="width: 200px; text-align: justify">
@@ -224,7 +209,6 @@
                     </v-tooltip>
                   </td>
                 </tr>
-                </tbody>
               </template>
             </v-data-table>
           </v-col>
@@ -376,7 +360,7 @@
                             show-size
                             :prepend-icon="null"
                             prepend-inner-icon="fas fa-arrow-up-from-bracket"
-                            style="width: 210px; max-width: 80% ;  cursor: pointer"
+                            style="width: 280px; max-width: 80% ;  cursor: pointer"
                             accept=".sif,.graphml,.gt" :rules="networkRule"
                             v-model="networkFile" variant="outlined">
                 <template v-slot:append>
@@ -399,32 +383,37 @@
                         :items="idMap[type]" v-model="nodeType" hide-details
                         item-title="text"
                         item-value="value"
-                        style="max-width: 220px" :class="{'flex_self_center':mobile}" density="compact">
+                        style="max-width: 260px; min-width: 240px" :class="{'flex_self_center':mobile}" density="compact">
                 <template v-slot:append>
-                  <v-tooltip location="right">
-                    <template v-slot:activator="{ props }">
-                      <v-icon v-bind="props">far fa-question-circle</v-icon>
-                    </template>
-                    <div style="width: 250px; text-align: justify">
-                      Select the ID space the {{ type }} nodes in your selected background network are in.
-                    </div>
-                  </v-tooltip>
+                  <span style="margin-left: 16px">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props">far fa-question-circle</v-icon>
+                      </template>
+                      <div style="width: 250px; text-align: justify">
+                        Select the ID space the {{ type }} nodes in your selected background network are in.
+                      </div>
+                    </v-tooltip>
+                  </span>
                 </template>
               </v-select>
             </v-col>
             <v-col cols="12" sm="5" class="flex_content_center">
-              <v-text-field style="max-width: 220px" variant="outlined" density="compact" v-model="nodeName"
+              <v-text-field style="max-width: 260px; min-width: 240px" variant="outlined" density="compact" v-model="nodeName"
+                            hide-details
                             :disabled="!networkFile || !(networkFile.name.endsWith('.gt') || networkFile.name.endsWith('.graphml'))"
                             label="Property name">
                 <template v-slot:append>
-                  <v-tooltip location="right">
-                    <template v-slot:activator="{ props }">
-                      <v-icon v-bind="props">far fa-question-circle</v-icon>
-                    </template>
-                    <div style="width: 250px; text-align: justify">
-                      Define the node or prop name of the {{ type }} nodes where the ID is located.
-                    </div>
-                  </v-tooltip>
+                  <span style="margin-left: 16px">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props">far fa-question-circle</v-icon>
+                      </template>
+                      <div style="width: 250px; text-align: justify">
+                        Define the node or prop name of the {{ type }} nodes where the ID is located.
+                      </div>
+                    </v-tooltip>
+                  </span>
                 </template>
               </v-text-field>
             </v-col>
@@ -955,8 +944,8 @@ export default {
     }
     ,
 
-    removeClusterEntry: function (item) {
-      this.clusters.splice(this.clusters.indexOf(item), 1)
+    removeClusterEntry: function (index) {
+      this.clusters.splice(index, 1)
     }
     ,
     addClusterEntry: function () {
