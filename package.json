@@ -29,5 +29,10 @@
     "sass": "^1.71.1",
     "vite": "^5.1.4",
     "vite-plugin-vuetify": "^2.0.3"
+  },
+  "overrides": {
+    "vite": {
+      "esbuild": ">=0.25.0"
+    }
   }
 }
