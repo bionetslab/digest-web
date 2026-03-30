@@ -1381,12 +1381,12 @@ export default {
 </script>
 
 <style scoped>
-.nav-link {
+a {
   text-decoration: none;
   color: #1976d2;
 }
 
-.nav-link:hover {
+a:hover {
   text-decoration: underline;
   color: #1565c0;
 }

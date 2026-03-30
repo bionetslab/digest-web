@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div style="background-color: cornflowerblue; width: 100%; padding:16px">
+    <div style="background-color: #1976d2; width: 100%; padding:16px">
       <h2 :style="{display: 'flex', 'justify-content': 'center', color: 'white', 'font-size': mobile ? '2.5rem' : '4rem'}">
         About</h2>
     </div>
     <div :style="{padding: mobile ? '32px 16px' : '32px 64px'}">
-      <b style="font-size: 1.5rem;">DIGEST</b>
+      <h3 class="section-header">DIGEST</h3>
       <p style="text-align: justify; margin-top: 16px; margin-bottom: 32px"> DIGEST is a (“in silico validation of
         <b>di</b>sease and <b>ge</b>ne <b>s</b>ets,
         clus<b>t</b>erings or subnetworks”), is a Python-based validation tool available as a webinterface, as a <a
@@ -19,54 +19,54 @@
         significance of candidate mechanisms with regard to functional and genetic coherence and enables the computation
         of empirical P-values with just a few mouse clicks.</p>
 
-      <b style="font-size: 1.5rem">Resources</b>
-      <div style="margin-top: 16px; margin-bottom: 32px">
-        <div>
-          <v-btn icon href="https://pypi.org/project/biodigest/" target="_blank" variant="text">
-            <v-icon>fab fa-python</v-icon>
+      <h3 class="section-header">Resources</h3>
+      <div style="margin-top: 8px; margin-bottom: 32px">
+        <div style="display: flex; align-items: center; margin-bottom: 4px;">
+          <v-btn icon href="https://pypi.org/project/biodigest/" target="_blank" variant="text" density="compact">
+            <v-icon size="small">fab fa-python</v-icon>
           </v-btn>
-          Python package (biodigest)
+          <span style="margin-left: 8px">Python package (biodigest)</span>
         </div>
-        <div>
-          <v-btn icon href="https://github.com/bionetslab/digest" target="_blank" variant="text">
-            <v-icon>fab fa-github</v-icon>
+        <div style="display: flex; align-items: center; margin-bottom: 4px;">
+          <v-btn icon href="https://github.com/bionetslab/digest" target="_blank" variant="text" density="compact">
+            <v-icon size="small">fab fa-github</v-icon>
           </v-btn>
-          DIGEST source code
+          <span style="margin-left: 8px">DIGEST source code</span>
         </div>
-        <div>
-          <v-btn icon href="https://github.com/bionetslab/digest-tutorial/blob/main/Tutorial.ipynb" target="_blank" variant="text">
-            <v-icon>fas fa-graduation-cap</v-icon>
+        <div style="display: flex; align-items: center;">
+          <v-btn icon href="https://github.com/bionetslab/digest-tutorial/blob/main/Tutorial.ipynb" target="_blank" variant="text" density="compact">
+            <v-icon size="small">fas fa-graduation-cap</v-icon>
           </v-btn>
-          DIGEST tutorial material
+          <span style="margin-left: 8px">DIGEST tutorial material</span>
         </div>
       </div>
 
 
-      <b style="font-size: 1.5rem">Contact</b>
-      <div style="margin-top: 16px; margin-bottom: 32px">
-        <div>
-          <v-btn icon :href="'mailto:'+getKAMail()" variant="text">
-            <v-icon>fas fa-envelope</v-icon>
+      <h3 class="section-header">Contact</h3>
+      <div style="margin-top: 8px; margin-bottom: 32px">
+        <div style="display: flex; align-items: center; margin-bottom: 4px;">
+          <v-btn icon :href="'mailto:'+getKAMail()" variant="text" density="compact">
+            <v-icon size="small">fas fa-envelope</v-icon>
           </v-btn>
-          klaudia.adamowicz(_at-]uni-hamburg.de
+          <span style="margin-left: 8px">klaudia.adamowicz(_at-]uni-hamburg.de</span>
         </div>
-        <div>
-          <v-btn icon :href="'mailto:'+getDBMail()" variant="text">
-            <v-icon>fas fa-envelope</v-icon>
+        <div style="display: flex; align-items: center;">
+          <v-btn icon :href="'mailto:'+getDBMail()" variant="text" density="compact">
+            <v-icon size="small">fas fa-envelope</v-icon>
           </v-btn>
-          david.b.blumenthal(_at-]fau.de
-        </div>
-      </div>
-      <b style="font-size: 1.5rem">Web-Application</b>
-      <div style="margin-top: 16px; margin-bottom: 32px">
-        <div>
-          <v-btn icon :href="'mailto:'+getAMMail()" variant="text">
-            <v-icon>fas fa-envelope</v-icon>
-          </v-btn>
-          andreas.maier-1(_at-]uni-hamburg.de
+          <span style="margin-left: 8px">david.b.blumenthal(_at-]fau.de</span>
         </div>
       </div>
-      <b style="font-size: 1.5rem">Cite</b>
+      <h3 class="section-header">Web-Application</h3>
+      <div style="margin-top: 8px; margin-bottom: 32px">
+        <div style="display: flex; align-items: center;">
+          <v-btn icon :href="'mailto:'+getAMMail()" variant="text" density="compact">
+            <v-icon size="small">fas fa-envelope</v-icon>
+          </v-btn>
+          <span style="margin-left: 8px">andreas.maier-1(_at-]uni-hamburg.de</span>
+        </div>
+      </div>
+      <h3 class="section-header">Cite</h3>
       <div style="margin-top: 16px; margin-bottom: 64px">If you find DIGEST useful please cite:
         <div style="margin: 16px 64px">Klaudia Adamowicz, Andreas Maier, Jan Baumbach, David B Blumenthal, Online <i>in silico</i>
           validation of disease and gene sets, clusterings or subnetworks with DIGEST. <i>Briefings in
@@ -80,7 +80,8 @@
       <span
           style="justify-content: center; display: flex; font-size: .85rem">Institute for Computational Systems Biology (CoSy.Bio)</span>
       <div style="height: .85rem"></div>
-      <span style="justify-content: center; display: flex; font-size: .85rem">E-Mail: <a :href="'mailto:'+getMail()">management-cosybio[at)zbh.uni-hamburg.de</a></span>
+      <span style="justify-content: center; display: flex; font-size: .85rem">E-Mail: &nbsp;<a :href="'mailto:'+getMail()">management-cosybio[at)zbh.uni-hamburg.de</a></span>
+
       <span style="justify-content: center; display: flex; font-size: .85rem">Address: Prof. Dr. Jan Baumbach</span>
       <span style="justify-content: center; display: flex; font-size: .85rem">University of Hamburg</span>
       <span style="justify-content: center; display: flex; font-size: .85rem">Albert-Einstein-Ring 8-10</span>
@@ -138,5 +139,20 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+  color: #1976d2;
+}
 
+a:hover {
+  text-decoration: underline;
+  color: #1565c0;
+}
+
+.section-header {
+  font-size: 1.5rem;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
 </style>
