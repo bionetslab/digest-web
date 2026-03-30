@@ -22,19 +22,19 @@
       <h3 class="section-header">Resources</h3>
       <div style="margin-top: 8px; margin-bottom: 32px">
         <div style="display: flex; align-items: center; margin-bottom: 4px;">
-          <v-btn icon href="https://pypi.org/project/biodigest/" target="_blank" variant="text" density="compact">
+          <v-btn icon href="https://pypi.org/project/biodigest/" target="_blank" variant="plain" density="compact">
             <v-icon size="small">fab fa-python</v-icon>
           </v-btn>
           <span style="margin-left: 8px">Python package (biodigest)</span>
         </div>
         <div style="display: flex; align-items: center; margin-bottom: 4px;">
-          <v-btn icon href="https://github.com/bionetslab/digest" target="_blank" variant="text" density="compact">
+          <v-btn icon href="https://github.com/bionetslab/digest" target="_blank" variant="plain" density="compact">
             <v-icon size="small">fab fa-github</v-icon>
           </v-btn>
           <span style="margin-left: 8px">DIGEST source code</span>
         </div>
         <div style="display: flex; align-items: center;">
-          <v-btn icon href="https://github.com/bionetslab/digest-tutorial/blob/main/Tutorial.ipynb" target="_blank" variant="text" density="compact">
+          <v-btn icon href="https://github.com/bionetslab/digest-tutorial/blob/main/Tutorial.ipynb" target="_blank" variant="plain" density="compact">
             <v-icon size="small">fas fa-graduation-cap</v-icon>
           </v-btn>
           <span style="margin-left: 8px">DIGEST tutorial material</span>
@@ -45,13 +45,13 @@
       <h3 class="section-header">Contact</h3>
       <div style="margin-top: 8px; margin-bottom: 32px">
         <div style="display: flex; align-items: center; margin-bottom: 4px;">
-          <v-btn icon :href="'mailto:'+getKAMail()" variant="text" density="compact">
+          <v-btn icon :href="'mailto:'+getKAMail()" variant="plain" density="compact">
             <v-icon size="small">fas fa-envelope</v-icon>
           </v-btn>
           <span style="margin-left: 8px">klaudia.adamowicz(_at-]uni-hamburg.de</span>
         </div>
         <div style="display: flex; align-items: center;">
-          <v-btn icon :href="'mailto:'+getDBMail()" variant="text" density="compact">
+          <v-btn icon :href="'mailto:'+getDBMail()" variant="plain" density="compact">
             <v-icon size="small">fas fa-envelope</v-icon>
           </v-btn>
           <span style="margin-left: 8px">david.b.blumenthal(_at-]fau.de</span>
@@ -60,7 +60,7 @@
       <h3 class="section-header">Web-Application</h3>
       <div style="margin-top: 8px; margin-bottom: 32px">
         <div style="display: flex; align-items: center;">
-          <v-btn icon :href="'mailto:'+getAMMail()" variant="text" density="compact">
+          <v-btn icon :href="'mailto:'+getAMMail()" variant="plain" density="compact">
             <v-icon size="small">fas fa-envelope</v-icon>
           </v-btn>
           <span style="margin-left: 8px">andreas.maier-1(_at-]uni-hamburg.de</span>

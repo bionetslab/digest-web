@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div style="display:flex;">
-      <v-list-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Data
-      </v-list-subheader>
+    <div style="display:flex; justify-content: center; position: relative">
+      <v-list-subheader>Data</v-list-subheader>
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
           <v-btn icon @click="downloadFile(getZIP('.zip'))" v-bind="props"
-                 style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 10px">
+                 variant="plain"
+                 style="position: absolute; right: 0; top: 0">
             <v-icon>fas fa-download</v-icon>
           </v-btn>
         </template>
@@ -125,7 +125,7 @@
                     <v-tooltip location="right">
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
-                          <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">All</a>
+                          <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank" style="text-decoration: none; color: #1976d2">All</a>
                           <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -134,12 +134,12 @@
                         genes in g:Profiler.
                       </div>
                     </v-tooltip>
-                    <v-tooltip location="right" v-for="cluster in getClusterNames(input.target)"
+                        <v-tooltip location="right" v-for="cluster in getClusterNames(input.target)"
                                :key="cluster+'_gprofiler'">
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
-                             target="_blank">{{ cluster }}</a>
+                             target="_blank" style="text-decoration: none; color: #1976d2">{{ cluster }}</a>
                           <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -157,7 +157,7 @@
                     <v-tooltip location="right">
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
-                          <a :href="getGProfilerUrl(input.target)" target="_blank">Targets</a>
+                          <a :href="getGProfilerUrl(input.target)" target="_blank" style="text-decoration: none; color: #1976d2">Targets</a>
                           <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -168,7 +168,7 @@
                     <v-tooltip location="right" v-if="input.reference">
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
-                          <a :href="getGProfilerUrl(input.reference)" target="_blank">References</a>
+                          <a :href="getGProfilerUrl(input.reference)" target="_blank" style="text-decoration: none; color: #1976d2">References</a>
                           <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -266,6 +266,10 @@ export default {
 .v-list-subheader
   font-size: 1.5rem
   margin-top: 8px
+  height: auto
+  min-height: auto
+  line-height: 2rem
+  padding-bottom: 4px
 
 .sh_mobile
   font-size: 1.2rem

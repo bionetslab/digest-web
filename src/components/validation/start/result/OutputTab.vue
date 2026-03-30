@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div style="display:flex">
-      <v-list-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular results
-      </v-list-subheader>
+    <div style="display:flex; justify-content: center; position: relative">
+      <v-list-subheader>Tabular results</v-list-subheader>
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
           <v-btn icon @click="downloadFile(getZIP('.zip'))" v-bind="props"
-                 style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 12px">
+                 variant="plain"
+                 style="position: absolute; right: 0; top: 0">
             <v-icon>fas fa-download</v-icon>
           </v-btn>
         </template>
@@ -24,7 +24,7 @@
                 <tr>
                   <th>
                     <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('p-value_validation'))"
-                           style="margin:4px">
+                           style="margin:4px" :ripple="false">
                       <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
@@ -79,7 +79,7 @@
                 <tr>
                   <th>
                     <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('p-value_validation'))"
-                           style="margin:4px">
+                           style="margin:4px" :ripple="false">
                       <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
@@ -149,7 +149,7 @@
                 <tr>
                   <th>
                     <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('input_validation'))"
-                           style="margin:4px">
+                           style="margin:4px" :ripple="false">
                       <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
@@ -202,7 +202,7 @@
                 <tr>
                   <th>
                     <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('input_validation'))"
-                           style="margin:4px">
+                           style="margin:4px" :ripple="false">
                       <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
@@ -294,38 +294,43 @@
           <v-col cols="12" lg="6" class="flex_content_center">
             <v-img :src="getPlot('p-value')" style="position: relative; max-width: 70%" v-if="mode!=='cluster'">
               <v-btn icon size="small" style="position: absolute; right: 0"
+                     variant="plain"
                      @click="downloadFile(getPlot('p-value'))">
                 <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
-            </v-img>
-            <v-img :src="getPlot(clusterMeasure+'_p-value')" v-if="mode==='cluster'"
+              </v-img>
+              <v-img :src="getPlot(clusterMeasure+'_p-value')" v-if="mode==='cluster'"
                    style="position: relative; max-width: 70% ">
               <v-btn icon size="small" style="position: absolute; right: 0"
+                     variant="plain"
                      @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
                 <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
-            </v-img>
-          </v-col>
-          <v-col cols="12" lg="6" class="flex_content_center">
-            <v-img :src="getPlot(getDistPlotName())"
+              </v-img>
+              </v-col>
+              <v-col cols="12" lg="6" class="flex_content_center">
+              <v-img :src="getPlot(getDistPlotName())"
                    style="position: relative" max-width="90%">
               <v-btn icon size="small" style="position: absolute; right: 0"
+                     variant="plain"
                      @click="downloadFile(getPlot(getDistPlotName()))">
                 <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
-            </v-img>
+              </v-img>
+
           </v-col>
         </v-row>
 
       </v-container>
       <v-divider></v-divider>
       <template v-if="input.sigCont">
-        <div style="display: flex; justify-content: center">
+        <div style="display: flex; justify-content: center; position: relative">
           <v-list-subheader>Significance contribution</v-list-subheader>
           <v-tooltip location="top">
             <template v-slot:activator="{ props }">
               <v-btn icon @click="downloadFile(getCSV('sc_results'))" v-bind="props"
-                     style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 12px">
+                     variant="plain"
+                     style="position: absolute; right: 0; top: 0">
                 <v-icon>fas fa-download</v-icon>
               </v-btn>
             </template>
@@ -401,6 +406,7 @@
                          style="position: relative; max-width: 70%"
                          v-if="mode !== 'cluster'">
                     <v-btn icon size="small" style="position: absolute; right: 0"
+                           variant="plain"
                            @click="downloadFile(getPlot('absolute_contribution_heatmap'))">
                       <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
@@ -408,6 +414,7 @@
                   <v-img :src="getPlot(clusterMeasure+'_absolute_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-else>
                     <v-btn icon size="small" style="position: absolute; right: 0"
+                           variant="plain"
                            @click="downloadFile(getPlot(clusterMeasure+'_absolute_contribution_heatmap'))">
                       <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
@@ -418,7 +425,7 @@
                     <template v-slot:activator="{ props }">
                       <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                         <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure]['absolute'] : Object.values(topSCGenes)[0]['absolute'])"
-                           target="_blank">functional enrichment (g:Profiler)</a>
+                           target="_blank" style="text-decoration: none; color: #1976d2">functional enrichment (g:Profiler)</a>
                         <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                       </v-chip>
                     </template>
@@ -437,6 +444,7 @@
                   <v-img :src="getPlot(distributionMeasure+'_positive_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
                     <v-btn icon size="small" style="position: absolute; right: 0"
+                           variant="plain"
                            @click="downloadFile(getPlot(distributionMeasure+'_positive_contribution_heatmap'))">
                       <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
@@ -444,6 +452,7 @@
                   <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-else>
                     <v-btn icon size="small" style="position: absolute; right: 0"
+                           variant="plain"
                            @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap'))">
                       <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
@@ -454,7 +463,7 @@
                     <template v-slot:activator="{ props }">
                       <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                         <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['positive'] : Object.values(topSCGenes)[0][distributionMeasure]['positive'])"
-                           target="_blank">functional enrichment (g:Profiler)</a>
+                           target="_blank" style="text-decoration: none; color: #1976d2">functional enrichment (g:Profiler)</a>
                         <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                       </v-chip>
                     </template>
@@ -471,6 +480,7 @@
                   <v-img :src="getPlot(distributionMeasure+'_negative_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
                     <v-btn icon size="small" style="position: absolute; right: 0"
+                           variant="plain"
                            @click="downloadFile(getPlot(distributionMeasure+'_negative_contribution_heatmap'))">
                       <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
@@ -478,6 +488,7 @@
                   <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-else>
                     <v-btn icon size="small" style="position: absolute; right: 0"
+                           variant="plain"
                            @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap'))">
                       <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
@@ -488,7 +499,7 @@
                     <template v-slot:activator="{ props }">
                       <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                         <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['negative'] : Object.values(topSCGenes)[0][distributionMeasure]['negative'])"
-                           target="_blank">functional enrichment (g:Profiler)</a>
+                           target="_blank" style="text-decoration: none; color: #1976d2">functional enrichment (g:Profiler)</a>
                         <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                       </v-chip>
                     </template>
@@ -505,6 +516,7 @@
               <v-img :src="getPlot(distributionMeasure+'_contribution_graph')"
                      style="position: relative; max-width: 70%">
                 <v-btn icon size="small" style="position: absolute; right: 0"
+                       variant="plain"
                        @click="downloadFile(getPlot(distributionMeasure+'_contribution_graph'))">
                   <v-icon size="small">fas fa-download</v-icon>
                 </v-btn>
@@ -542,6 +554,7 @@
           <v-col cols="12" lg="6" class="flex_content_center">
             <v-img :src="getPlot('mappability')" style="margin:16px; position: relative" max-width="70%">
               <v-btn icon size="small" style="position: absolute; right: 0"
+                     variant="plain"
                      @click="downloadFile(getPlot('mappability'))">
                 <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
@@ -551,6 +564,7 @@
             <v-img :src="getPlot(getAnnotationPlotName())" style="margin:16px; position: relative"
                    max-width="90%">
               <v-btn icon size="small" style="position: absolute; right: 0"
+                     variant="plain"
                      @click="downloadFile(getPlot(getAnnotationPlotName()))">
                 <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
@@ -559,6 +573,7 @@
           <v-col cols="12" lg="6" class="flex_content_center">
             <v-img :src="getPlot(getSankeyPlotName())" style="margin:16px; position: relative; max-width:80%">
               <v-btn icon size="small" style="position: absolute; right: 0"
+                     variant="plain"
                      @click="downloadFile(getPlot(getSankeyPlotName()))">
                 <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
@@ -583,7 +598,7 @@
                     <v-tooltip location="right">
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
-                          <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">All</a>
+                          <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank" style="text-decoration: none; color: #1976d2">All</a>
                           <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -597,7 +612,7 @@
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
-                             target="_blank">{{ cluster }}</a>
+                             target="_blank" style="text-decoration: none; color: #1976d2">{{ cluster }}</a>
                           <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -615,7 +630,7 @@
                     <v-tooltip location="right">
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
-                          <a :href="getGProfilerUrl(input.target)" target="_blank">Targets</a>
+                          <a :href="getGProfilerUrl(input.target)" target="_blank" style="text-decoration: none; color: #1976d2">Targets</a>
                           <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -626,7 +641,7 @@
                     <v-tooltip location="right" v-if="input.reference">
                       <template v-slot:activator="{ props }">
                         <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
-                          <a :href="getGProfilerUrl(input.reference)" target="_blank">References</a>
+                          <a :href="getGProfilerUrl(input.reference)" target="_blank" style="text-decoration: none; color: #1976d2">References</a>
                           <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
@@ -845,9 +860,13 @@ export default {
 
 <style scoped lang="sass">
 
-.v-subheader
+.v-list-subheader
   font-size: 1.5rem
   margin-top: 8px
+  height: auto
+  min-height: auto
+  line-height: 2rem
+  padding-bottom: 4px
 
 .sh_mobile
   font-size: 1.2rem
