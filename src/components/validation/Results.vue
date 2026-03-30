@@ -12,6 +12,7 @@
                            :model-value="progress"></v-progress-linear>
         <div style="width: 100%; display: flex; justify-content: center; margin-top:8px;">
           <i v-if="taskID && !result">You may return to your results later using the following URL: <a
+              style="text-decoration: none; color: #1976d2"
               :href="getCurrentURL()">{{ getCurrentURL() }}</a></i>
         </div>
       </div>
