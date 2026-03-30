@@ -654,10 +654,13 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="12">
-            <v-slider label="Runs" min="100" max="10000" step="100" v-model="runs" density="compact" color="primary" track-size="2" thumb-size="14" hide-details>
+            <v-slider min="100" max="10000" step="100" v-model="runs" density="compact" color="primary" track-size="2" thumb-size="14" hide-details>
               <template v-slot:prepend>
-                <v-text-field v-model="runs" single-line type="number" density="compact" variant="filled"
-                              style="max-width: 5rem; margin-top: 0" hide-details></v-text-field>
+                <div class="v-label" style="opacity: 1; color: rgba(0,0,0,0.87); width: 60px">Runs</div>
+              </template>
+              <template v-slot:label>
+                <v-text-field v-model="runs" single-line type="number" density="compact" variant="underlined"
+                              style="max-width: 6rem; margin-top: 0" hide-details></v-text-field>
               </template>
               <template v-slot:append>
                 <span style="margin-left: 16px">
@@ -677,10 +680,13 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="12">
-            <v-slider label="Replace" min="1" max="100" step="1" v-model="replace" density="compact" color="primary" track-size="2" thumb-size="14" hide-details>
+            <v-slider min="1" max="100" step="1" v-model="replace" density="compact" color="primary" track-size="2" thumb-size="14" hide-details>
               <template v-slot:prepend>
-                <v-text-field v-model="replace" single-line type="number" density="compact" variant="filled"
-                              style="max-width: 5rem; margin-top: 0" hide-details></v-text-field>
+                <div class="v-label" style="opacity: 1; color: rgba(0,0,0,0.87); width: 60px">Replace</div>
+              </template>
+              <template v-slot:label>
+                <v-text-field v-model="replace" single-line type="number" density="compact" variant="underlined"
+                              style="max-width: 6rem; margin-top: 0" hide-details></v-text-field>
               </template>
               <template v-slot:append>
                 <span style="margin-left: 16px">
