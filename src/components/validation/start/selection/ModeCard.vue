@@ -10,26 +10,24 @@
       <picture class="white--text align-end" style="width: 100%">
         <source :srcset="image" type="image/avif" >
         <source :srcset="fallback_image" type="image/png" >
-        <img alt="For safari users" :src="fallback_image" :style="{margin: isMobile()? '4px 15% 8px' : '8px 15% 48px', position: 'relative', width: '70%'}">
+        <img alt="For safari users" :src="fallback_image" :style="{margin: isMobile()? '4px 15% 8px' : '16px 15% 48px', position: 'relative', width: '70%'}">
       </picture>
     </div>
     <div v-if="!mobile" v-show="!hover" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex">
-      <div style="align-self: flex-end; justify-self: center; margin: auto auto 0;">
-        <v-card-title style="color:#484848"><i>{{title}}</i></v-card-title>
+      <div style="align-self: flex-end; justify-self: center; margin: auto auto 8px;">
+        <v-card-title style="color:#484848; font-size: 1.25rem;"><i>{{title}}</i></v-card-title>
       </div>
     </div>
     <div v-if="!mobile" v-show="hover"
-         style="position: absolute;  display:flex; background-color: rgba(255,255,255,0.6); width: 100%; height: 100%; top: 0; left: 0">
-      <div style="align-self: center; margin-top: auto; margin-bottom: auto; ">
-        <v-card-title style="color:#484848; margin-bottom: 16px">{{title}}</v-card-title>
-        <v-card-subtitle style="font-size: 1rem; line-height: 1rem; margin-bottom: 16px}">{{text}}
+         style="position: absolute;  display:flex; background-color: rgba(255,255,255,0.7); width: 100%; height: 100%; top: 0; left: 0">
+      <div style="align-self: center; margin: auto; padding: 16px; text-align: center;">
+        <v-card-title style="color:#484848; margin-bottom: 8px; font-weight: bold;">{{title}}</v-card-title>
+        <v-card-subtitle style="font-size: 0.9rem; line-height: 1.1rem; margin-bottom: 12px; white-space: normal; height: auto;">{{text}}
         </v-card-subtitle>
-        <v-card-actions>
-          <div style="width: 100%; display: flex; justify-content: center">
+        <v-card-actions class="justify-center">
             <v-btn variant="flat" color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})">
               Validate
             </v-btn>
-          </div>
         </v-card-actions>
       </div>
     </div>

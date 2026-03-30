@@ -1,23 +1,25 @@
 <template>
   <v-app>
     <v-app-bar elevation="4" density="compact">
+      <div style="width: 70vw; display: flex; align-items: center; margin: 0 auto;">
           <v-app-bar-title v-if="!isMobile()" style="cursor:pointer;" @click="$router.push('/'); $router.go()">DIGEST</v-app-bar-title>
           <v-spacer v-if="!isMobile()"></v-spacer>
-          <v-btn variant="text" @click="checkRouting()">
+          <v-btn variant="text" color="primary" @click="checkRouting()">
             <router-link style="text-decoration: none; color: inherit" to="/">Home</router-link>
           </v-btn>
-          <v-btn variant="text">
+          <v-btn variant="text" color="primary">
             <router-link style="text-decoration: none; color: inherit" to="/documentation">Documentation</router-link>
           </v-btn>
-          <v-btn variant="text">
+          <v-btn variant="text" color="primary">
             <router-link style="text-decoration: none; color: inherit" to="/about">About</router-link>
           </v-btn>
+      </div>
     </v-app-bar>
     <v-main>
-      <v-card v-if="isMobile()" style="min-height: 100vh; top: 60px">
+      <v-card v-if="isMobile()" style="min-height: 100vh; margin-top: 16px;">
         <router-view></router-view>
       </v-card>
-      <v-card v-else style="width: 70vw; justify-self: center; margin-left: auto; margin-right: auto; top: 60px">
+      <v-card v-else style="width: 70vw; justify-self: center; margin-left: auto; margin-right: auto; margin-top: 16px;">
         <router-view></router-view>
       </v-card>
     </v-main>

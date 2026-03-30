@@ -38,7 +38,7 @@
     <div v-if="step===0">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center; margin-top:32px">
-        <v-list-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem'}">Start validating
+        <v-list-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem', 'line-height': '2.5rem'}">Start validating
           now!
         </v-list-subheader>
       </div>
