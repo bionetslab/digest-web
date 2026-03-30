@@ -595,17 +595,16 @@
               </template>
             </v-checkbox>
           </v-col>
-          <v-col class="flex_content_center" cols="12" lg="4">
+          <v-col class="flex_content_center" cols="12" md="6" lg="4">
             <v-file-input ref="sigContList" :disabled="!sigCont"
                           :label="(sigContTargets && sigContTargets.length>0 ? ('Selected '+sigContTargets.length) :('Upload ' +(mode==='network' ? 'nodes' : 'targets')))"
                           hide-details
                           density="compact"
                           :prepend-icon="null"
                           prepend-inner-icon="fas fa-arrow-up-from-bracket"
-                          style="width: 250px; max-width: 210px; cursor: pointer"
+                          style="width: 210px; max-width: 210px; cursor: pointer"
                           v-model="sigContFile" @change="readSigContFile" variant="outlined">
               <template v-slot:append>
-                <span style="margin-left: 16px">
                   <v-tooltip location="right">
                     <template v-slot:activator="{ props }">
                       <v-icon v-bind="props">far fa-question-circle</v-icon>
@@ -624,7 +623,6 @@
                       than 100 targets.
                     </div>
                   </v-tooltip>
-                </span>
               </template>
             </v-file-input>
           </v-col>
