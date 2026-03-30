@@ -12,7 +12,17 @@ const router = createRouter({
     { path: "/result", component: Validation },
     { path: "/documentation", component: Documentation },
     { path: "/about", component: About }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        top: 64,
+        behavior: 'smooth',
+      }
+    }
+    return { top: 0 }
+  },
 })
 
 export default router

@@ -1,36 +1,37 @@
 <template>
   <div>
-    <div style="background-color: cornflowerblue; width: 100%; padding:16px">
+    <div style="background-color: #1976d2; width: 100%; padding:16px">
       <h2 :style="{display: 'flex', 'justify-content': 'center', color: 'white', 'font-size': mobile ? '2.5rem' : '4rem'}">
         Documentation</h2>
     </div>
     <div :style="{padding: mobile ? '32px 16px' : '32px 64px'}">
-      <b style="font-size: 1.5rem">Table of contents</b>
-      <ul style="margin-bottom: 32px">
-        <li><a :href="getAnchor('digest')">DIGEST</a></li>
-        <li><a :href="getAnchor('web-app')">Web Application</a>
-          <ul>
-            <li><a :href="getAnchor('validation-modes')">Validation Modes</a></li>
-            <li><a :href="getAnchor('parameters')">Parameters</a></li>
-            <li><a :href="getAnchor('results')">Results</a></li>
+      <h3 style="font-size: 1.5rem; margin-bottom: 16px;">Table of contents</h3>
+      <ul style="margin-bottom: 32px; list-style-type: disc; padding-left: 32px;">
+        <li><a :href="getAnchor('digest')" class="nav-link">DIGEST</a></li>
+        <li><a :href="getAnchor('web-app')" class="nav-link">Web Application</a>
+          <ul style="list-style-type: circle; padding-left: 24px;">
+            <li><a :href="getAnchor('validation-modes')" class="nav-link">Validation Modes</a></li>
+            <li><a :href="getAnchor('parameters')" class="nav-link">Parameters</a></li>
+            <li><a :href="getAnchor('results')" class="nav-link">Results</a></li>
           </ul>
         </li>
-        <li><a :href="getAnchor('api')">RESTful API</a>
-          <ul>
-            <li><a :href="getAnchor('api-executions')">Execution Routes</a></li>
-            <li><a :href="getAnchor('api-status')">Status Requesting</a></li>
-            <li><a :href="getAnchor('api-results')">Result Routes</a></li>
+        <li><a :href="getAnchor('api')" class="nav-link">RESTful API</a>
+          <ul style="list-style-type: circle; padding-left: 24px;">
+            <li><a :href="getAnchor('api-executions')" class="nav-link">Execution Routes</a></li>
+            <li><a :href="getAnchor('api-status')" class="nav-link">Status Requesting</a></li>
+            <li><a :href="getAnchor('api-results')" class="nav-link">Result Routes</a></li>
           </ul>
         </li>
-        <li><a :href="getAnchor('package')">Python Package</a></li>
+        <li><a :href="getAnchor('package')" class="nav-link">Python Package</a></li>
       </ul>
-      <b id="digest" style="font-size: 1.5rem; padding-top:48px; margin-top:48px">DIGEST</b>
+
+      <h3 id="digest" class="section-header">DIGEST</h3>
       <div style="text-align: justify; margin-bottom: 48px">
         DIGEST is a (“validation of <b>di</b>sease
         and <b>ge</b>ne <b>s</b>ets,
         clus<b>t</b>erings or subnetworks”), is a Python-based validation tool available as a webinterface, as a <a
-          href="https://pypi.org/project/biodigest/" target="_blank">standalone package</a>, or over a
-        <a href="https://digest-validation.net/documentation" target="_blank">REST API</a>. DIGEST greatly facilitates
+          href="https://pypi.org/project/biodigest/" target="_blank" class="nav-link">standalone package</a>, or over a
+        <a href="https://digest-validation.net/documentation" target="_blank" class="nav-link">REST API</a>. DIGEST greatly facilitates
         <i>in silico</i> validation of gene and disease sets, clusterings or subnetworks via fully
         automated validation pipelines comprising disease and gene ID mapping, enrichment analysis, comparisons of
         shared
@@ -39,18 +40,20 @@
         significance of candidate mechanisms with regard to functional and genetic coherence and enables the computation
         of empirical P-values with just a few mouse clicks.
       </div>
-      <b id="web-app" style="font-size: 1.5rem; padding-top:48px;">Web Application</b>
+
+      <h3 id="web-app" class="section-header">Web Application</h3>
       <div style="text-align: justify; margin-bottom: 48px">
         In order to simplify the use and to allow access to the validation even for users without any programming
         experience,
         we offer a web service that allows a quick and easy validation and calculation of statistical significance with
         just a few clicks.
       </div>
+
       <div style="padding-left: 16px">
-        <b id="validation-modes" style="font-size: 1.25rem; padding-top:48px;">Validation Modes</b>
+        <h4 id="validation-modes" class="sub-section-header">Validation Modes</h4>
         <div style="text-align: justify; margin-bottom: 48px">
           <b>Set</b>
-          <ul>
+          <ul style="padding-left: 24px; margin-top: 8px;">
             <li><b>Reference-free</b><br> If a set of IDs is entered without reference, the individual IDs are checked
               in pairs for similarity and converted to a distance measure. For this purpose, functional annotations or,
               in the case of disease sets, additional genetic annotations are used to determine a functional and genetic
@@ -70,8 +73,9 @@
               determine the significance of the target set entered by the user with the help of empirical p-values.
             </li>
           </ul>
+          <br>
           <b>Clustering</b><br>
-          <ul>
+          <ul style="padding-left: 24px; margin-top: 8px;">
             <li>Here, clustering is assessed using 3 well-known cluster quality measures,
               the Dunn Index, the Silhouette Score, and the, Davies-Bouldin index. In all of these quality measures, intra
               distances within clusters and inter distances between them are calculated and used. To determine these
@@ -88,8 +92,9 @@
               P-values.
             </li>
           </ul>
+          <br>
           <b>Subnetwork</b><br>
-          <ul>
+          <ul style="padding-left: 24px; margin-top: 8px;">
             <li>
               An input set of diseases or genes can also be validated as a subnetwork, where the spanned network is
               identified in a user entered network or a default network. The functional relevance score is calculated in
@@ -102,11 +107,11 @@
       </div>
 
       <div style="padding-left: 16px">
-        <b id="parameters" style="font-size: 1.25rem; padding-top:48px;">Parameters</b>
+        <h4 id="parameters" class="sub-section-header">Parameters</h4>
         <div style="text-align: justify; margin-bottom: 48px">
-          <ul>
+          <ul style="padding-left: 24px;">
             <li><b>Targets</b>
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li><b>Target ID type:</b> To ensure a validation fit for the input, it is important to select the
                   correct ID
                   type of your input. At *** you can check the supported ID types, which will also be showed in the
@@ -126,7 +131,7 @@
               </ul>
             </li>
             <li><b>References</b> (optional in set mode)
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li><b>Reference type:</b> Choose the type of the reference to ensure the correct validation.
                   The reference can consist of either disease or gene IDs independent of the target reference type.
                 </li>
@@ -144,7 +149,7 @@
               </ul>
             </li>
             <li><b>Network</b> (optional in subnetwork mode)
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li><b>Network:</b>Network including the target IDs (the subnetwork) and additional IDs. A network
                   given my querying NeDReX is given. Keep in mind, that all input target IDs should be present or will be
                   disregarded in that mode.
@@ -163,7 +168,7 @@
               target annotations.
             </li>
             <li><b>Similarity measure</b>
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li>
                   The similarity of IDs is determined based on assigned annotations. For this purpose, the respective sets
                   of annotations are evaluated by one of two possible units of measurement. Choose wisely, as depending on
@@ -184,7 +189,7 @@
               </ul>
             </li>
             <li><b>Background model</b>
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li>
                   Models to create random input sets to compare against the original target input for generation of
                   empirical P-values.
@@ -211,7 +216,7 @@
               </ul>
             </li>
             <li><b>Significance Contribution:</b>
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li>
                   <b>Calculate significane contribution:</b> This switch enables or disables the significance
                   contribution
@@ -242,7 +247,7 @@
       </div>
 
       <div style="padding-left: 16px">
-        <b id="results" style="font-size: 1.25rem; padding-top:48px;">Results</b>
+        <h4 id="results" class="sub-section-header">Results</h4>
         <div style="text-align: justify; margin-bottom: 48px">
           Depending on the input types for the targets and optionally also the reference, functional annotations based
           on
@@ -250,7 +255,7 @@
           pathways,
           as well as genetic annotations based on shared genes and variants from <i>DisGeNET</i>, are used for
           validation.
-          <ul>
+          <ul style="padding-left: 24px; margin-top: 8px;">
             <li><b>P-value table:</b> The most important result to be found in the section are the calculated
               <b>empirical P-values</b> using the selected background model and other parameters that indicate the
               significance of the calculated relevance scores derived from the input.
@@ -259,7 +264,7 @@
               genetic relevance score(s) determined for solely their input.
             </li>
             <li><b>Significance figures:</b>
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li><b>P-value plot:</b> In addition, the calculated P-values are displayed in a plot with a plotted
                   cut-off
                   line at 0.05, which can be used directly by the user for a presentation of the results.
@@ -271,7 +276,7 @@
               </ul>
             </li>
             <li><b>Significance contribution figures:</b>
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li><b>Significance contribution table:</b> The full table for each validation type with the
                   calculated contributions of each gene separately for each respective annotation type.
                 </li>
@@ -286,7 +291,7 @@
               </ul>
             </li>
             <li><b>Mappability figures:</b>
-              <ul>
+              <ul style="padding-left: 20px;">
                 <li><b>Mappability plot:</b> Since the annotations are taken from biological databases, which are known
                   to
                   have a study bias whereby some IDs have a high number of annotations and others have no annotations,
@@ -311,46 +316,46 @@
         </div>
       </div>
 
-      <b id="api" style="font-size: 1.5rem; padding-top:48px;">RESTful API</b>
+      <h3 id="api" class="section-header">RESTful API</h3>
       <div style="text-align: justify; margin-bottom: 48px">
         For programmatic access to the DIGEST web server, we provide a API endpoint:
         <code>api.digest-validation.net</code>. In the following we will explain how this route can be used to dispatch
         validation jobs, how to check the execution status and how to retrieve results of finished tasks.<br><br>
         In general, the API consists of:
-        <ol>
+        <ol style="padding-left: 24px;">
           <li>A Django backend, accepting request</li>
           <li>A Redis service for queuing and executing tasks</li>
           <li>A PostgreSQL database to store valiation results</li>
         </ol>
       </div>
       <div style="padding-left: 16px">
-        <b id="api-executions" style="font-size: 1.25rem; padding-top:48px;">Execution Routes</b>
+        <h4 id="api-executions" class="sub-section-header">Execution Routes</h4>
         <div style="text-align: justify; margin-bottom: 48px">
           To submit validation tasks to the API, four enpoints exist, mimicing the four different <a
-            :href="getAnchor('validation-modes')">modes
+            :href="getAnchor('validation-modes')" class="nav-link">modes
         </a> of DIGEST:
-          <ul>
-            <li>set
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
-              <code><b>POST </b>api.digest-validation.net/set</code></li>
-            <li>set-set
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
-              <code><b>POST </b>api.digest-validation.net/set_set</code></li>
-            <li>subnetwork
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
-              <code><b>POST </b>api.digest-validation.net/subnetwork</code></li>
-            <li>subnetwork-set
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
-              <code><b>POST </b>api.digest-validation.net/subnetwork_set</code></li>
-            <li>clustering
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
-              <code><b>POST </b>api.digest-validation.net/clustering</code></li>
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li class="api-route">set
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
+              <code><b class="api-method">POST </b>api.digest-validation.net/set</code></li>
+            <li class="api-route">set-set
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
+              <code><b class="api-method">POST </b>api.digest-validation.net/set_set</code></li>
+            <li class="api-route">subnetwork
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
+              <code><b class="api-method">POST </b>api.digest-validation.net/subnetwork</code></li>
+            <li class="api-route">subnetwork-set
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
+              <code><b class="api-method">POST </b>api.digest-validation.net/subnetwork_set</code></li>
+            <li class="api-route">clustering
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
+              <code><b class="api-method">POST </b>api.digest-validation.net/clustering</code></li>
           </ul>
           <br>
           The attribute names for the <b>POST</b> request object are identical to parameter names within the DIGEST
           package. For detailed explanations about the influence of the parameters, please check the <a
-            :href="getAnchor('parameters')">section above</a>!
-          <v-tabs v-model="apiParamModel">
+            :href="getAnchor('parameters')" class="nav-link">section above</a>!
+          <v-tabs v-model="apiParamModel" color="primary">
             <v-tab>set</v-tab>
             <v-tab>set-set</v-tab>
             <v-tab>subnetwork</v-tab>
@@ -1088,7 +1093,7 @@
           be used:
           <ul style="margin-bottom: 32px">
             <li>result
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/status?task=$task</code></li>
           </ul>
           The response object will include the following attributes:
@@ -1188,7 +1193,7 @@
           is used:
           <ul style="margin-bottom: 32px">
             <li>status
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result?task=${task}</code></li>
           </ul>
           The response object will include the following attributes:
@@ -1239,20 +1244,20 @@
           following route:
           <ul>
             <li>result_file_list
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result_file_list?task=${task}</code>
             </li>
           </ul>
           Any result file including an input parameter json file, figures and the result files can be downloaded:
           <ul>
             <li>result_file
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result_file?name=${file_name}</code>
             </li>
           </ul>
           A .zip archive containing all files can for example be downloaded as follows:
           <li>Results.zip
-            <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+            <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
             <code><b>GET </b>api.digest-validation.net/result_file?name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX.zip</code>
           </li>
         </div>
@@ -1263,7 +1268,7 @@
           For significance contribuiton status and results there are additional routes in place:
           <ul style="margin-bottom: 32px">
             <li>status
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/sc_status?task=${task}</code></li>
           </ul>
           The response object will include the following attributes:
@@ -1313,7 +1318,7 @@
           target entry individually:
           <ul style="margin-bottom: 32px">
             <li>result
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/sc_results?task=${task}</code></li>
           </ul>
 
@@ -1322,7 +1327,7 @@
           and the <code>negative</code> or <code>positive</code> contribution to these results:
           <ul style="margin-bottom: 32px">
             <li>rop_result
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/sc_top_results?task=${task}</code></li>
           </ul>
 
@@ -1330,7 +1335,7 @@
           and can be retrieved through the following route:
           <ul>
             <li>result_file_list
-              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
+              <v-icon size="x-small" color="#9e9e9e" class="mx-2" style="margin-top: -1px">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result_file_list?task=${task}</code>
             </li>
           </ul>
@@ -1376,5 +1381,46 @@ export default {
 </script>
 
 <style scoped>
+.nav-link {
+  text-decoration: none;
+  color: #1976d2;
+}
 
+.nav-link:hover {
+  text-decoration: underline;
+  color: #1565c0;
+}
+
+.section-header {
+  font-size: 1.5rem;
+  padding-top: 48px;
+  margin-top: 48px;
+  margin-bottom: 16px;
+  scroll-margin-top: 64px;
+}
+
+.sub-section-header {
+  font-size: 1.25rem;
+  padding-top: 48px;
+  margin-bottom: 16px;
+  scroll-margin-top: 64px;
+}
+
+.api-method {
+  font-size: 0.75rem;
+}
+
+.api-route {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+code {
+  background-color: #f5f5f5;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
 </style>
