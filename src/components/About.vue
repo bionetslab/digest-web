@@ -22,22 +22,21 @@
       <b style="font-size: 1.5rem">Resources</b>
       <div style="margin-top: 16px; margin-bottom: 32px">
         <div>
-          <v-btn icon><a style="text-decoration: none" target="_blank" href="https://pypi.org/project/biodigest/">
+          <v-btn icon href="https://pypi.org/project/biodigest/" target="_blank" variant="text">
             <v-icon>fab fa-python</v-icon>
-          </a></v-btn>
+          </v-btn>
           Python package (biodigest)
         </div>
         <div>
-          <v-btn icon><a style="text-decoration: none" target="_blank" href="https://github.com/bionetslab/digest">
+          <v-btn icon href="https://github.com/bionetslab/digest" target="_blank" variant="text">
             <v-icon>fab fa-github</v-icon>
-          </a></v-btn>
+          </v-btn>
           DIGEST source code
         </div>
         <div>
-          <v-btn icon><a style="text-decoration: none" target="_blank"
-                         href="https://github.com/bionetslab/digest-tutorial/blob/main/Tutorial.ipynb">
+          <v-btn icon href="https://github.com/bionetslab/digest-tutorial/blob/main/Tutorial.ipynb" target="_blank" variant="text">
             <v-icon>fas fa-graduation-cap</v-icon>
-          </a></v-btn>
+          </v-btn>
           DIGEST tutorial material
         </div>
       </div>
@@ -46,24 +45,24 @@
       <b style="font-size: 1.5rem">Contact</b>
       <div style="margin-top: 16px; margin-bottom: 32px">
         <div>
-          <v-btn icon><a style="text-decoration: none" :href="'mailto:'+getKAMail()">
+          <v-btn icon :href="'mailto:'+getKAMail()" variant="text">
             <v-icon>fas fa-envelope</v-icon>
-          </a></v-btn>
+          </v-btn>
           klaudia.adamowicz(_at-]uni-hamburg.de
         </div>
         <div>
-          <v-btn icon><a style="text-decoration: none" :href="'mailto:'+getDBMail()">
+          <v-btn icon :href="'mailto:'+getDBMail()" variant="text">
             <v-icon>fas fa-envelope</v-icon>
-          </a></v-btn>
+          </v-btn>
           david.b.blumenthal(_at-]fau.de
         </div>
       </div>
       <b style="font-size: 1.5rem">Web-Application</b>
       <div style="margin-top: 16px; margin-bottom: 32px">
         <div>
-          <v-btn icon><a style="text-decoration: none" :href="'mailto:'+getAMMail()">
+          <v-btn icon :href="'mailto:'+getAMMail()" variant="text">
             <v-icon>fas fa-envelope</v-icon>
-          </a></v-btn>
+          </v-btn>
           andreas.maier-1(_at-]uni-hamburg.de
         </div>
       </div>

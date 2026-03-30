@@ -18,8 +18,8 @@
 
     </v-card>
     <div style="display: flex; justify-content: center; margin-top: 32px;" v-if="step===0">
-      <v-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem'}">How does DIGEST work?
-      </v-subheader>
+      <v-list-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem'}">How does DIGEST work?
+      </v-list-subheader>
     </div>
     <div
         style="width: 90%;text-align: justify; display: flex; justify-self: center; margin: 16px auto 16px;color: #484848">
@@ -38,9 +38,9 @@
     <div v-if="step===0">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center; margin-top:32px">
-        <v-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem'}">Start validating
+        <v-list-subheader :style="{'font-size': mobile ? '1.4rem' : '1.5rem'}">Start validating
           now!
-        </v-subheader>
+        </v-list-subheader>
       </div>
     </div>
     <Selection v-if="step===0" @startValidationEvent="startValidation" :mobile="mobile"></Selection>

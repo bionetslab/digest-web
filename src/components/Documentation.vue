@@ -64,34 +64,39 @@
               reference annotation set in at least one annotation, this ID is considered to be associated. The relevance
               score in this mode is the number of target IDs identified as related.
             </li>
-            <br>
-            In both reference-free and reference set modes, random target sets are generated based on a user-selected
-            background model, with which relevance scores are calculated in the same way. These are finally used to
-            determine the significance of the target set entered by the user with the help of empirical p-values.
+            <li>
+              In both reference-free and reference set modes, random target sets are generated based on a user-selected
+              background model, with which relevance scores are calculated in the same way. These are finally used to
+              determine the significance of the target set entered by the user with the help of empirical p-values.
+            </li>
           </ul>
           <b>Clustering</b><br>
-          <ul>Here, clustering is assessed using 3 well-known cluster quality measures,
-            the Dunn Index, the Silhouette Score, and the, Davies-Bouldin index. In all of these quality measures, intra
-            distances within clusters and inter distances between them are calculated and used. To determine these
-            distances, pairwise distance measures are required, which are calculated the same way as in the
-            reference-free
-            set mode. For each functional and genetic annotation, depending on whether the cluster IDs originate from
-            genes or diseases, three scores are given, one for each of the quality scores described above, in contrast
-            to
-            the set mode, where one relevance score is calculated for each.<br>
-            Finally, with a background model, not the IDs but the cluster assignments are randomly reassigned,
-            while the size and distribution of the respective clusters as well as the original IDs are preserved.
-            The relevance scores calculated based on the new randomly generated clusterings are used here to determine
-            the significance of quality measure values on the clustering passed by the user with the help of empirical
-            P-values.
+          <ul>
+            <li>Here, clustering is assessed using 3 well-known cluster quality measures,
+              the Dunn Index, the Silhouette Score, and the, Davies-Bouldin index. In all of these quality measures, intra
+              distances within clusters and inter distances between them are calculated and used. To determine these
+              distances, pairwise distance measures are required, which are calculated the same way as in the
+              reference-free
+              set mode. For each functional and genetic annotation, depending on whether the cluster IDs originate from
+              genes or diseases, three scores are given, one for each of the quality scores described above, in contrast
+              to
+              the set mode, where one relevance score is calculated for each.<br>
+              Finally, with a background model, not the IDs but the cluster assignments are randomly reassigned,
+              while the size and distribution of the respective clusters as well as the original IDs are preserved.
+              The relevance scores calculated based on the new randomly generated clusterings are used here to determine
+              the significance of quality measure values on the clustering passed by the user with the help of empirical
+              P-values.
+            </li>
           </ul>
           <b>Subnetwork</b><br>
           <ul>
-            An input set of diseases or genes can also be validated as a subnetwork, where the spanned network is
-            identified in a user entered network or a default network. The functional relevance score is calculated in
-            the same way as in the normal set mode described above.<br>
-            To calculate the empirical p-value, random target sets are extracted from the network that exhibit the
-            same number of connected components as the original input set.
+            <li>
+              An input set of diseases or genes can also be validated as a subnetwork, where the spanned network is
+              identified in a user entered network or a default network. The functional relevance score is calculated in
+              the same way as in the normal set mode described above.<br>
+              To calculate the empirical p-value, random target sets are extracted from the network that exhibit the
+              same number of connected components as the original input set.
+            </li>
           </ul>
         </div>
       </div>
@@ -119,46 +124,51 @@
                   you can also just insert your input manually.
                 </li>
               </ul>
-            <li><b>References</b> (optional in set mode)</li>
-            <ul>
-              <li><b>Reference type:</b> Choose the type of the reference to ensure the correct validation.
-                The reference can consist of either disease or gene IDs independent of the target reference type.
-              </li>
-              <li><b>Reference ID type:</b> Similar to the target ID type, a correct selection of the ID type is
-                necessary.
-                The reference ID type does not have to be of the same type as the target.
-              </li>
-              <li><b>Upload reference:</b> Easy way to load the reference ID(s) from a file. Keep in mind to have the
-                correct format inside the file described under <i>upload targets</i>.
-              </li>
-              <li><b>Reference IDs field:</b> Uploaded IDs will show up in this field and allow individual changes.
-                This field can also be used to insert your reference manually. Keep in mind that a reference consisting
-                of a single ID is sufficient.
-              </li>
-            </ul>
-            <li><b>Network</b> (optional in subnetwork mode)</li>
-            <ul>
-              <li><b>Network:</b>Network including the target IDs (the subnetwork) and additional IDs. A network
-                given my querying NeDReX is given. Keep in mind, that all input target IDs should be present or will be
-                disregarded in that mode.
-                Supported type: graphml and sif
-              </li>
-              <li><b>Network node type:</b> Similar to the target ID type, a correct selection of the ID type is
-                necessary.
-              </li>
-              <li><b>Property name:</b> If the user inserts an own graphml file, the need of the property name
-                which has the ID names saved is needed.
-              </li>
-            </ul>
+            </li>
+            <li><b>References</b> (optional in set mode)
+              <ul>
+                <li><b>Reference type:</b> Choose the type of the reference to ensure the correct validation.
+                  The reference can consist of either disease or gene IDs independent of the target reference type.
+                </li>
+                <li><b>Reference ID type:</b> Similar to the target ID type, a correct selection of the ID type is
+                  necessary.
+                  The reference ID type does not have to be of the same type as the target.
+                </li>
+                <li><b>Upload reference:</b> Easy way to load the reference ID(s) from a file. Keep in mind to have the
+                  correct format inside the file described under <i>upload targets</i>.
+                </li>
+                <li><b>Reference IDs field:</b> Uploaded IDs will show up in this field and allow individual changes.
+                  This field can also be used to insert your reference manually. Keep in mind that a reference consisting
+                  of a single ID is sufficient.
+                </li>
+              </ul>
+            </li>
+            <li><b>Network</b> (optional in subnetwork mode)
+              <ul>
+                <li><b>Network:</b>Network including the target IDs (the subnetwork) and additional IDs. A network
+                  given my querying NeDReX is given. Keep in mind, that all input target IDs should be present or will be
+                  disregarded in that mode.
+                  Supported type: graphml and sif
+                </li>
+                <li><b>Network node type:</b> Similar to the target ID type, a correct selection of the ID type is
+                  necessary.
+                </li>
+                <li><b>Property name:</b> If the user inserts an own graphml file, the need of the property name
+                  which has the ID names saved is needed.
+                </li>
+              </ul>
+            </li>
             <li><b>Enriched:</b> If you use a reference gene set of more than one element, you can limit the functional
               annotations of the reference to only enriched ones that will later function as the comparison set for the
               target annotations.
             </li>
             <li><b>Similarity measure</b>
               <ul>
-                The similarity of IDs is determined based on assigned annotations. For this purpose, the respective sets
-                of annotations are evaluated by one of two possible units of measurement. Choose wisely, as depending on
-                the similarity measure, the results can change immensely.
+                <li>
+                  The similarity of IDs is determined based on assigned annotations. For this purpose, the respective sets
+                  of annotations are evaluated by one of two possible units of measurement. Choose wisely, as depending on
+                  the similarity measure, the results can change immensely.
+                </li>
                 <li><b>Jaccard index:</b> This measure calculates the similarity by dividing the intersection if two
                   sets
                   with the union of them. This measure is not directly influenced by the individual sizes of the sets
@@ -175,8 +185,10 @@
             </li>
             <li><b>Background model</b>
               <ul>
-                Models to create random input sets to compare against the original target input for generation of
-                empirical P-values.
+                <li>
+                  Models to create random input sets to compare against the original target input for generation of
+                  empirical P-values.
+                </li>
                 <li><b>Fully randomized in clustering mode:</b> For this purpose, the assignment of the clusters is
                   shuffled,
                   whereby the number and the distribution of the clusters as well as the original IDs are retained.
@@ -238,7 +250,7 @@
           pathways,
           as well as genetic annotations based on shared genes and variants from <i>DisGeNET</i>, are used for
           validation.
-          <ul><br>
+          <ul>
             <li><b>P-value table:</b> The most important result to be found in the section are the calculated
               <b>empirical P-values</b> using the selected background model and other parameters that indicate the
               significance of the calculated relevance scores derived from the input.
@@ -319,19 +331,19 @@
         </a> of DIGEST:
           <ul>
             <li>set
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>POST </b>api.digest-validation.net/set</code></li>
             <li>set-set
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>POST </b>api.digest-validation.net/set_set</code></li>
             <li>subnetwork
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>POST </b>api.digest-validation.net/subnetwork</code></li>
             <li>subnetwork-set
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>POST </b>api.digest-validation.net/subnetwork_set</code></li>
             <li>clustering
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>POST </b>api.digest-validation.net/clustering</code></li>
           </ul>
           <br>
@@ -346,9 +358,9 @@
             <v-tab>clustering</v-tab>
 
           </v-tabs>
-          <v-tabs-items v-model="apiParamModel">
-            <v-tab-item style="display: flex; justify-content: flex-start">
-              <v-simple-table>
+          <v-window v-model="apiParamModel">
+            <v-window-item style="display: flex; justify-content: flex-start">
+              <v-table>
                 <template v-slot:default>
                   <thead>
                   <tr>
@@ -457,10 +469,10 @@
                   </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
-            </v-tab-item>
-            <v-tab-item>
-              <v-simple-table>
+              </v-table>
+            </v-window-item>
+            <v-window-item>
+              <v-table>
                 <template v-slot:default>
                   <thead>
                   <tr>
@@ -595,10 +607,10 @@
                   </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
-            </v-tab-item>
-            <v-tab-item style="display: flex; justify-content: flex-start">
-              <v-simple-table>
+              </v-table>
+            </v-window-item>
+            <v-window-item style="display: flex; justify-content: flex-start">
+              <v-table>
                 <template v-slot:default>
                   <thead>
                   <tr>
@@ -756,10 +768,10 @@
                   </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
-            </v-tab-item>
-            <v-tab-item>
-              <v-simple-table>
+              </v-table>
+            </v-window-item>
+            <v-window-item>
+              <v-table>
                 <template v-slot:default>
                   <thead>
                   <tr>
@@ -943,10 +955,10 @@
                   </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
-            </v-tab-item>
-            <v-tab-item>
-              <v-simple-table>
+              </v-table>
+            </v-window-item>
+            <v-window-item>
+              <v-table>
                 <template v-slot:default>
                   <thead>
                   <tr>
@@ -1057,9 +1069,9 @@
                   </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
-            </v-tab-item>
-          </v-tabs-items>
+              </v-table>
+            </v-window-item>
+          </v-window>
         </div>
         <div style="margin-top: 16px">
           <p>The <b>response</b> object contains an taskID (e.g.
@@ -1076,11 +1088,11 @@
           be used:
           <ul style="margin-bottom: 32px">
             <li>result
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/status?task=$task</code></li>
           </ul>
           The response object will include the following attributes:
-          <v-simple-table>
+          <v-table>
             <template v-slot:default>
               <thead>
               <tr>
@@ -1165,7 +1177,7 @@
               </tr>
               </tbody>
             </template>
-          </v-simple-table>
+          </v-table>
         </div>
       </div>
 
@@ -1176,11 +1188,11 @@
           is used:
           <ul style="margin-bottom: 32px">
             <li>status
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result?task=${task}</code></li>
           </ul>
           The response object will include the following attributes:
-          <v-simple-table style="margin-bottom: 32px">
+          <v-table style="margin-bottom: 32px">
             <template v-slot:default>
               <thead>
               <tr>
@@ -1222,25 +1234,25 @@
               </tr>
               </tbody>
             </template>
-          </v-simple-table>
+          </v-table>
           A <b><i>list of files</i></b> that are generated based on the validation results can be obtained through the
           following route:
           <ul>
             <li>result_file_list
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result_file_list?task=${task}</code>
             </li>
           </ul>
           Any result file including an input parameter json file, figures and the result files can be downloaded:
           <ul>
             <li>result_file
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result_file?name=${file_name}</code>
             </li>
           </ul>
           A .zip archive containing all files can for example be downloaded as follows:
           <li>Results.zip
-            <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+            <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
             <code><b>GET </b>api.digest-validation.net/result_file?name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX.zip</code>
           </li>
         </div>
@@ -1251,11 +1263,11 @@
           For significance contribuiton status and results there are additional routes in place:
           <ul style="margin-bottom: 32px">
             <li>status
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/sc_status?task=${task}</code></li>
           </ul>
           The response object will include the following attributes:
-          <v-simple-table style="margin-bottom: 32px">
+          <v-table style="margin-bottom: 32px">
             <template v-slot:default>
               <thead>
               <tr>
@@ -1296,12 +1308,12 @@
               </tr>
               </tbody>
             </template>
-          </v-simple-table>
+          </v-table>
           The response object will contain an object with the contribution scores for teh background model and each
           target entry individually:
           <ul style="margin-bottom: 32px">
             <li>result
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/sc_results?task=${task}</code></li>
           </ul>
 
@@ -1310,7 +1322,7 @@
           and the <code>negative</code> or <code>positive</code> contribution to these results:
           <ul style="margin-bottom: 32px">
             <li>rop_result
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/sc_top_results?task=${task}</code></li>
           </ul>
 
@@ -1318,7 +1330,7 @@
           and can be retrieved through the following route:
           <ul>
             <li>result_file_list
-              <v-icon left right small style="margin-top:-2px">fas fa-arrow-right</v-icon>
+              <v-icon size="small" style="margin-top:-2px" class="mx-2">fas fa-arrow-right</v-icon>
               <code><b>GET </b>api.digest-validation.net/result_file_list?task=${task}</code>
             </li>
           </ul>

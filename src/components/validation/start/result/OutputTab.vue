@@ -1,11 +1,11 @@
 <template>
   <div>
     <div style="display:flex">
-      <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular results
-      </v-subheader>
-      <v-tooltip top>
-        <template v-slot:activator="{attrs, on}">
-          <v-btn icon @click="downloadFile(getZIP('.zip'))" v-on="on" v-bind="attrs"
+      <v-list-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Tabular results
+      </v-list-subheader>
+      <v-tooltip location="top">
+        <template v-slot:activator="{ props }">
+          <v-btn icon @click="downloadFile(getZIP('.zip'))" v-bind="props"
                  style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 12px">
             <v-icon>fas fa-download</v-icon>
           </v-btn>
@@ -18,23 +18,23 @@
         <v-col cols="12" lg="6" style="display: flex; justify-content: center">
           <div>
             <b>Empirical P-values</b>
-            <v-simple-table v-if="mode!=='cluster'">
+            <v-table v-if="mode!=='cluster'">
               <template v-slot:default>
                 <thead>
                 <tr>
                   <th>
-                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
+                    <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('p-value_validation'))"
                            style="margin:4px">
-                      <v-icon right>fas fa-download</v-icon>
+                      <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
                   <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
                       :key="'p_value-head'+head">
                     <div style="white-space: nowrap">
                       {{ head }}
-                      <v-tooltip right>
-                        <template v-slot:activator="{attrs, on}">
-                          <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon size="small" v-bind="props">far fa-question-circle</v-icon>
                         </template>
                         <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
                       </v-tooltip>
@@ -50,9 +50,9 @@
                       <div style="white-space: nowrap"
                            :style="{color: distributionMeasure===metric ? 'cornflowerblue':''}">
                         {{ metric }}
-                        <v-tooltip right>
-                          <template v-slot:activator="{attrs, on}">
-                            <v-icon small v-bind="attrs" v-on="on" :color="distributionMeasure===metric ? 'primary':''">
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon size="small" v-bind="props" :color="distributionMeasure===metric ? 'primary':''">
                               far fa-question-circle
                             </v-icon>
                           </template>
@@ -60,6 +60,7 @@
                         </v-tooltip>
                       </div>
                     </b>
+                  </td>
                   <td v-for="head in Object.keys(result.p_values.values)" :key="'p_value-'+head"
                       style="margin:4px">
                     <span v-show="distributionMeasure!==metric">{{
@@ -71,15 +72,15 @@
                 </tr>
                 </tbody>
               </template>
-            </v-simple-table>
-            <v-simple-table v-if="mode==='cluster'">
+            </v-table>
+            <v-table v-if="mode==='cluster'">
               <template v-slot:default>
                 <thead>
                 <tr>
                   <th>
-                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('p-value_validation'))"
+                    <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('p-value_validation'))"
                            style="margin:4px">
-                      <v-icon right>fas fa-download</v-icon>
+                      <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
                   <th class="text-left" v-for="head in Object.keys(result.p_values.values)"
@@ -91,10 +92,10 @@
                          v-show="head===clusterMeasure">{{
                           head
                         }}</b>
-                      <v-tooltip right>
-                        <template v-slot:activator="{attrs, on}">
-                          <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
-                                  v-bind="attrs" v-on="on">far fa-question-circle
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon class="ms-2" :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" size="small"
+                                  v-bind="props">far fa-question-circle
                           </v-icon>
                         </template>
                         <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
@@ -111,9 +112,9 @@
                         <b v-show="metric===distributionMeasure"
                            style="color: cornflowerblue; text-decoration: underline">{{ metric }}</b>
                         <span v-show="metric !== distributionMeasure">{{ metric }}</span>
-                        <v-tooltip right>
-                          <template v-slot:activator="{attrs, on}">
-                            <v-icon right small v-bind="attrs" v-on="on"
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon class="ms-2" size="small" v-bind="props"
                                     :color="metric===distributionMeasure? 'primary': ''">far fa-question-circle
                             </v-icon>
                           </template>
@@ -136,29 +137,29 @@
                 </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
         <v-col cols="12" lg="6" style="display: flex; justify-content: center">
           <div>
             <b>{{ getScoreName() }}</b>
-            <v-simple-table style="max-width:500px" v-if="mode!=='cluster'">
+            <v-table style="max-width:500px" v-if="mode!=='cluster'">
               <template v-slot:default>
                 <thead>
                 <tr>
                   <th>
-                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
+                    <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('input_validation'))"
                            style="margin:4px">
-                      <v-icon right>fas fa-download</v-icon>
+                      <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
                   <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
                       :key="'input_'+head">
                     <div style="white-space: nowrap">
                       {{ head }}
-                      <v-tooltip right>
-                        <template v-slot:activator="{attrs, on}">
-                          <v-icon small v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon size="small" v-bind="props">far fa-question-circle</v-icon>
                         </template>
                         <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
                       </v-tooltip>
@@ -173,9 +174,9 @@
                     <div style="white-space: nowrap"
                          :style="{color: distributionMeasure===metric ? 'cornflowerblue':''}">
                       {{ metric }}
-                      <v-tooltip right>
-                        <template v-slot:activator="{attrs, on}">
-                          <v-icon small v-bind="attrs" v-on="on" :color="distributionMeasure===metric ? 'primary':''">
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon size="small" v-bind="props" :color="distributionMeasure===metric ? 'primary':''">
                             far fa-question-circle
                           </v-icon>
                         </template>
@@ -183,6 +184,7 @@
                       </v-tooltip>
                     </div>
                   </b>
+                  </td>
                   <td v-for="head in Object.keys(result.input_values.values)" :key="'input_value-'+head"
                       style="margin:4px"><span v-show="distributionMeasure!==metric">{{
                       formatValue(result.input_values.values[head][metric])
@@ -193,15 +195,15 @@
                 </tr>
                 </tbody>
               </template>
-            </v-simple-table>
-            <v-simple-table v-if="mode==='cluster'">
+            </v-table>
+            <v-table v-if="mode==='cluster'">
               <template v-slot:default>
                 <thead>
                 <tr>
                   <th>
-                    <v-btn small plain v-if="csvs" dense @click="downloadFile(getCSV('input_validation'))"
+                    <v-btn size="small" variant="plain" v-if="csvs" density="compact" @click="downloadFile(getCSV('input_validation'))"
                            style="margin:4px">
-                      <v-icon right>fas fa-download</v-icon>
+                      <v-icon class="ms-2">fas fa-download</v-icon>
                     </v-btn>
                   </th>
                   <th class="text-left" v-for="head in Object.keys(result.input_values.values)"
@@ -213,10 +215,10 @@
                          v-show="head===clusterMeasure">{{
                           head
                         }}</b>
-                      <v-tooltip right>
-                        <template v-slot:activator="{attrs, on}">
-                          <v-icon right :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" small
-                                  v-bind="attrs" v-on="on">far fa-question-circle
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon class="ms-2" :style="{'color': clusterMeasure===head? 'cornflowerblue':''}" size="small"
+                                  v-bind="props">far fa-question-circle
                           </v-icon>
                         </template>
                         <div style="width:200px; text-align: justify">{{ tooltips[head] }}</div>
@@ -234,9 +236,9 @@
                       <b v-show="metric===distributionMeasure"
                          style="color: cornflowerblue; text-decoration: underline">{{ metric }}</b>
                       <span v-show="metric !== distributionMeasure">{{ metric }}</span>
-                      <v-tooltip right>
-                        <template v-slot:activator="{attrs, on}">
-                          <v-icon right small v-bind="attrs" v-on="on"
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon class="ms-2" size="small" v-bind="props"
                                   :color="metric===distributionMeasure? 'primary': ''">far fa-question-circle
                           </v-icon>
                         </template>
@@ -260,7 +262,7 @@
                 </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
       </v-row>
@@ -268,48 +270,48 @@
     <template v-if="plots">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
-        <v-subheader>Annotation selection</v-subheader>
+        <v-list-subheader>Annotation selection</v-list-subheader>
       </div>
       <v-container>
         <v-row justify="center" style="padding-top:16px; padding-bottom: 16px">
           <v-col cols="7" md="3" v-if="mode==='cluster'" style="display: flex; justify-content: center">
-            <v-select label="Scoring type" style="max-width: 200px" dense outlined filled
+            <v-select label="Scoring type" style="max-width: 200px" density="compact" variant="outlined"
                       :items="measureMap['clustering']" v-model="clusterMeasure"></v-select>
           </v-col>
           <v-col cols="7" md="3" style="display: flex; justify-content: center">
-            <v-select label="Annotation type" style="max-width: 200px" dense outlined filled :items="!this.referenceType || this.referenceType.length === 0 || this.type === this.referenceType ? termMap[type] : ['KEGG']"
+            <v-select label="Annotation type" style="max-width: 200px" density="compact" variant="outlined" :items="!this.referenceType || this.referenceType.length === 0 || this.type === this.referenceType ? termMap[type] : ['KEGG']"
                       v-model="distributionMeasure" ></v-select>
           </v-col>
         </v-row>
       </v-container>
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
-        <v-subheader>Significance figures</v-subheader>
+        <v-list-subheader>Significance figures</v-list-subheader>
 
       </div>
       <v-container>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
           <v-col cols="12" lg="6" class="flex_content_center">
-            <v-img :src="getPlot('p-value')" contain style="position: relative; max-width: 70%" v-if="mode!=='cluster'">
-              <v-btn icon small style="position: absolute; right: 0"
+            <v-img :src="getPlot('p-value')" style="position: relative; max-width: 70%" v-if="mode!=='cluster'">
+              <v-btn icon size="small" style="position: absolute; right: 0"
                      @click="downloadFile(getPlot('p-value'))">
-                <v-icon small>fas fa-download</v-icon>
+                <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
             </v-img>
-            <v-img :src="getPlot(clusterMeasure+'_p-value')" contain v-if="mode==='cluster'"
+            <v-img :src="getPlot(clusterMeasure+'_p-value')" v-if="mode==='cluster'"
                    style="position: relative; max-width: 70% ">
-              <v-btn icon small style="position: absolute; right: 0"
+              <v-btn icon size="small" style="position: absolute; right: 0"
                      @click="downloadFile(getPlot(clusterMeasure+'_p-value'))">
-                <v-icon small>fas fa-download</v-icon>
+                <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center">
-            <v-img :src="getPlot(getDistPlotName())" contain
+            <v-img :src="getPlot(getDistPlotName())"
                    style="position: relative" max-width="90%">
-              <v-btn icon small style="position: absolute; right: 0"
+              <v-btn icon size="small" style="position: absolute; right: 0"
                      @click="downloadFile(getPlot(getDistPlotName()))">
-                <v-icon small>fas fa-download</v-icon>
+                <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
@@ -319,10 +321,10 @@
       <v-divider></v-divider>
       <template v-if="input.sigCont">
         <div style="display: flex; justify-content: center">
-          <v-subheader>Significance contribution</v-subheader>
-          <v-tooltip top>
-            <template v-slot:activator="{attrs, on}">
-              <v-btn icon @click="downloadFile(getCSV('sc_results'))" v-on="on" v-bind="attrs"
+          <v-list-subheader>Significance contribution</v-list-subheader>
+          <v-tooltip location="top">
+            <template v-slot:activator="{ props }">
+              <v-btn icon @click="downloadFile(getCSV('sc_results'))" v-bind="props"
                      style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 12px">
                 <v-icon>fas fa-download</v-icon>
               </v-btn>
@@ -333,7 +335,7 @@
         <v-container v-if="scDone">
           <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
             <v-col cols="12" lg="6" class="flex_content_center">
-              <v-data-table :headers="getSCTableHeader(clusterMeasure)" :items="getSCTableItems(clusterMeasure)" dense>
+              <v-data-table :headers="getSCTableHeader(clusterMeasure)" :items="getSCTableItems(clusterMeasure)" density="compact">
                 <template v-slot:header.GO.BP="{ header }">
                   <b v-show="header.text === distributionMeasure" style="color: cornflowerblue">{{ header.text }}</b>
                   <b v-show="header.text !== distributionMeasure"
@@ -395,29 +397,29 @@
             <v-col cols="12" lg="6" class="flex_content_center">
               <div style="width: 100%">
                 <div class="flex_content_center">
-                  <v-img :src="getPlot('absolute_contribution_heatmap')" contain
+                  <v-img :src="getPlot('absolute_contribution_heatmap')"
                          style="position: relative; max-width: 70%"
                          v-if="mode !== 'cluster'">
-                    <v-btn icon small style="position: absolute; right: 0"
+                    <v-btn icon size="small" style="position: absolute; right: 0"
                            @click="downloadFile(getPlot('absolute_contribution_heatmap'))">
-                      <v-icon small>fas fa-download</v-icon>
+                      <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
-                  <v-img :src="getPlot(clusterMeasure+'_absolute_contribution_heatmap')" contain
+                  <v-img :src="getPlot(clusterMeasure+'_absolute_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-else>
-                    <v-btn icon small style="position: absolute; right: 0"
+                    <v-btn icon size="small" style="position: absolute; right: 0"
                            @click="downloadFile(getPlot(clusterMeasure+'_absolute_contribution_heatmap'))">
-                      <v-icon small>fas fa-download</v-icon>
+                      <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
                 </div>
                 <div class="flex_content_center">
-                  <v-tooltip right v-if="type === 'gene' && topSCGenes">
-                    <template v-slot:activator="{on, attrs}">
-                      <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                  <v-tooltip location="right" v-if="type === 'gene' && topSCGenes">
+                    <template v-slot:activator="{ props }">
+                      <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                         <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure]['absolute'] : Object.values(topSCGenes)[0]['absolute'])"
                            target="_blank">functional enrichment (g:Profiler)</a>
-                        <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                        <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                       </v-chip>
                     </template>
                     <div style="width: 200px; text-align: justify">Show the functional enrichment for the top absolute
@@ -432,28 +434,28 @@
             <v-col cols="12" lg="6" class="flex_content_center">
               <div style="width: 100%">
                 <div class="flex_content_center">
-                  <v-img :src="getPlot(distributionMeasure+'_positive_contribution_heatmap')" contain
+                  <v-img :src="getPlot(distributionMeasure+'_positive_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
-                    <v-btn icon small style="position: absolute; right: 0"
+                    <v-btn icon size="small" style="position: absolute; right: 0"
                            @click="downloadFile(getPlot(distributionMeasure+'_positive_contribution_heatmap'))">
-                      <v-icon small>fas fa-download</v-icon>
+                      <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
-                  <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap')" contain
+                  <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-else>
-                    <v-btn icon small style="position: absolute; right: 0"
+                    <v-btn icon size="small" style="position: absolute; right: 0"
                            @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_positive_contribution_heatmap'))">
-                      <v-icon small>fas fa-download</v-icon>
+                      <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
                 </div>
                 <div class="flex_content_center">
-                  <v-tooltip right v-if="type === 'gene'  && topSCGenes">
-                    <template v-slot:activator="{on, attrs}">
-                      <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                  <v-tooltip location="right" v-if="type === 'gene'  && topSCGenes">
+                    <template v-slot:activator="{ props }">
+                      <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                         <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['positive'] : Object.values(topSCGenes)[0][distributionMeasure]['positive'])"
                            target="_blank">functional enrichment (g:Profiler)</a>
-                        <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                        <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                       </v-chip>
                     </template>
                     <div style="width: 200px; text-align: justify">Show the functional enrichment for the top positive
@@ -466,28 +468,28 @@
             <v-col cols="12" lg="6" class="flex_content_center">
               <div style="width: 100%">
                 <div class="flex_content_center">
-                  <v-img :src="getPlot(distributionMeasure+'_negative_contribution_heatmap')" contain
+                  <v-img :src="getPlot(distributionMeasure+'_negative_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-if="mode !== 'cluster'">
-                    <v-btn icon small style="position: absolute; right: 0"
+                    <v-btn icon size="small" style="position: absolute; right: 0"
                            @click="downloadFile(getPlot(distributionMeasure+'_negative_contribution_heatmap'))">
-                      <v-icon small>fas fa-download</v-icon>
+                      <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
-                  <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap')" contain
+                  <v-img :src="getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap')"
                          style="position: relative; max-width: 70%" v-else>
-                    <v-btn icon small style="position: absolute; right: 0"
+                    <v-btn icon size="small" style="position: absolute; right: 0"
                            @click="downloadFile(getPlot(clusterMeasure+'_'+distributionMeasure+'_negative_contribution_heatmap'))">
-                      <v-icon small>fas fa-download</v-icon>
+                      <v-icon size="small">fas fa-download</v-icon>
                     </v-btn>
                   </v-img>
                 </div>
                 <div class="flex_content_center">
-                  <v-tooltip right v-if="type === 'gene'  && topSCGenes">
-                    <template v-slot:activator="{on, attrs}">
-                      <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                  <v-tooltip location="right" v-if="type === 'gene'  && topSCGenes">
+                    <template v-slot:activator="{ props }">
+                      <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                         <a :href="getGProfilerUrl(mode ==='cluster' ? topSCGenes[clusterMeasure][distributionMeasure]['negative'] : Object.values(topSCGenes)[0][distributionMeasure]['negative'])"
                            target="_blank">functional enrichment (g:Profiler)</a>
-                        <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                        <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                       </v-chip>
                     </template>
                     <div style="width: 200px; text-align: justify">Show the functional enrichment for the top negative
@@ -500,11 +502,11 @@
           </v-row>
           <v-row v-if="mode === 'subnetwork'" justify="center" style="padding-top: 16px; padding-bottom: 16px">
             <v-col cols="12" lg="6" class="flex_content_center">
-              <v-img :src="getPlot(distributionMeasure+'_contribution_graph')" contain
+              <v-img :src="getPlot(distributionMeasure+'_contribution_graph')"
                      style="position: relative; max-width: 70%">
-                <v-btn icon small style="position: absolute; right: 0"
+                <v-btn icon size="small" style="position: absolute; right: 0"
                        @click="downloadFile(getPlot(distributionMeasure+'_contribution_graph'))">
-                  <v-icon small>fas fa-download</v-icon>
+                  <v-icon size="small">fas fa-download</v-icon>
                 </v-btn>
               </v-img>
             </v-col>
@@ -515,9 +517,9 @@
             <v-col cols="12">
               <div v-if="scStatus" style="width: 100%" class="flex_content_center"><i>Significance contribution
                 calculation: {{ scStatus.done }} of {{ scStatus.total }} done!
-                <v-tooltip right>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-icon v-on="on" v-bind="attrs" style="top:-2px" left size="1.2rem">far fa-question-circle</v-icon>
+                <v-tooltip location="right">
+                  <template v-slot:activator="{ props }">
+                    <v-icon v-bind="props" style="top:-2px" class="me-2" size="1.2rem">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 300px; text-align: justify">These tasks are executed with lower priority to not
                     block
@@ -525,7 +527,7 @@
                   </div>
                 </v-tooltip>
               </i></div>
-              <v-progress-linear v-if="scStatus" :value="scStatus.done/scStatus.total*100"></v-progress-linear>
+              <v-progress-linear v-if="scStatus" :model-value="scStatus.done/scStatus.total*100"></v-progress-linear>
               <v-progress-linear v-else indeterminate></v-progress-linear>
             </v-col>
           </v-row>
@@ -533,32 +535,32 @@
         <v-divider></v-divider>
       </template>
       <div style="display: flex; justify-content: center">
-        <v-subheader>Mappability figures</v-subheader>
+        <v-list-subheader>Mappability figures</v-list-subheader>
       </div>
       <v-container>
         <v-row justify="center" style="padding-top: 16px; padding-bottom: 16px">
           <v-col cols="12" lg="6" class="flex_content_center">
-            <v-img :src="getPlot('mappability')" contain style="margin:16px; position: relative" max-width="70%">
-              <v-btn icon small style="position: absolute; right: 0"
+            <v-img :src="getPlot('mappability')" style="margin:16px; position: relative" max-width="70%">
+              <v-btn icon size="small" style="position: absolute; right: 0"
                      @click="downloadFile(getPlot('mappability'))">
-                <v-icon small>fas fa-download</v-icon>
+                <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center">
-            <v-img :src="getPlot(getAnnotationPlotName())" contain style="margin:16px; position: relative"
+            <v-img :src="getPlot(getAnnotationPlotName())" style="margin:16px; position: relative"
                    max-width="90%">
-              <v-btn icon small style="position: absolute; right: 0"
+              <v-btn icon size="small" style="position: absolute; right: 0"
                      @click="downloadFile(getPlot(getAnnotationPlotName()))">
-                <v-icon small>fas fa-download</v-icon>
+                <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
           <v-col cols="12" lg="6" class="flex_content_center">
-            <v-img :src="getPlot(getSankeyPlotName())" contain style="margin:16px; position: relative; max-width:80%">
-              <v-btn icon small style="position: absolute; right: 0"
+            <v-img :src="getPlot(getSankeyPlotName())" style="margin:16px; position: relative; max-width:80%">
+              <v-btn icon size="small" style="position: absolute; right: 0"
                      @click="downloadFile(getPlot(getSankeyPlotName()))">
-                <v-icon small>fas fa-download</v-icon>
+                <v-icon size="small">fas fa-download</v-icon>
               </v-btn>
             </v-img>
           </v-col>
@@ -567,9 +569,9 @@
       <template v-if="type==='gene'">
         <v-divider></v-divider>
         <div style="display: flex; justify-content: center">
-          <v-subheader>
+          <v-list-subheader>
             External resources
-          </v-subheader>
+          </v-list-subheader>
         </div>
         <v-container>
           <v-row justify="center" v-if="type==='gene'">
@@ -578,11 +580,11 @@
               <v-container v-if="mode==='cluster'">
                 <v-row justify="center">
                   <v-col cols="12" v-if="input && input.target">
-                    <v-tooltip right>
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">All</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all
@@ -590,13 +592,13 @@
                         genes in g:Profiler.
                       </div>
                     </v-tooltip>
-                    <v-tooltip right v-for="cluster in getClusterNames(input.target)"
+                    <v-tooltip location="right" v-for="cluster in getClusterNames(input.target)"
                                :key="cluster+'_gprofiler'">
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
                              target="_blank">{{ cluster }}</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all
@@ -610,22 +612,22 @@
               <v-container v-else>
                 <v-row justify="center">
                   <v-col cols="12" class="flex_content_center">
-                    <v-tooltip right>
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target)" target="_blank">Targets</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
                         genes in g:Profiler.
                       </div>
                     </v-tooltip>
-                    <v-tooltip right v-if="input.reference">
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                    <v-tooltip location="right" v-if="input.reference">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.reference)" target="_blank">References</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" class="ms-2" color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all target

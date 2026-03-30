@@ -2,79 +2,79 @@
   <div style="width: 100%;  padding: 16px">
     <div v-if="isMobile()" style="display: flex; margin-bottom: 16px">
       <v-btn color="error" @click="$emit('resetEvent')" style="justify-self: left; margin-right: auto;">
-        <v-icon left>fas fa-angle-left</v-icon>
+        <v-icon class="me-2">fas fa-angle-left</v-icon>
         Back
       </v-btn>
       <v-btn color="primary" @click="checkEvent" style="margin-left: auto; margin-right: 0; justify-self: flex-end">
         Validate
-        <v-icon right>fas fa-angle-right</v-icon>
+        <v-icon class="ms-2">fas fa-angle-right</v-icon>
       </v-btn>
     </div>
     <div v-bind:class="{flex:!mobile}">
       <v-btn v-if="!mobile" color="error" @click="$emit('resetEvent')"
              style="justify-self: flex-start; margin-right: auto;">
-        <v-icon left>fas fa-angle-left</v-icon>
+        <v-icon class="me-2">fas fa-angle-left</v-icon>
         Back
       </v-btn>
       <div v-if="(mode==='set' || mode ==='network') && type==='gene'"
            :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample(mode, 'gene', mode)">
-          <v-icon left>far fa-lightbulb</v-icon>
+        <v-btn color="primary" :class="{flex_self_center:mobile}" variant="outlined" @click="loadExample(mode, 'gene', mode)">
+          <v-icon class="me-2">far fa-lightbulb</v-icon>
           {{ mode === 'network' ? 'Subnetwork Example' : 'Set only Example' }}
         </v-btn>
       </div>
       <div v-if="(mode==='set') && type==='gene'"
            :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined @click="loadExample(mode, 'gene', 'ref')">
-          <v-icon left>far fa-lightbulb</v-icon>
+        <v-btn color="primary" :class="{flex_self_center:mobile}" variant="outlined" @click="loadExample(mode, 'gene', 'ref')">
+          <v-icon class="me-2">far fa-lightbulb</v-icon>
           Reference Example
         </v-btn>
       </div>
       <div v-if="mode==='cluster' && type==='gene'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined
+        <v-btn color="primary" :class="{flex_self_center:mobile}" variant="outlined"
                @click="loadExample('cluster', 'gene')">
-          <v-icon left>far fa-lightbulb</v-icon>
+          <v-icon class="me-2">far fa-lightbulb</v-icon>
           Example
         </v-btn>
       </div>
       <div v-if="mode==='network' && type==='gene'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn color="primary" :class="{flex_self_center:mobile}" outlined
+        <v-btn color="primary" :class="{flex_self_center:mobile}" variant="outlined"
                @click="getExampleNetwork()">
-          <v-icon left>fas fa-download</v-icon>
+          <v-icon class="me-2">fas fa-download</v-icon>
           Get example network
         </v-btn>
       </div>
       <div v-if="mode==='cluster' && type==='disease'" :class="{flex_self_center:!mobile, example_div_width:mobile}">
         <v-btn color="primary" :class="{flex_self_center:mobile}"
-               outlined
+               variant="outlined"
                @click="loadExample('cluster', 'disease')">
-          <v-icon left>far fa-lightbulb</v-icon>
+          <v-icon class="me-2">far fa-lightbulb</v-icon>
           Example
         </v-btn>
       </div>
       <div v-if="(mode==='set' || mode ==='network') && type==='disease'"
            :class="{flex_self_center:!mobile, example_div_width:mobile}">
-        <v-btn color="primary" outlined :class="{flex_self_center:mobile}"
+        <v-btn color="primary" variant="outlined" :class="{flex_self_center:mobile}"
                @click="loadExample(mode, 'disease')">
-          <v-icon left>far fa-lightbulb</v-icon>
+          <v-icon class="me-2">far fa-lightbulb</v-icon>
           {{ mode === 'network' ? 'Subnetwork Example' : 'Set only Example' }}
         </v-btn>
       </div>
       <v-btn v-if="!isMobile()" color="primary" @click="checkEvent"
              style="margin-left: auto; margin-right: 0; justify-self: flex-end">
         Validate
-        <v-icon right>fas fa-angle-right</v-icon>
+        <v-icon class="ms-2">fas fa-angle-right</v-icon>
       </v-btn>
     </div>
     <v-sheet style="margin-top: 16px;">
       <v-divider></v-divider>
       <div style="display: flex; justify-content: center">
-        <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">
+        <v-list-subheader :class="{sh_mobile:mobile, sh:!mobile}">
           {{ mode === 'network' ? "Nodes of induced subnetwork" : "Targets" }}
-        </v-subheader>
+        </v-list-subheader>
       </div>
-      <v-alert v-if="errorTargetID" type="error" dense>Missing target ID type selection</v-alert>
-      <v-alert v-if="errorTargetIDs" type="error" dense>Missing targetIDs</v-alert>
+      <v-alert v-if="errorTargetID" type="error" density="compact">Missing target ID type selection</v-alert>
+      <v-alert v-if="errorTargetIDs" type="error" density="compact">Missing targetIDs</v-alert>
       <v-container :class="{border_mobile:mobile, border:!mobile}">
         <v-row justify="center">
           <v-col cols="12" lg="4" :class="{'flex_content_center':mobile}">
@@ -83,11 +83,11 @@
                 <v-col cols="12" md="6" lg="12" class="flex_content_center">
                   <v-select :label="mode==='network' ?'Node ID type':'Target ID type'" :items="targetIDTypes[type]"
                             v-model="targetIDType"
-                            style="max-width: 210px; min-width: 210px" outlined dense filled hide-details>
-                    <template v-slot:append-outer>
-                      <v-tooltip right>
-                        <template v-slot:activator="{on, attrs}">
-                          <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                            style="max-width: 210px; min-width: 210px" variant="outlined" density="compact" hide-details>
+                    <template v-slot:append>
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon v-bind="props">far fa-question-circle</v-icon>
                         </template>
                         <div style="width: 250px; text-align: justify">
                           ID type of inserted {{ mode === 'network' ? 'node' : 'target' }} IDs. Click on the drop-down
@@ -100,15 +100,14 @@
                 <v-col cols="12" md="6" lg="12" class="flex_content_center">
                   <v-file-input ref="tarInput" :label="'Upload '+(mode==='network' ? 'nodes' : 'targets')"
                                 hide-details
-                                dense
-                                single-line
+                                density="compact"
                                 style="width: 210px; max-width: 210px; cursor: pointer"
-                                v-model="targetFile" @change="readTargetFile" prepend-icon="" filled outlined
+                                v-model="targetFile" @change="readTargetFile" variant="outlined"
                                 prepend-inner-icon="fas fa-arrow-up-from-bracket">
-                    <template v-slot:append-outer>
-                      <v-tooltip right>
-                        <template v-slot:activator="{on, attrs}">
-                          <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    <template v-slot:append>
+                      <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                          <v-icon v-bind="props">far fa-question-circle</v-icon>
                         </template>
                         <div style="width: 250px; text-align: justify" v-if="mode !== 'network'">
                           Upload of file with target IDs that are separated by a newline in the file.
@@ -128,12 +127,12 @@
                         v-model="targets"
                         :class="{ 'ta_mobile':mobile }"
                         no-resize
-                        filled
+                        variant="filled"
                         placeholder="Enter your chosen IDs newline separated...">
               <template v-slot:append>
-                <v-tooltip right>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far
+                <v-tooltip location="right">
+                  <template v-slot:activator="{ props }">
+                    <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="props">far
                       fa-question-circle
                     </v-icon>
                   </template>
@@ -144,13 +143,13 @@
                 </v-tooltip>
               </template>
             </v-textarea>
-            <v-data-table v-if="mode==='cluster'" item-key="id" :items="clusters" :class="{ 'ta_mobile':mobile }"
-                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end" dense
+            <v-data-table v-if="mode==='cluster'" item-value="id" :items="clusters" :class="{ 'ta_mobile':mobile }"
+                          style="padding: 16px; margin-left: 0; margin-right: 0; justify-self: flex-end" density="compact"
                           :headers="clusterHeaders">
               <template v-slot:item.action="{item}">
-                <v-tooltip right>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-btn icon v-on="on" v-bind="attrs" @click="removeClusterEntry(item)" small>
+                <v-tooltip location="right">
+                  <template v-slot:activator="{ props }">
+                    <v-btn icon v-bind="props" @click="removeClusterEntry(item)" size="small">
                       <v-icon>far fa-trash-can</v-icon>
                     </v-btn>
                   </template>
@@ -159,15 +158,32 @@
                   </div>
                 </v-tooltip>
               </template>
-              <template v-slot:body.append="{headers}">
+              <template v-slot:tbody>
+                <tbody>
+                <tr v-for="item in clusters" :key="item.id">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.cluster }}</td>
+                  <td style="text-align: end">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-btn icon v-bind="props" @click="removeClusterEntry(item)" size="small">
+                          <v-icon>far fa-trash-can</v-icon>
+                        </v-btn>
+                      </template>
+                      <div style="width: 200px; text-align: justify">
+                        Remove entry from cluster list!
+                      </div>
+                    </v-tooltip>
+                  </td>
+                </tr>
                 <tr>
-                  <td :style="{'text-align':headers[0].align}">
-                    <v-text-field dense label="id" style="margin-bottom: -16px; margin-top:16px;padding-bottom: 6px"
+                  <td>
+                    <v-text-field density="compact" label="id" style="margin-bottom: -16px; margin-top:16px;padding-bottom: 6px"
                                   v-model="clusterIDModel">
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Insert ID of target ID type.
@@ -176,14 +192,14 @@
                       </template>
                     </v-text-field>
                   </td>
-                  <td :style="{'text-align':headers[1].align}">
-                    <v-text-field dense label="cluster"
+                  <td>
+                    <v-text-field density="compact" label="cluster"
                                   style="margin-bottom: -16px; margin-top:16px; padding-bottom: 6px"
                                   v-model="clusterModel">
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Add assigned Cluster. Names and/or numbers are supported.
@@ -192,10 +208,10 @@
                       </template>
                     </v-text-field>
                   </td>
-                  <td :style="{'text-align':headers[2].align, 'width':headers[2].width}">
-                    <v-tooltip right>
-                      <template v-slot:activator="{attrs, on}">
-                        <v-btn v-on="on" v-bind="attrs" icon @click="addClusterEntry()" small>
+                  <td style="text-align: end">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-btn v-bind="props" icon @click="addClusterEntry()" size="small">
                           <v-icon>far fa-square-plus</v-icon>
                         </v-btn>
                       </template>
@@ -205,6 +221,7 @@
                     </v-tooltip>
                   </td>
                 </tr>
+                </tbody>
               </template>
             </v-data-table>
           </v-col>
@@ -213,10 +230,10 @@
       <v-divider></v-divider>
       <template v-if="mode==='set' || mode ==='network'">
         <div style="display: flex; justify-content: center;">
-          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">References (optional)</v-subheader>
+          <v-list-subheader :class="{sh_mobile:mobile, sh:!mobile}">References (optional)</v-list-subheader>
         </div>
-        <v-alert v-if="errorReferenceID" type="error" dense>Missing reference ID type selection</v-alert>
-        <v-alert v-if="errorReferenceIDs" type="error" dense>Missing reference IDs</v-alert>
+        <v-alert v-if="errorReferenceID" type="error" density="compact">Missing reference ID type selection</v-alert>
+        <v-alert v-if="errorReferenceIDs" type="error" density="compact">Missing reference IDs</v-alert>
         <v-container :class="{border_mobile:mobile, border:!mobile}">
           <v-row justify="center" justify-lg="start">
             <v-col cols="12" lg="4" class="flex_content_center">
@@ -224,9 +241,9 @@
                 <v-checkbox v-model="useReference" label="Use reference"
                             style="max-width: 170px" hide-details>
                   <template v-slot:append>
-                    <v-tooltip right>
-                      <template v-slot:activator="{on, attrs}">
-                        <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props">far fa-question-circle</v-icon>
                       </template>
                       <div style="width: 250px; text-align: justify">
                         Set checkmark if the input target set should be compared to a reference.
@@ -242,14 +259,14 @@
               <v-container>
                 <v-row justify="center" justify-lg="start">
                   <v-col cols="12" md="6" lg="12" class="flex_content_center">
-                    <v-select v-if="type==='gene'" outlined :disabled="!useReference" filled label="Reference type"
+                    <v-select v-if="type==='gene'" variant="outlined" :disabled="!useReference" label="Reference type"
                               :items="refTypes" v-model="refType" hide-details
-                              @change="(val)=>{ if(val ==='disease') this.enriched=false}"
-                              style="max-width: 180px;" :class="{'flex_self_center':mobile}" dense>
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                              @update:modelValue="(val)=>{ if(val ==='disease') this.enriched=false}"
+                              style="max-width: 180px;" :class="{'flex_self_center':mobile}" density="compact">
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             ID type of inserted reference IDs. Click on the drop-down to see the supported types.
@@ -257,13 +274,13 @@
                         </v-tooltip>
                       </template>
                     </v-select>
-                    <v-select v-else outlined :disabled="!useReference" filled label="Reference type"
-                              :items="[{text:'Disease',value:'disease'}]" v-model="refType" hide-details
-                              style="max-width: 180px" :class="{'flex_self_center':mobile}" dense>
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                    <v-select v-else variant="outlined" :disabled="!useReference" label="Reference type"
+                              :items="[{title:'Disease',value:'disease'}]" v-model="refType" hide-details
+                              style="max-width: 180px" :class="{'flex_self_center':mobile}" density="compact">
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Select if the reference consists of gene or disease IDs.
@@ -273,14 +290,14 @@
                     </v-select>
                   </v-col>
                   <v-col cols="12" md="6" lg="12" class="flex_content_center">
-                    <v-select outlined :disabled="!useReference" filled label="Reference ID type"
+                    <v-select variant="outlined" :disabled="!useReference" label="Reference ID type"
                               :items="targetIDTypes[refType]" hide-details
                               v-model="referenceIDType" style="max-width: 220px" :class="{'flex_self_center':mobile}"
-                              dense>
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                              density="compact">
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             ID type of inserted reference IDs. Click on the drop-down to see the supported types.
@@ -291,15 +308,14 @@
                   </v-col>
                   <v-col cols="12" md="6" lg="12" class="flex_content_center">
                     <v-file-input ref="refInput" :disabled="!useReference" label="Upload references"
-                                  hint="Upload a file of newline separated reference IDs"
-                                  :class="{'flex_self_center':mobile}" dense hide-details
+                                  :class="{'flex_self_center':mobile}" density="compact" hide-details
                                   style="width: 270px; max-width: 270px; cursor: pointer"
-                                  v-model="referenceFile" @change="readReferenceFile" prepend-icon="" filled outlined
+                                  v-model="referenceFile" @change="readReferenceFile" variant="outlined"
                                   prepend-inner-icon="fas fa-arrow-up-from-bracket">
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Upload of file with reference IDs that are separated by a newline in the file.
@@ -312,12 +328,12 @@
               </v-container>
             </v-col>
             <v-col cols="12" lg="8" :class="{'flex_content_center':mobile}">
-              <v-textarea :disabled="!useReference" label="Reference IDs" filled :class="{ 'ta_mobile':mobile }"
+              <v-textarea :disabled="!useReference" label="Reference IDs" variant="filled" :class="{ 'ta_mobile':mobile }"
                           placeholder="Enter your chosen IDs newline separated..." v-model="references" no-resize>
                 <template v-slot:append>
-                  <v-tooltip right>
-                    <template v-slot:activator="{on, attrs}">
-                      <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="attrs" v-on="on">far
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon style="top: -14px;right:-10px; margin-left: -21px" v-bind="props">far
                         fa-question-circle
                       </v-icon>
                     </template>
@@ -337,30 +353,29 @@
       </template>
       <template v-if="mode === 'network'">
         <div style="display: flex; justify-content: center">
-          <!--          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>-->
-          <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-subheader>
+          <!--          <v-list-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-list-subheader>-->
+          <v-list-subheader :class="{sh_mobile:mobile, sh:!mobile}">Custom Network (optional)</v-list-subheader>
         </div>
-        <!--        <v-alert v-if="errorNetwork" type="error" dense>Please upload a valid network!</v-alert>-->
-        <v-alert v-if="errorNetworkFormat" type="error" dense>Network format is not of accepted type (.sif, .gt,
+        <!--        <v-alert v-if="errorNetwork" type="error" density="compact">Please upload a valid network!</v-alert>-->
+        <v-alert v-if="errorNetworkFormat" type="error" density="compact">Network format is not of accepted type (.sif, .gt,
           .graphml)!
         </v-alert>
-        <v-alert v-if="errorNetworkIDType" type="error" dense>Missing node id type definition!</v-alert>
-        <v-alert v-if="errorNetworkNodeName" type="error" dense>Missing node attribute name!</v-alert>
+        <v-alert v-if="errorNetworkIDType" type="error" density="compact">Missing node id type definition!</v-alert>
+        <v-alert v-if="errorNetworkNodeName" type="error" density="compact">Missing node attribute name!</v-alert>
         <v-container style="margin-bottom: 32px">
           <v-row justify="center">
             <v-col cols="12" :lg="6" :md="8" :sm="10" class="flex_content_center">
               <v-file-input ref="networkInput" label="Network"
-                            dense
-                            single-line
+                            density="compact"
                             show-size
                             style="width: 210px; max-width: 80% ;  cursor: pointer"
                             accept=".sif,.graphml,.gt" :rules="networkRule"
-                            v-model="networkFile" prepend-icon="fas fa-arrow-up-from-bracket" filled outlined
-                            prepend-inner-icon="">
-                <template v-slot:append-outer>
-                  <v-tooltip right>
-                    <template v-slot:activator="{on, attrs}">
-                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                            v-model="networkFile" variant="outlined"
+                            prepend-inner-icon="fas fa-arrow-up-from-bracket">
+                <template v-slot:append>
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
                     </template>
                     <div style="max-width: 300px">
                       Upload a network with {{ type }} nodes in sif, gt or graphml format. If the given network is of
@@ -373,13 +388,13 @@
           </v-row>
           <v-row justify="center">
             <v-col cols="12" sm="5" class="flex_content_center">
-              <v-select outlined :disabled="!networkFile" filled label="Network node type"
+              <v-select variant="outlined" :disabled="!networkFile" label="Network node type"
                         :items="idMap[type]" v-model="nodeType" hide-details
-                        style="max-width: 220px" :class="{'flex_self_center':mobile}" dense>
-                <template v-slot:append-outer>
-                  <v-tooltip right>
-                    <template v-slot:activator="{on, attrs}">
-                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                        style="max-width: 220px" :class="{'flex_self_center':mobile}" density="compact">
+                <template v-slot:append>
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
                     </template>
                     <div style="width: 250px; text-align: justify">
                       Select the ID space the {{ type }} nodes in your selected background network are in.
@@ -389,13 +404,13 @@
               </v-select>
             </v-col>
             <v-col cols="12" sm="5" class="flex_content_center">
-              <v-text-field style="max-width: 220px" outlined filled dense v-model="nodeName"
+              <v-text-field style="max-width: 220px" variant="outlined" density="compact" v-model="nodeName"
                             :disabled="!networkFile || !(networkFile.name.endsWith('.gt') || networkFile.name.endsWith('.graphml'))"
                             label="Property name">
-                <template v-slot:append-outer>
-                  <v-tooltip right>
-                    <template v-slot:activator="{on, attrs}">
-                      <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                <template v-slot:append>
+                  <v-tooltip location="right">
+                    <template v-slot:activator="{ props }">
+                      <v-icon v-bind="props">far fa-question-circle</v-icon>
                     </template>
                     <div style="width: 250px; text-align: justify">
                       Define the node or prop name of the {{ type }} nodes where the ID is located.
@@ -409,10 +424,10 @@
         <v-divider></v-divider>
       </template>
       <div style="display: flex; justify-content: center">
-        <v-subheader :class="{sh_mobile:mobile, sh:!mobile}">Additional parameters (optional)</v-subheader>
+        <v-list-subheader :class="{sh_mobile:mobile, sh:!mobile}">Additional parameters (optional)</v-list-subheader>
       </div>
       <v-container :class="{border_mobile:mobile, border:!mobile}">
-        <v-alert v-if="errorSigCont" type="error" dense>Define a list of entries for significance contribution (max 100
+        <v-alert v-if="errorSigCont" type="error" density="compact">Define a list of entries for significance contribution (max 100
           entries).
         </v-alert>
         <v-row justify="center">
@@ -428,9 +443,9 @@
                         hide-details
                         label="Enriched">
                       <template v-slot:append>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Set checkmark, if only enriched annotations of the reference set should be used.
@@ -443,11 +458,11 @@
                          :lg="mode==='set' || mode==='network'?4:6">
                     <v-select label="Similarity measure" :items="distanceMeasures" v-model="distanceModel"
                               style="max-width: 240px; min-width: 240px;" hide-details
-                              outlined dense filled>
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                              variant="outlined" density="compact">
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 400px;">
                             <div style="display: flex">
@@ -477,11 +492,11 @@
                               :items="getBackgroundModelItems()"
                               v-model="backgroundModel"
                               hide-details
-                              style="max-width: 260px; min-width: 250px;" outlined dense filled>
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                              style="max-width: 260px; min-width: 250px;" variant="outlined" density="compact">
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 400px;">
                             <div style="display: flex"
@@ -539,13 +554,13 @@
                     <v-checkbox
                         style="margin-top: 4px; max-width: 310px; padding-top:15px"
                         v-model="sigCont"
-                        @change="sigContMail=''"
+                        @update:modelValue="sigContMail=''"
                         hide-details
                         label="Calculate significance contribution">
                       <template v-slot:append>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify">
                             Calculate the contribution to the significance (empirical p-value) for each input id
@@ -561,15 +576,14 @@
                     <v-file-input ref="sigContList" :disabled="!sigCont"
                                   :label="(sigContTargets && sigContTargets.length>0 ? ('Selected '+sigContTargets.length) :('Upload ' +(mode==='network' ? 'nodes' : 'targets')))"
                                   hide-details
-                                  dense
-                                  single-line
+                                  density="compact"
                                   style="width: 250px; max-width: 210px; cursor: pointer"
-                                  v-model="sigContFile" @change="readSigContFile" prepend-icon="" filled outlined
+                                  v-model="sigContFile" @change="readSigContFile" variant="outlined"
                                   prepend-inner-icon="fas fa-arrow-up-from-bracket">
-                      <template v-slot:append-outer>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                      <template v-slot:append>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 250px; text-align: justify" v-if="mode !== 'network'">
                             Upload a file with target IDs that are separated by a newline in the file. For the selected
@@ -596,9 +610,9 @@
                         hide-details
                         label="Notification e-mail">
                       <template v-slot:append>
-                        <v-tooltip right>
-                          <template v-slot:activator="{on, attrs}">
-                            <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                        <v-tooltip location="right">
+                          <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">far fa-question-circle</v-icon>
                           </template>
                           <div style="width: 300px; text-align: justify">
                             Significance contribution calculation will happen with low priority to not fully block other
@@ -616,15 +630,15 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="12">
-            <v-slider label="Runs" min="100" max="10000" step="100" v-model="runs" dense>
+            <v-slider label="Runs" min="100" max="10000" step="100" v-model="runs" density="compact">
               <template v-slot:prepend>
-                <v-text-field v-model="runs" single-line type="number"
+                <v-text-field v-model="runs" single-line type="number" density="compact"
                               style="max-width: 5rem; margin-top: -16px"></v-text-field>
               </template>
               <template v-slot:append>
-                <v-tooltip right>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                <v-tooltip location="right">
+                  <template v-slot:activator="{ props }">
+                    <v-icon v-bind="props">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 250px; text-align: justify">
                     Number of runs to be performed with randomly generated target IDs to be used as a comparison for the
@@ -637,15 +651,15 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="12">
-            <v-slider label="Replace" min="1" max="100" step="1" v-model="replace" dense>
+            <v-slider label="Replace" min="1" max="100" step="1" v-model="replace" density="compact">
               <template v-slot:prepend>
-                <v-text-field v-model="replace" single-line type="number"
+                <v-text-field v-model="replace" single-line type="number" density="compact"
                               style="max-width: 5rem; margin-top: -16px"></v-text-field>
               </template>
               <template v-slot:append>
-                <v-tooltip right>
-                  <template v-slot:activator="{on, attrs}">
-                    <v-icon v-bind="attrs" v-on="on">far fa-question-circle</v-icon>
+                <v-tooltip location="right">
+                  <template v-slot:activator="{ props }">
+                    <v-icon v-bind="props">far fa-question-circle</v-icon>
                   </template>
                   <div style="width: 250px; text-align: justify">
                     How many percent of the target set elements should be replaced each run with random values based on
@@ -661,19 +675,19 @@
       <v-divider></v-divider>
       <div style="display: flex; margin-top:8px">
         <v-btn color="error" @click="$emit('resetEvent')" style="justify-self: left; margin-right: auto;">
-          <v-icon left>fas fa-angle-left</v-icon>
+          <v-icon class="me-2">fas fa-angle-left</v-icon>
           Back
         </v-btn>
 
         <v-btn color="primary" @click="checkEvent"
                style="margin-left: auto; margin-right: 0; justify-self: flex-end">
           Validate
-          <v-icon right>fas fa-angle-right</v-icon>
+          <v-icon class="ms-2">fas fa-angle-right</v-icon>
         </v-btn>
       </div>
     </v-sheet>
     <v-snackbar v-model="notification.show" :multi-line="true" :timeout="notification.timeout"
-                color="warning" dark>
+                color="warning">
       {{ notification.message }}
     </v-snackbar>
   </div>
@@ -737,9 +751,9 @@ export default {
       nodeType: "",
       nodeName: "",
       clusterHeaders: [
-        {text: 'Target ID', align: 'start', sortable: true, value: 'id'},
-        {text: 'Cluster', align: 'start', sortable: true, value: 'cluster'},
-        {text: 'Action', align: 'end', sortable: false, width: "50px", value: 'action'}
+        {title: 'Target ID', align: 'start', sortable: true, key: 'id'},
+        {title: 'Cluster', align: 'start', sortable: true, key: 'cluster'},
+        {title: 'Action', align: 'end', sortable: false, width: "50px", key: 'action'}
       ],
       clusters: [],
       edges: [],
@@ -747,18 +761,18 @@ export default {
         value => !value || (value.name.endsWith('.gt') || value.name.endsWith('.graphml') || value.name.endsWith('.sif')) || 'Network file must have the suffix .sif, .gt or .graphml.'
       ],
       refTypes: [
-        {text: "Gene", value: "gene"},
-        {text: "Disease", value: "disease"},
+        {title: "Gene", value: "gene"},
+        {title: "Disease", value: "disease"},
       ],
       distanceMeasures: [
-        {text: "Jaccard index", value: "jaccard"},
-        {text: "Overlap coefficient", value: "overlap"}
+        {title: "Jaccard index", value: "jaccard"},
+        {title: "Overlap coefficient", value: "overlap"}
       ],
       backgroundModel: this.mode === 'cluster' ? 'complete' : (this.mode === 'network' ? 'network' : "complete"),
       backgroundModels: [
-        {text: "Fully randomized", value: "complete"},
-        {text: "Term-size preserving", value: "term-pres"},
-        {text: "Network-based", value: "network"}
+        {title: "Fully randomized", value: "complete"},
+        {title: "Term-size preserving", value: "term-pres"},
+        {title: "Network-based", value: "network"}
       ],
       targetIDTypes: this.idMap
     }

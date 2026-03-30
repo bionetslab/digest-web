@@ -1,11 +1,11 @@
 <template>
   <div>
     <div style="display:flex;">
-      <v-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Data
-      </v-subheader>
-      <v-tooltip top>
-        <template v-slot:activator="{attrs, on}">
-          <v-btn icon @click="downloadFile(getZIP('.zip'))" v-on="on" v-bind="attrs"
+      <v-list-subheader style="justify-self: center; margin-left: auto; margin-right: 0">Data
+      </v-list-subheader>
+      <v-tooltip location="top">
+        <template v-slot:activator="{ props }">
+          <v-btn icon @click="downloadFile(getZIP('.zip'))" v-bind="props"
                  style="justify-self: flex-end; margin-left: auto; margin-right: 0; top: 10px">
             <v-icon>fas fa-download</v-icon>
           </v-btn>
@@ -18,7 +18,7 @@
         <v-col cols="12" lg="4" md="6" class="flex_content_center">
           <div v-if="mode==='cluster'">
             <b>Clusterings</b>
-            <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+            <v-table density="compact" style="max-height: 300px; overflow-y: auto;">
               <template v-slot:default>
                 <thead>
                 <tr>
@@ -33,11 +33,11 @@
                 </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
           <div v-else>
             <b>Targets</b>
-            <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+            <v-table density="compact" style="max-height: 300px; overflow-y: auto;">
               <template v-slot:default>
                 <thead>
                 <tr>
@@ -50,13 +50,13 @@
                 </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
         <v-col v-if="input.reference_id" cols="12" lg="4" md="6" class="flex_content_center">
           <div>
             <b>Reference{{ typeof input.reference === 'string' ? '' : 's' }}</b>
-            <v-simple-table dense style="max-height: 300px; overflow-y: scroll;">
+            <v-table density="compact" style="max-height: 300px; overflow-y: scroll;">
               <template v-slot:default>
                 <thead>
                 <tr>
@@ -76,13 +76,13 @@
                 </template>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
         <v-col cols="12" lg="4" md="6" class="flex_content_center">
           <div>
             <b>Configuration</b>
-            <v-simple-table dense style="max-height: 300px; overflow-y: auto;">
+            <v-table density="compact" style="max-height: 300px; overflow-y: auto;">
               <template v-slot:default>
                 <thead>
                 <tr>
@@ -98,22 +98,22 @@
                 </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
       </v-row>
       <div style="display: flex; justify-content: center; margin: 32px;">
         <v-btn @click="downloadInput()">
-          <v-icon left>fas fa-download</v-icon>
+          <v-icon start>fas fa-download</v-icon>
           Download Input
         </v-btn>
       </div>
       <template v-if="type==='gene'">
         <v-divider></v-divider>
         <div style="display:flex;">
-          <v-subheader style="justify-self: center; margin-left: auto; margin-top:32px; margin-right: auto">
+          <v-list-subheader style="justify-self: center; margin-left: auto; margin-top:32px; margin-right: auto">
             External resources
-          </v-subheader>
+          </v-list-subheader>
         </div>
         <v-container>
           <v-row justify="center" v-if="type==='gene'">
@@ -122,11 +122,11 @@
               <v-container v-if="mode==='cluster'">
                 <v-row justify="center">
                   <v-col cols="12">
-                    <v-tooltip right>
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target.map(e=>e.id))" target="_blank">All</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all
@@ -134,13 +134,13 @@
                         genes in g:Profiler.
                       </div>
                     </v-tooltip>
-                    <v-tooltip right v-for="cluster in getClusterNames(input.target)"
+                    <v-tooltip location="right" v-for="cluster in getClusterNames(input.target)"
                                :key="cluster+'_gprofiler'">
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target.filter(e=>e.cluster===cluster).map(e=>e.id))"
                              target="_blank">{{ cluster }}</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all
@@ -154,22 +154,22 @@
               <v-container v-else>
                 <v-row justify="center">
                   <v-col cols="12" class="flex_content_center">
-                    <v-tooltip right>
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                    <v-tooltip location="right">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.target)" target="_blank">Targets</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
                         genes in g:Profiler.
                       </div>
                     </v-tooltip>
-                    <v-tooltip right v-if="input.reference">
-                      <template v-slot:activator="{on, attrs}">
-                        <v-chip outlined v-on="on" v-bind="attrs" small style="margin: 4px">
+                    <v-tooltip location="right" v-if="input.reference">
+                      <template v-slot:activator="{ props }">
+                        <v-chip variant="outlined" v-bind="props" size="small" style="margin: 4px">
                           <a :href="getGProfilerUrl(input.reference)" target="_blank">References</a>
-                          <v-icon small right color="primary">fas fa-up-right-from-square</v-icon>
+                          <v-icon size="small" end color="primary">fas fa-up-right-from-square</v-icon>
                         </v-chip>
                       </template>
                       <div style="width: 200px; text-align: justify">Show the functional enrichment for all target
@@ -263,7 +263,7 @@ export default {
 
 <style scoped lang="sass">
 
-.v-subheader
+.v-list-subheader
   font-size: 1.5rem
   margin-top: 8px
 

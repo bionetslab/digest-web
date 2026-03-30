@@ -26,7 +26,7 @@
         </v-card-subtitle>
         <v-card-actions>
           <div style="width: 100%; display: flex; justify-content: center">
-            <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})">
+            <v-btn variant="flat" color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})">
               Validate
             </v-btn>
           </div>
@@ -34,8 +34,8 @@
       </div>
     </div>
     <div v-if="mobile" style="display: flex; justify-content: center; margin-bottom: 8px">
-      <v-btn depressed color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})" rounded style="font-size: smaller">
-        <v-icon left style="margin-right:4px ">fas fa-play</v-icon>
+      <v-btn variant="flat" color="primary" @click="$emit('startValidationEvent',{type:type,mode:mode})" rounded style="font-size: smaller">
+        <v-icon class="me-1">fas fa-play</v-icon>
         Validate
       </v-btn>
     </div>

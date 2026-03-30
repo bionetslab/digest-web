@@ -2,40 +2,39 @@
   <div style="width: 100%;  padding: 16px">
     <v-sheet style="margin-top: 16px;">
       <div style="display: flex; justify-content: center" v-if="!error && result ===undefined">
-        <v-subheader :class="{sh:!mobile, sh_mobile:mobile}">Status: {{
+        <v-list-subheader :class="{sh:!mobile, sh_mobile:mobile}">Status: {{
             status ? status + (status === "Queued" ? "(" + queueStats.queuePosition + "/" + queueStats.queueLength + ")" : '') : "communicating..."
           }}
-        </v-subheader>
+        </v-list-subheader>
       </div>
       <div v-if="result===undefined">
         <v-progress-linear :color="error?'error':'primary'" :indeterminate="progress===undefined"
-                           :value="progress"></v-progress-linear>
+                           :model-value="progress"></v-progress-linear>
         <div style="width: 100%; display: flex; justify-content: center; margin-top:8px;">
           <i v-if="taskID && !result">You may return to your results later using the following URL: <a
               :href="getCurrentURL()">{{ getCurrentURL() }}</a></i>
         </div>
       </div>
       <div v-else :style="{'padding-left': isMobile() ? '16px':'64px', 'padding-right': isMobile() ? '16px': '64px'}">
-        <v-tabs v-model="resultTab" centered>
-          <v-tabs-slider color="primary"></v-tabs-slider>
-          <v-tab>
+        <v-tabs v-model="resultTab" align-tabs="center">
+          <v-tab :value="0">
             Input
           </v-tab>
-          <v-tab>
+          <v-tab :value="1">
             Result
           </v-tab>
 
         </v-tabs>
         <v-divider></v-divider>
-        <v-tabs-items v-model="resultTab">
-          <v-tab-item>
+        <v-window v-model="resultTab">
+          <v-window-item :value="0">
             <InputTab @downloadEvent="downloadFile" :task-i-d="taskID" :id-map="idMap" :type="type" :mode="mode" :mobile="mobile" :input="input" :zips="zips"></InputTab>
-          </v-tab-item>
+          </v-window-item>
 
-          <v-tab-item style="width: 100%">
+          <v-window-item :value="1" style="width: 100%">
             <OutputTab @reloadFiles="loadPlots()" @downloadEvent="downloadFile" :taskID="taskID" :mobile="mobile" :result="result" :plots="plots" :csvs="csvs" :input="input" :type="type" :mode="mode" :zips="zips" :reference-type="getIDType(input.reference_id)"></OutputTab>
-          </v-tab-item>
-        </v-tabs-items>
+          </v-window-item>
+        </v-window>
       </div>
       <span v-if="error"><i>An error with following message occurred: {{ status }}</i></span>
     </v-sheet>

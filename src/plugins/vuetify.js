@@ -1,15 +1,20 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib/framework';
-import '@fortawesome/fontawesome-free/css/all.css' // Ensure you are using css-loader
-import 'vuetify/dist/vuetify.min.css'
+// Styles
+import '@mdi/font/css/materialdesignicons.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import 'vuetify/styles'
 
+// Vuetify
+import { createVuetify } from 'vuetify'
+import { aliases, fa } from 'vuetify/iconsets/fa'
+import { mdi } from 'vuetify/iconsets/mdi'
 
-Vue.use(Vuetify);
-
-const opts = {
-    icons: {
-        iconfont:'fa',
+export default createVuetify({
+  icons: {
+    defaultSet: 'fa',
+    aliases,
+    sets: {
+      fa,
+      mdi,
     },
-}
-
-export default new Vuetify(opts);
+  },
+})
